@@ -1,0 +1,81 @@
+---------------------1/5------:
+Base_AI_answer:Use Case Diagram:
+
+Use Case: Student Login
+- Actors: Student
+- Description: Student starts the system, logs in with student ID number and password for verification
+
+Use Case: Verify Information
+- Actors: System
+- Description: System verifies student information after login
+
+Use Case: Course Selection
+- Actors: Student, System
+- Description: Student passes verification and chooses course selection, system executes course selection function
+
+Use Case: View Credits
+- Actors: Student, System
+- Description: Student passes verification and chooses to view credits, system executes view credits function
+---------------------2/5------:
+Base_AI_answer:Use Case Diagram:
+
+Use Case: Student Login
+Actor: Student
+Description: The student starts the system, logs in, enters student ID number and password, and the system verifies the information.
+
+Use Case: Course Selection
+Actor: Student
+Description: The student chooses to select courses after passing verification, and the system executes the course selection function.
+
+Use Case: View Credits
+Actor: Student
+Description: The student chooses to view credits after passing verification, and the system executes the view credits function.
+---------------------3/5------:
+Base_AI_answer:Use Case Diagram:
+
+Use Case: Student Login
+Actors: Student
+Description: Student logs in to the system and verifies their identity.
+
+Use Case: Course Selection
+Actors: Student
+Description: Student chooses the course selection option to select their courses.
+
+Use Case: View Credits
+Actors: Student
+Description: Student chooses the view credits option to check their credit status.
+---------------------4/5------:
+Base_AI_answer:Here is a use case diagram based on the given description:
+
+[Student]-[Starts the system]
+[Student]-[Logs in]
+[System]->[Prompt to enter student ID number and password]
+[System]->[Verify the student ID number and password]
+[System]<-[Verification information is given]
+[Student]<-[Verification information is given]
+[Student]-[Chooses course selection]
+[System]->[Executes course selection function]
+[System]<-[Executes course selection function]
+[Student]<-[Executes course selection function]
+[Student]-[Chooses to view credits]
+[System]->[Executes view credits function]
+[System]<-[Executes view credits function]
+[Student]<-[Executes view credits function]
+---------------------5/5------:
+Base_AI_answer:Use Case Diagram:
+
+Use Case: Student Login
+Actors: Student
+Description: Student starts the system, enters student ID number and password, and is prompted for verification.
+
+Use Case: Verification
+Actors: System
+Description: System verifies student information and displays verification status.
+
+Use Case: Course Selection
+Actors: Student, System
+Description: If student passes verification and chooses course selection, the system executes the course selection function.
+
+Use Case: View Credits
+Actors: Student, System
+Description: If student passes verification and chooses to view credits, the system executes the view credits function.

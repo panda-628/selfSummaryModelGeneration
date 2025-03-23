@@ -1,0 +1,72 @@
+Base_AI_answer:@startuml
+
+enum TestType {
+  BLOOD
+  ULTRASOUND
+  X_RAY
+  URINE
+  STOOL
+}
+
+class Doctor {
+  - practitionerNumber: int
+  - signature: Image
+  - fullName: String
+  - address: String
+  - phoneNumber: String
+  - isValidRequisition(requisition): boolean
+  - prescribeTest()
+}
+
+class Patient {
+  - healthNumber: String
+  - firstName: String
+  - lastName: String
+  - dateOfBirth: Date
+  - address: String
+  - phoneNumber: String
+  - makeAppointment()
+  - viewTestResults()
+}
+
+class Requisition {
+  - doctor: Doctor
+  - patient: Patient
+  - tests: TestType[]
+  - validFrom: Date
+}
+
+class Test {
+  - duration: int
+  
+}
+
+class TestRepetition {
+  - numberOfTimes: int
+  - interval: enum{WEEKLY, MONTHLY, HALF_YEARLY, YEARLY}
+}
+
+class Appointment {
+  - patient: Patient
+  - lab: Lab
+  - appointmentNumber: int
+  - date: Date
+  - startTime: Time
+  - endTime: Time
+}
+
+class Lab {
+  - address: String
+  - businessHours: Time
+  - registrationNumber: int
+  - makeAppointment()
+}
+
+Doctor o-- Requisition
+Patient o-- Appointment
+Patient o-- Test
+Requisition o-- Test
+Requisition o-- TestRepetition
+Appointment o-- Lab
+
+@enduml

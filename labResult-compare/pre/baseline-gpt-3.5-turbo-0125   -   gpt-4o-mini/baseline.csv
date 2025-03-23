@@ -1,0 +1,806 @@
+---------------------1/10---------1/3:
+Base_AI_answer:Based on the provided description, here's the use case diagram in the specified format:
+
+### Actors:
+Customer
+
+### Use Cases:
+1. Log In
+2. Purchase Ticket
+3. Cancel Ticket
+4. Check Remaining Tickets
+5. Check Train Time
+6. Retrieve Password
+7. Station Query
+8. Train Number Query
+
+### Relationships:
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Log In) include (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Log In) include (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Customer) associate (Retrieve Password)
+- (Log In) extend (Retrieve Password) 
+
+This structure captures the interactions between the actors and the system, along with how certain use cases depend on others.
+---------------------1/10---------2/3:
+Base_AI_answer:Based on the provided description of the train ticket booking system, here’s the use case diagram representation:
+
+Actors:
+- Customer
+
+Use Cases:
+- Login
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query
+- Train Number Query
+
+Relationships:
+- (Customer) associate (Login)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Purchase Ticket) extend (Login)
+- (Cancel Ticket) extend (Login)
+---------------------1/10---------3/3:
+Base_AI_answer:Actors:
+Customer
+
+Use Cases:
+Log In  
+Purchase Ticket  
+Cancel Ticket  
+Check Remaining Tickets  
+Check Train Time  
+Station Query  
+Train Number Query  
+Retrieve Password  
+
+Relationships:
+(Customer) associate (Log In)  
+(Customer) associate (Purchase Ticket)  
+(Customer) associate (Cancel Ticket)  
+(Customer) associate (Check Remaining Tickets)  
+(Customer) associate (Check Train Time)  
+(Check Train Time) include (Station Query)  
+(Check Train Time) include (Train Number Query)  
+(Customer) associate (Retrieve Password)  
+(Log In) extend (Retrieve Password)  
+(Purchase Ticket) generalize (Check Remaining Tickets)  
+(Cancel Ticket) generalize (Check Remaining Tickets)  
+---------------------2/10---------1/3:
+Base_AI_answer:Based on the provided description of the train ticket booking system, here’s a breakdown of the actors, use cases, and their associations:
+
+**Actors:**
+- Customer
+
+**Use Cases:**
+- Log In
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query (included in Check Train Time)
+- Train Number Query (included in Check Train Time)
+
+**Relationships:**
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Log In) include (Purchase Ticket)
+- (Log In) include (Cancel Ticket)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+
+This representation captures the interactions between the customer and the various functionalities offered by the train ticket booking system.
+---------------------2/10---------2/3:
+Base_AI_answer:Actors:
+Customer
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Purchase Ticket) extend (Login)
+(Cancel Ticket) extend (Login)
+---------------------2/10---------3/3:
+Base_AI_answer:Actors:
+Customer
+
+Use Cases:
+Log In
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Log In)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Purchase Ticket) extend (Log In)
+(Cancel Ticket) extend (Log In)
+(Retrieve Password) extend (Log In)
+---------------------3/10---------1/3:
+Base_AI_answer:Actors:
+Customer
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Station Query
+Train Number Query
+Retrieve Password
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Customer) associate (Retrieve Password)
+(Login) extend (Retrieve Password)
+---------------------3/10---------2/3:
+Base_AI_answer:Based on the provided description, here is the use case diagram representation:
+
+**Actors:**
+- Customer
+
+**Use Cases:**
+- Log In
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query
+- Train Number Query
+
+**Relationships:**
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Log In) extend (Retrieve Password)
+---------------------3/10---------3/3:
+Base_AI_answer:Based on the given description for the train ticket booking system, here are the actors, use cases, and relationships in the specified format:
+
+Actors:
+- Customer
+
+Use Cases:
+- Log In
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query
+- Train Number Query
+
+Relationships:
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Log In) extend (Retrieve Password)
+---------------------4/10---------1/3:
+Base_AI_answer:Actors:
+Customer
+System Admin
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Login) extend (Retrieve Password)
+---------------------4/10---------2/3:
+Base_AI_answer:Actors:
+Customer
+System
+
+Use Cases:
+Log In
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Log In)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Log In) include (Purchase Ticket)
+(Log In) include (Cancel Ticket)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Retrieve Password) extend (Log In)
+---------------------4/10---------3/3:
+Base_AI_answer:Actors:
+Customer  
+System
+
+Use Cases:
+Log In  
+Purchase Ticket  
+Cancel Ticket  
+Check Remaining Tickets  
+Check Train Time  
+Retrieve Password  
+Station Query  
+Train Number Query  
+
+Relationships:
+(Customer) associate (Log In)  
+(Customer) associate (Purchase Ticket)  
+(Customer) associate (Cancel Ticket)  
+(Customer) associate (Check Remaining Tickets)  
+(Customer) associate (Check Train Time)  
+(Customer) associate (Retrieve Password)  
+(Log In) include (Purchase Ticket)  
+(Log In) include (Cancel Ticket)  
+(Check Train Time) include (Station Query)  
+(Check Train Time) include (Train Number Query)  
+(Retrieve Password) extend (Log In)
+---------------------5/10---------1/3:
+Base_AI_answer:Sure! Based on the description provided, here's the use case diagram formatted with actors, use cases, and associations:
+
+**Actors:**
+- Customer
+
+**Use Cases:**
+- Log in
+- Purchase ticket
+- Cancel ticket
+- Check remaining tickets
+- Check train time
+- Retrieve password
+- Query train time by station
+- Query train time by train number
+
+**Relationships:**
+- (Customer) associate (Log in)
+- (Customer) associate (Purchase ticket)
+- (Customer) associate (Cancel ticket)
+- (Customer) associate (Check remaining tickets)
+- (Customer) associate (Check train time)
+- (Customer) associate (Retrieve password)
+- (Check train time) include (Query train time by station)
+- (Check train time) include (Query train time by train number)
+- (Log in) extend (Retrieve password)
+- (Purchase ticket) generalize (Log in)
+- (Cancel ticket) generalize (Log in)
+
+This structure captures the interactions within the train ticket booking system according to your description. Let me know if you need any further details or modifications!
+---------------------5/10---------2/3:
+Base_AI_answer:Certainly! Based on the provided description, here's the use case diagram outline with actors, use cases, and relationships.
+
+### Actors:
+- Customer
+- System
+
+### Use Cases:
+- Log In
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Station Query
+- Train Number Query
+- Retrieve Password
+
+### Relationships:
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Customer) associate (Retrieve Password)
+- (Log In) extend (Retrieve Password)
+
+This configuration captures the interactions between the customer and the system in the train ticket booking scenario.
+---------------------5/10---------3/3:
+Base_AI_answer:Based on the provided description of the train ticket booking system, here's how the use case diagram can be structured:
+
+Actors:
+- Customer
+
+Use Cases:
+- Login
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query (includes)
+- Train Number Query (includes)
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Login) include (Purchase Ticket)
+(Login) include (Cancel Ticket)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+---------------------6/10---------1/3:
+Base_AI_answer:Based on the provided description of the train ticket booking system, here is the use case diagram represented in the specified format:
+
+**Actors:**
+Customer
+
+**Use Cases:**
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Station Query
+Train Number Query
+Retrieve Password
+
+**Relationships:**
+(Customer) associate (Login)
+(Login) include (Purchase Ticket)
+(Login) include (Cancel Ticket)
+(Login) include (Check Remaining Tickets)
+(Login) associate (Check Train Time)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Customer) associate (Retrieve Password)
+---------------------6/10---------2/3:
+Base_AI_answer:Based on the provided description, here is the use case diagram represented in the specified format:
+
+Actors:
+Customer
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Login) extend (Retrieve Password)
+---------------------6/10---------3/3:
+Base_AI_answer:Based on the provided description of the train ticket booking system, here's a breakdown of the use case diagram elements:
+
+**Actors:**
+- Customer
+
+**Use Cases:**
+- Log In
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query
+- Train Number Query
+
+**Relationships:**
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Purchase Ticket) extend (Log In)
+- (Cancel Ticket) extend (Log In)
+- (Log In) extend (Retrieve Password)
+
+This structure summarizes the interactions where the customer interacts with the system through various use cases, establishing the required relationships according to the activities described.
+---------------------7/10---------1/3:
+Base_AI_answer:Actors:
+Customer
+System
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Station Query
+Train Number Query
+Retrieve Password
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Customer) associate (Retrieve Password)
+(Login) extend (Purchase Ticket)
+(Login) extend (Cancel Ticket)
+---------------------7/10---------2/3:
+Base_AI_answer:Based on the provided description, here is the use case diagram in the requested format:
+
+Actors:
+- Customer
+
+Use Cases:
+- Log In
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Station Query
+- Train Number Query
+- Retrieve Password
+
+Relationships:
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Customer) associate (Retrieve Password)
+- (Purchase Ticket) include (Log In)
+- (Cancel Ticket) include (Log In)
+
+This format captures the main actors, use cases, and their relationships as described in the system's functionality.
+---------------------7/10---------3/3:
+Base_AI_answer:Based on the provided description, here's the use case diagram represented in the requested format:
+
+**Actors:**
+Customer  
+System
+
+**Use Cases:**
+Login  
+Purchase Ticket  
+Cancel Ticket  
+Check Remaining Tickets  
+Check Train Time  
+Station Query  
+Train Number Query  
+Retrieve Password  
+
+**Relationships:**
+(Customer) associate (Login)  
+(Customer) associate (Purchase Ticket)  
+(Customer) associate (Cancel Ticket)  
+(Customer) associate (Check Remaining Tickets)  
+(Customer) associate (Check Train Time)  
+(Check Train Time) include (Station Query)  
+(Check Train Time) include (Train Number Query)  
+(Customer) associate (Retrieve Password)  
+(Login) extend (Retrieve Password)  
+
+This structure illustrates the relationships between the customer and the system's various functionalities. If the customer wants to purchase or cancel tickets, they must first log in, and they have the option to retrieve their password if forgotten. The checking of train times can be done using either a station query or a train number query, showcasing the modular nature of the system's use cases.
+---------------------8/10---------1/3:
+Base_AI_answer:Actors:
+Customer
+System
+
+Use Cases:
+Log In
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Log In)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Log In) extend (Retrieve Password)
+---------------------8/10---------2/3:
+Base_AI_answer:Based on the provided description, here are the actors, use cases, and relationships formatted accordingly:
+
+Actors:
+- Customer
+
+Use Cases:
+- Log in
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Station Query
+- Train Number Query
+- Retrieve Password
+
+Relationships:
+- (Customer) associate (Log in)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Customer) associate (Retrieve Password)
+- (Purchase Ticket) extend (Log in)
+- (Cancel Ticket) extend (Log in)
+---------------------8/10---------3/3:
+Base_AI_answer:Actors:
+Customer
+System
+
+Use Cases:
+Log in
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Log in)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Log in) extend (Retrieve Password)
+---------------------9/10---------1/3:
+Base_AI_answer:Based on the provided description for the train ticket booking system, here is the use case diagram representation:
+
+**Actors:**
+- Customer
+
+**Use Cases:**
+- Login
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query
+- Train Number Query
+
+**Relationships:**
+- (Customer) associate (Login)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Purchase Ticket) extend (Login)
+- (Cancel Ticket) extend (Login)
+---------------------9/10---------2/3:
+Base_AI_answer:Sure! Based on the provided description, here is a structured representation of the use case diagram for the train ticket booking system:
+
+### Actors:
+1. Customer
+
+### Use Cases:
+1. Log In
+2. Purchase Ticket
+3. Cancel Ticket
+4. Check Remaining Tickets
+5. Check Train Time
+6. Retrieve Password
+7. Station Query (sub-use case of Check Train Time)
+8. Train Number Query (sub-use case of Check Train Time)
+
+### Relationships:
+- (Customer) associate (Log In)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Log In) include (Purchase Ticket)
+- (Log In) include (Cancel Ticket)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+
+This representation encapsulates the primary actors, use cases, and their relationships, making it suitable for a use case diagram in the described train ticket booking system.
+---------------------9/10---------3/3:
+Base_AI_answer:Based on the given description for the train ticket booking system, here is the use case diagram represented in the specified format:
+
+Actors:
+Customer
+
+Use Cases:
+Log In
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Log In)
+(Log In) include (Purchase Ticket)
+(Log In) include (Cancel Ticket)
+(Log In) include (Check Remaining Tickets)
+(Check Remaining Tickets) associate (Check Train Time)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Customer) associate (Retrieve Password)
+---------------------10/10---------1/3:
+Base_AI_answer:Based on the description provided, here is the use case diagram in the specified format:
+
+Actors:
+Customer
+System
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Login)
+(Customer) associate (Purchase Ticket)
+(Customer) associate (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Customer) associate (Retrieve Password)
+(Login) include (Purchase Ticket)
+(Login) include (Cancel Ticket)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+---------------------10/10---------2/3:
+Base_AI_answer:Actors:
+Customer
+System
+
+Use Cases:
+Login
+Purchase Ticket
+Cancel Ticket
+Check Remaining Tickets
+Check Train Time
+Retrieve Password
+Station Query
+Train Number Query
+
+Relationships:
+(Customer) associate (Login)
+(Login) include (Purchase Ticket)
+(Login) include (Cancel Ticket)
+(Customer) associate (Check Remaining Tickets)
+(Customer) associate (Check Train Time)
+(Check Train Time) include (Station Query)
+(Check Train Time) include (Train Number Query)
+(Customer) associate (Retrieve Password)
+---------------------10/10---------3/3:
+Base_AI_answer:Based on the provided description of the train ticket booking system, here is the use case diagram format with the specified components:
+
+**Actors:**
+- Customer
+
+**Use Cases:**
+- Login
+- Purchase Ticket
+- Cancel Ticket
+- Check Remaining Tickets
+- Check Train Time
+- Retrieve Password
+- Station Query
+- Train Number Query
+
+**Relationships:**
+- (Customer) associate (Login)
+- (Customer) associate (Purchase Ticket)
+- (Customer) associate (Cancel Ticket)
+- (Customer) associate (Check Remaining Tickets)
+- (Customer) associate (Check Train Time)
+- (Customer) associate (Retrieve Password)
+- (Check Train Time) include (Station Query)
+- (Check Train Time) include (Train Number Query)
+- (Purchase Ticket) extend (Login)
+- (Cancel Ticket) extend (Login)

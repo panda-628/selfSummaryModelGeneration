@@ -1,0 +1,2122 @@
+---------------------1/10---------1/5:
+Base_AI_answer:Based on the provided description of the LabTracker software, here is the class diagram structured according to your specified format:
+
+**Enumerations:**
+```
+TestType(bloodTest, ultrasoundExamination, xRayExamination, urineTest, stoolTest)
+Interval(weekly, monthly, halfYear, yearly)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber: int, signature: Image, fullName: String, address: String, phoneNumber: String)
+Patient(healthNumber: String, firstName: String, lastName: String, dateOfBirth: Date, address: String, phoneNumber: String)
+Requisition(dateValidFrom: Date)
+Test(name: String, duration: int, isAppointmentRequired: Boolean, isWalkIn: Boolean, isSampleDropOff: Boolean)
+Appointment(confirmationNumber: String, date: Date, startTime: Time, endTime: Time, labName: String, labRegistrationNumber: String)
+Lab(address: String, businessHours: String, cancellationFee: int)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+0..* Requisition contain 1..* Test
+0..* Requisition associate 0..* Appointment
+0..1 Appointment contain 1 Lab
+1 Lab associate 0..* Appointment
+1 Patient associate 0..* Appointment
+```
+
+**Inheritance:**
+```
+```
+(NOTE: There are no classes defined for inheritance based on the above description.)
+
+**Composition:**
+```
+1 Doctor contain 0..* Patient
+```
+
+This class diagram captures the relationships and entities described in the LabTracker software, including doctors, patients, requisitions, tests, appointments, and labs, with all the specified attributes and relationships detailed accordingly.
+---------------------1/10---------2/5:
+Base_AI_answer:Here’s an outline of the class diagram based on the provided description:
+
+**Enumerations:**
+```
+TestRepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, xray, urine_sample, stool_sample)
+AppointmentStatus(confirmed, changed, canceled)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, dateOfRequisitionValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(validityDate : Date, testGroup : TestType, repeatCount : int, repetitionInterval : TestRepetitionInterval)
+Test(duration : int, isAppointmentRequired : boolean, isWalkInOnly : boolean, requiresSampleDropOff : boolean)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, cancellationFee : float)
+```
+
+**Relationships:**
+```
+1 Doctor prescribe 0..* Requisition
+1 Patient book 0..* Appointment
+1 Requisition contain 1..* Test
+0..* Test belong to 1 Requisition
+1 Appointment associated with 1 Lab
+1 Lab can have 0..* Appointment
+```
+
+**Inheritances:**
+```
+None
+```
+
+**Compositions:**
+```
+1 Lab contain 0..* Test
+```
+
+This class diagram captures the key components of the LabTracker software, including the important relationships, data types for practitioners, patients, requisitions, appointments, tests, and labs. It highlights the complexity of managing appointments and tests along with the relationship between doctors and patients.
+---------------------1/10---------3/5:
+Base_AI_answer:Based on the provided description, here is the class diagram structured into enumerations, classes, and relationships:
+
+### Enumerations:
+``` 
+Interval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, xray, urine_test, stool_test)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, requisitionValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionId : int, date : Date, isSelfPrescribed : boolean)
+Test(duration : int, repetitionCount : int, interval : Interval, testType : TestType)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, labName : String, labRegistrationNumber : String)
+Lab(address : String, businessHours : String, cancellationFee : double)
+TestResult(result : String, report : String)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Requisition contain 1 Patient
+1 Requisition contain 0..* Test
+1 Patient associate 0..* Appointment
+1 Appointment contain 1 Lab
+1 Requisition contain 0..* TestResult
+0..* Test associate 1 TestType
+1 Test contain 0..* Appointment
+0..* Lab associate 1 Test
+1 Lab contain 0..* Appointment
+```
+
+### Inheritance:
+```
+Doctor inherit User
+Patient inherit User
+```
+
+### Notes:
+- The `User` class can be assumed to have common attributes/behaviors (like user ID, password, etc.) if needed.
+- Each `Test` can be associated with a `TestResult` to show the result of the test.
+- The relation of `Doctor` to `Requisition` includes a self-referential check indicating a doctor cannot prescribe tests for themselves.
+- The handling of appointments for specific tests is dictated by their type, particularly in distinguishing between walk-in and appointment-only tests.
+- Cancellation fees and business hours are associated with the `Lab` class, which manages all operational aspects related to test appointments. 
+
+This structure captures the major components and relationships as specified in your description.
+---------------------1/10---------4/5:
+Base_AI_answer:Here's a class diagram based on the provided description:
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(blood, ultrasound, xRay, urine, stool)
+AppointmentStatus(confirmed, cancelled, pending)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber: int, fullName: String, address: String, phoneNumber: String, signature: Image, requisitionValidityDate: Date)
+Patient(healthNumber: String, firstName: String, lastName: String, dateOfBirth: Date, address: String, phoneNumber: String)
+Requisition(date: Date, doctor: Doctor, patient: Patient, tests: List<Test>, repetitionCount: int, repetitionInterval: RepetitionInterval)
+Test(name: String, duration: int, testType: TestType, isAppointmentRequired: boolean)
+Appointment(confirmationNumber: String, date: Date, startTime: Time, endTime: Time, lab: Lab)
+Lab(name: String, registrationNumber: String, address: String, businessHours: String, changeCancellationFee: double)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+0..* Requisition contain 1..* Test
+0..* Appointment associate 1 Requisition
+1 Lab contain 0..* Appointment
+0..1 Test contain 1 RepetitionInterval
+```
+
+**Inheritance:**
+```
+# No inheritance specified in the given description
+```
+
+**Composition:**
+```
+1 Lab contain 0..* Test
+```
+
+This class diagram outlines various entities involved in the LabTracker system, their attributes, and the relationships between them as described in your prompt. Each class corresponds to a real-world entity, and the associations define how these entities interact with each other.
+---------------------1/10---------5/5:
+Base_AI_answer:Based on the provided description, here is a class diagram in the required format:
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasoundExamination, xRay, urineSample, stoolSample)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, digitalSignature : Image, dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(dateIssued : Date, isApproved : Boolean, repeatCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : int, testType : TestType)
+Lab(address : String, businessHours : String, registrationNumber : String, appointmentRequired : Boolean, cancellationFee : double)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time)
+TestResult(result : String, report : String)
+```
+
+### Relationships:
+```
+1 Doctor prescribe 0..* Requisition
+1 Patient make 0..* Requisition
+0..* Requisition contain 1..* Test
+1 Requisition generate 0..* Appointment
+1 Requisition have 0..* TestResult
+1 Lab perform 0..* Test
+1 Appointment relatedTo 1 Requisition
+1 Requisition handledBy 1 Lab
+``` 
+
+### Notes
+- The `Requisition` can contain multiple `Test` instances.
+- The `Doctor` can prescribe multiple `Requisition` instances but cannot prescribe for themselves.
+- The `Patient` can make multiple `Requisition` instances.
+- `TestResult` shows the result of tests associated with a `Requisition`.
+- `Appointment` can be associated with a `Requisition` to allow scheduling.
+- `Lab` instances provide specific tests, where each lab has its own business hours and cancellation fees. 
+
+Thus, this class diagram represents the primary components and relationships within the LabTracker system according to the description given.
+---------------------2/10---------1/5:
+Base_AI_answer:Based on the provided description, here is the class diagram in the specified format:
+
+### Enumerations:
+```plaintext
+TestType(blood, ultrasound, xray, urine, stool)
+RepetitionInterval(weekly, monthly, half_year, yearly)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, signature : image, requisitionValidityDate : date)
+Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+Requisition(tests : List<Test>, patient : Patient, doctor : Doctor, repetitionCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : int, testType : TestType)
+Lab(registrationNumber : string, address : string, businessHours : string, fee : float)
+Appointment(confirmationNumber : string, date : date, startTime : time, endTime : time, lab : Lab)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Test associate 1 Lab
+1 Lab contain 0..* Appointment
+1 Appointment associate 1 Patient
+1 Appointment associate 1 Requisition
+```
+
+### Inheritance:
+(If applicable, based on the provided data, there are no clear existing inheritance structures implied in the description. However, if needed, an extension may be added for different types of Tests but isn't strictly necessary in the current context.)
+
+### Composition:
+```plaintext
+1 Requisition contain 1..* Appointment (indicating that appointments can be made based on requisitions, but each requisition can have multiple appointment instances.)
+```
+
+This class diagram representation captures the structure and relationships of the entities described in the LabTracker software. Each class and enumeration is defined, and the relevant relationships are specified according to their cardinalities.
+---------------------2/10---------2/5:
+Base_AI_answer:Based on the description provided, here is the class diagram with enumerations, classes, and relationships:
+
+### Enumerations:
+```
+RepetitionPattern(Weekly, Monthly, HalfYear, Yearly)
+TestType(BloodTest, Ultrasound, XRay, UrineSample, StoolSample)
+AppointmentStatus(Confirmed, Cancelled, Completed, Pending)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, validFromDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, doctor : Doctor, patient : Patient, tests : List<Test>, repeatCount : int, repetitionPattern : RepetitionPattern)
+Test(duration : int, testType : TestType, isWalkInOnly : boolean)
+Appointment(appointmentDate : Date, startTime : Time, endTime : Time, lab : Lab, confirmationNumber : String, appointmentStatus : AppointmentStatus)
+Lab(registrationNumber : String, address : String, businessHours : String)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..1 Appointment
+1 Appointment associate 1 Lab
+1 Lab contain 0..* Appointment
+```
+
+### Additional Constraints:
+- **Doctor Cannot Prescribe for Themselves**: Implicit constraint that a doctor cannot be their own patient for prescribing tests.
+- **Test Grouping**: Only tests of the same type can be included in the same requisition - this could be enforced by attributes within the `Test` class and methods in the `Requisition` class.
+- **Repetition of Tests**: Implicitly maintained by the `repeatCount` and `repetitionPattern` attributes in the `Requisition`. 
+
+This structuring captures the relationships and attributes outlined in your requirements for the LabTracker software system.
+---------------------2/10---------3/5:
+Base_AI_answer:Based on the given description, here’s a class diagram representation consisting of enumerations, classes, and relationships in the specified format:
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentStatus(confirmed, canceled, changed)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, startDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(id : String, validFrom : Date, tests : List<Test>, doctor : Doctor, patient : Patient, repeatable : boolean, repetitionPattern : RepetitionInterval)
+Test(testName : String, duration : int, testType : TestType)
+Appointment(appointmentID : String, requisition : Requisition, lab : Lab, appointmentDate : Date, startTime : Date, endTime : Date, confirmationNumber : String, status : AppointmentStatus)
+Lab(name : String, registrationNumber : String, address : String, businessHours : List<Time>, fee : double)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Patient contain 0..* Appointment
+1 Requisition contain 0..* Appointment
+1 Appointment associate 1 Lab
+1 Lab contain 0..* Appointment
+```
+
+### Inheritance (if needed): 
+*No inheritance specified in the description provided.*
+
+### Notes:
+- The `Doctor` class is not allowed to prescribe tests for themselves, but they can prescribe for another doctor.
+- The `Requisition` class has a list of tests (`List<Test>`), ensuring it can handle multiple tests per requisition while respecting the grouping of tests by type.
+- The `Appointment` class is related to both `Requisition` and `Lab`, allowing tracking of appointments according to lab specifications.
+- The `RepetitionInterval` enumeration standardizes the recurring nature of some tests.
+- The `Test` class has a `testType` attribute to categorize each test appropriately.
+---------------------2/10---------4/5:
+Base_AI_answer:Based on the provided description for the LabTracker software, here is the class diagram representation, including enumerations, classes, and relationships:
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, halfYearly, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentStatus(confirmed, canceled, pending)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : int, dateCreated : Date)
+Test(testID : int, testType : TestType, duration : int, isAppointmentRequired : Boolean, repeatCount : int, repetitionInterval : RepetitionInterval)
+Lab(labName : String, registrationNumber : int, address : String, businessHours : String, cancellationFee : double)
+Appointment(appointmentID : int, confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, status : AppointmentStatus)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Patient associate 1..* Appointment
+1 Requisition associate 1..1 Patient
+1 Appointment contain 1..1 Lab
+0..* Lab contain 0..* Appointment
+```
+
+### Explanation of Relationships:
+
+1. **Doctor to Requisition (1 to 0..*)**: A doctor can create multiple requisitions, but each requisition is created by one specific doctor.
+  
+2. **Requisition to Test (1 to 1..*)**: A requisition can contain multiple tests, but each test belongs to one specific requisition.
+
+3. **Patient to Appointment (1 to 0..*)**: A patient can have multiple appointments, but each appointment is associated with one patient.
+
+4. **Requisition to Patient (1 to 1)**: Each requisition has exactly one patient associated with it.
+
+5. **Appointment to Lab (1 to 1)**: Each appointment is associated with exactly one lab where the tests will be conducted.
+
+6. **Lab to Appointment (0..* to 0..*)**: A lab can have multiple appointments and an appointment can occur at different times or days hence have multiple appointments in general.
+
+This class diagram captures the essential structure, data, and relationships of the LabTracker software based on the provided description.
+---------------------2/10---------5/5:
+Base_AI_answer:Here is the class diagram based on the description provided for the LabTracker software:
+
+**Enumerations:**
+
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound_exam, x_ray_exam, urine_sample, stool_sample)
+AppointmentStatus(confirmed, canceled, pending)
+```
+
+**Class:**
+
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, requisitionDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : String, validFrom : Date, doctor : Doctor, patient : Patient, tests : List<Test>, repeatInterval : RepetitionInterval, repeatCount : int)
+Test(testID : String, duration : int, testType : TestType, isAppointmentRequired : boolean, isWalkInOnly : boolean)
+Appointment(appointmentID : String, lab : Lab, requisition : Requisition, confirmationNumber : String, startTime : DateTime, endTime : DateTime, status : AppointmentStatus)
+Lab(labID : String, name : String, address : String, businessHours : String, registrationNumber : String, appointmentFee : double)
+```
+
+**Relationships:**
+
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+0..1 Appointment associate 1 Requisition
+0..* Appointment contain 1 Lab
+```
+
+**Inheritance:**
+
+(No inheritances were specified in the description, so this section is empty.)
+
+**Composition:**
+
+```
+1 Lab contain 0..* Appointment
+```
+
+This structure captures the key entities and relationships of the LabTracker software, while also defining attributes, enumerations, and how the classes interact with each other.
+---------------------3/10---------1/5:
+Base_AI_answer:Here is the class diagram representation based on the provided description, including enumerations, classes, and relationships:
+
+### Enumerations:
+```
+RepetitionInterval(Weekly, Monthly, HalfYear, Yearly)
+TestType(BloodTest, UltrasoundExamination, XRay, UrineSample, StoolSample)
+AppointmentStatus(Confirmed, Changed, Canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : String, signature : Image, fullName : String, address : String, phoneNumber : String, 
+       dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, 
+       phoneNumber : String)
+Requisition(validityDate : Date)
+Test(duration : Duration, testType : TestType)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, 
+            labName : String, labRegistrationNumber : String, status : AppointmentStatus)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, changeCancelFee : Float)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+0..* Requisition contain 1..* Test
+0..* Requisition contain 0..1 Appointment
+1 Doctor inherit Patient
+1 Lab contain 0..* Appointment
+0..* Test associate 1..* Appointment
+``` 
+
+### Notes on Relationships:
+1. A `Doctor` can create multiple `Requisitions`.
+2. A `Patient` can have multiple `Requisitions`.
+3. A `Requisition` can hold multiple `Tests`.
+4. A `Requisition` can be associated with one or zero `Appointment`.
+5. A `Lab` can contain multiple `Appointments`.
+6. Each `Test` can be associated with multiple `Appointments`.
+7. The `Doctor` inherits the `Patient` attributes and can be utilized as a specialized kind of `Patient`.
+
+This class diagram representation reflects the various entities, their attributes, and the relationships as described in the prompt.
+---------------------3/10---------2/5:
+Base_AI_answer:Below is the class diagram representation based on the provided description using enumerations, classes, and relationships.
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+AppointmentType(appointment_required, walk_in_only, drop_off_only)
+TestGroup(blood_tests, ultrasound_examinations)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, digitalSignature : Image, requisitionValidityDate : Date)
+Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : Date, address : string, phoneNumber : string)
+Requisition(tests : List<Test>, patient : Patient, doctor : Doctor, repetitions : int, interval : RepetitionInterval)
+Test(testName : string, duration : int, group : TestGroup, repeatable : boolean)
+Appointment(confirmationNumber : string, date : Date, startTime : Time, endTime : Time, lab : Lab)
+Lab(name : string, registrationNumber : string, address : string, businessHours : BusinessHours)
+
+BusinessHours(startTime : Time, endTime : Time)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+0..* Requisition contain 1..* Test
+1..* Test inherit TestGroup
+1 Lab associate 0..* Appointment
+0..* Appointment contain 1 Requisition
+``` 
+
+### Notes:
+- The `Doctor` class supports the requirements for signing requisitions and managing tests.
+- The `Patient` class holds the necessary information for testing appointments and communication.
+- The `Requisition` class encapsulates the tests, doctor, and patient, and tracks the repetition details.
+- The `Test` class outlines specific tests including their grouping and duration.
+- The `Appointment` class is designed to manage the scheduling aspect, linking to `Lab` while capturing confirmation details.
+- The `Lab` class contains lab-specific information, such as business hours.
+- `BusinessHours` indicates the operating hours of the lab.
+
+This structure provides a comprehensive overview of the system's functionality while respecting the constraints and relationships outlined in the original description.
+---------------------3/10---------3/5:
+Base_AI_answer:Here’s the class diagram based on the provided description, with enumerations, classes, and relationships:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, x_ray, urine_test, stool_test)
+AppointmentStatus(confirmed, changed, canceled)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(validFromDate : Date, tests : List<Test>, patient : Patient, doctor : Doctor, repeatTimes : int, interval : RepetitionInterval)
+Test(name : String, duration : int, type : TestType, isAppointmentRequired : boolean, isWalkInOnly : boolean)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab)
+Lab(registrationNumber : String, address : String, businessHours : String)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Appointment
+1 Requisition contain 1..* Test
+1 Test associate 0..1 Appointment
+1 Lab contain 0..* Appointment
+1 Requisition contain 1..* Test
+Doctor inherit Patient
+``` 
+
+### Notes:
+- The `Doctor` class has specific attributes related to requisitions.
+- The `Patient` class includes attributes necessary for booking appointments and storing personal health information.
+- The `Requisition` class links between `Doctor`, `Patient`, and `Test`, indicating the tests prescribed for a patient by a doctor.
+- The `Test` class specifies the properties of various tests and indicates whether an appointment is required.
+- The `Appointment` class manages details about the appointments made by patients in different labs.
+- The `Lab` class consists of lab-specific information, including registration and business hours.
+- The relationships capture the associations, whether they are one-to-many, many-to-one, or one-to-one as described.
+- Doctor does not inherit from Patient in a traditional sense, as they represent different roles; however, it is stated that a doctor cannot prescribe tests for themselves, which is emphasized in the relationship design, rather than a direct inheritance relationship. Adjustments can be made to represent this as required.
+
+This structured approach creates a visual representation of how the LabTracker software's components interact, facilitating better understanding and implementation of the system.
+---------------------3/10---------4/5:
+Base_AI_answer:Here is the class diagram representation based on the provided description:
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound_exam, x_ray, urine_sample, stool_sample)
+```
+
+**Class:**
+```
+Doctor(practitionerNumber : int, signature : String, fullName : String, address : String, phoneNumber : String, validityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, repeatCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : int, testType : TestType)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, labName : String, registrationNumber : String)
+Lab(address : String, businessHours : String, changeCancellationFee : double)
+TestResult(result : String, report : String)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+0..* Requisition associate 1..* Test
+0..* Requisition contain 0..* Appointment
+1 Patient associate 0..* Requisition
+1 Patient associate 0..* Appointment
+0..* Appointment associate 1 Lab
+0..* Test contain 1 TestResult
+```
+
+**Inheritance:**
+(No inheritance is explicitly required based on the provided description.)
+
+**Composition:**
+```
+1 Lab contain 0..* Appointment
+```
+
+This class diagram structure encapsulates the key aspects of the LabTracker software as described, including the roles of doctors and patients, the requisition of tests, appointment management, and the results associated with those tests.
+---------------------3/10---------5/5:
+Base_AI_answer:Here is a class diagram representation based on the provided description using the specified format:
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample) // just a few examples, can add more as needed
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : String, signature : Image, fullName : String, address : String, phoneNumber : String, validFromDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, repeatedCount : int, testDuration : Duration)
+Test(testType : TestType, duration : Duration)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, lab : Lab)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, changeFee : double)
+TestResult(result : String, report : String)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Test inherit 0..1 Test // Test can be specialized further if needed
+1 Requisition contain 0..* Appointment
+1 Appointment associate 1..1 Lab
+1 Lab contain 0..* Appointment
+0..* Test associate 1..1 Report
+1 Requisition contain 0..1 TestResult
+```
+
+### Explanation:
+1. **Enumerations**: Defined `RepetitionInterval` for the interval of test repetitions and `TestType` to categorize different tests.
+2. **Classes**: Each of the key entities from the description is represented as a class, with attributes that reflect the provided information.
+3. **Relationships**:
+   - A **Doctor** can create multiple **Requisitions**.
+   - A **Patient** can have multiple **Requisitions**.
+   - A **Requisition** can contain multiple **Tests**, and every test can be associated with a type.
+   - An **Appointment** is linked to a **Lab**, which allows for multiple appointments.
+   - **TestResults** are associated with **Requisitions**, indicating the outcome of tests.
+
+This structure captures the main features and relationships outlined in the description, allowing for the implementation of the LabTracker system.
+---------------------4/10---------1/5:
+Base_AI_answer:Based on the provided description, here is a structured class diagram format that outlines the enumerations, classes, and relationships:
+
+### Enumerations:
+```
+TestGroup(bloodTests, ultrasound, xRay, urineTest, stoolTest)
+RepetitionInterval(weekly, monthly, halfYearly, yearly)
+AppointmentStatus(confirmed, cancelled, pending)
+```
+
+### Class:
+```
+Doctor(practitionerNumber: int, name: String, address: String, phoneNumber: String, signature: Image, requisitionStartDate: Date)
+Patient(healthNumber: String, firstName: String, lastName: String, dateOfBirth: Date, address: String, phoneNumber: String)
+Requisition(date: Date, validityStart: Date, doctor: Doctor, patient: Patient, tests: List<Test>, repetitionCount: int, repetitionInterval: RepetitionInterval)
+Test(name: String, duration: int, testGroup: TestGroup, isAppointmentRequired: boolean, isWalkIn: boolean, allowsMultipleTests: boolean)
+Appointment(appointmentID: int, requisition: Requisition, lab: Lab, appointmentDate: Date, startTime: Time, endTime: Time, status: AppointmentStatus, confirmationNumber: String)
+Lab(registrationNumber: int, name: String, address: String, businessHours: String, cancellationFee: double)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Appointment contain 1 Requisition
+1 Requisition associate 1 Lab
+```
+
+### Inheritance:
+```
+Test inherit BloodTest
+Test inherit Ultrasound
+Test inherit XRay
+Test inherit UrineTest
+Test inherit StoolTest
+```
+
+### Composition:
+```
+1 Lab contain 0..* Appointment
+```
+
+### Additional Notes:
+1. The **Requisition** class includes a relationship to **Doctor** and **Patient**, indicating that a doctor creates a requisition for a patient.
+2. The **Requisition** contains multiple **Test** objects, as several tests can be prescribed together.
+3. The **Appointment** is associated with a single **Requisition** and linked to a specific **Lab**.
+4. Specific types of tests (e.g., BloodTest, Ultrasound, etc.) can extend the base **Test** class to provide specific functionality if needed.
+
+This structure captures the various entities and their interactions required for the LabTracker software, helping to visualize the system design.
+---------------------4/10---------2/5:
+Base_AI_answer:Based on the provided description, here is the class diagram representation using the specified format:
+
+### Enumerations:
+```
+AppointmentType(appointment, walk_in_only, sample_drop_off)
+RepetitionInterval(weekly, monthly, every_half_year, yearly)
+TestType(blood_test, ultrasound, x_ray, urine_sample, stool_sample)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, requisitionStartDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(dateValidFrom : Date, tests : List<Test>, repeatCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : int, testType : TestType)
+Result(status : String, report : String)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, appointmentRequired : boolean, cancellationFee : double)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Test inherit TestType
+1 Requisition contain 0..1 Result
+0..* Lab associate 0..* Appointment
+1 Appointment contain 1 Lab
+```
+
+### Notes:
+- The `Test` class inherits from the `TestType` enumeration to allow for specific test types.
+- The `Result` class is associated with `Requisition` to allow doctors and patients to view test results.
+- `Lab` can have multiple `Appointment`s, and each `Appointment` is associated with exactly one `Lab`.
+- Additional constraints regarding doctors prescribing tests only to other patients, and the unique requirements for making appointments (for specific tests), are implied through relationships, multiplicities, and attributes but are not explicitly represented as separate classes for clarity and simplicity.
+---------------------4/10---------3/5:
+Base_AI_answer:Here’s a class diagram based on the provided description. The classes, enumerations, and relationships are structured according to the specified format:
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, everyHalfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentStatus(confirmed, changed, canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionId : String, doctor : Doctor, patient : Patient, tests : List<Test>, validFrom : Date, repeatCount : int, repeatInterval : RepetitionInterval)
+Test(testId : String, testType : TestType, duration : int, isAppointmentRequired : boolean)
+Appointment(appointmentId : String, patient : Patient, requisition : Requisition, lab : Lab, confirmationNumber : String, startTime : Date, endTime : Date, status : AppointmentStatus)
+Lab(labId : String, name : String, address : String, registrationNumber : String, businessHours : String, cancellationFee : double)
+
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Patient associate 0..* Appointment
+1 Requisition associate 0..* Appointment
+1 Appointment associate 1 Lab
+1 Lab contain 0..* Appointment
+```
+
+### Inheritance:
+```
+1 Test inherit 0..* Requisition
+```
+
+### Additional Notes:
+- The `Test` class might be extended further to represent specific types of tests (e.g., `BloodTest`, `XRayTest`) if specific attributes or behaviors are needed for certain tests.
+- The relationships within the `Requisition` class specify that a requisition can contain multiple tests, while appointments can be associated with one requisition at most.
+- `Patient` has the ability to have multiple appointments, and each appointment is linked to exactly one lab.
+- The design captures the business rules outlined in the description, including restrictions on test combinations and appointment requirements.
+---------------------4/10---------4/5:
+Base_AI_answer:Based on the description provided for the LabTracker software, here is a structured class diagram representation using the specified format for enumerations, classes, and relationships:
+
+### Enumerations:
+```
+Interval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, x_ray, urine_sample, stool_sample)
+AppointmentType(appointment_required, walk_in_only, sample_drop_off)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : String, tests : List<Test>, doctor : Doctor, patient : Patient, repeatCount : int, interval : Interval)
+Test(testID : String, testType : TestType, duration : int, isRepeatable : boolean)
+Appointment(appointmentID : String, requisition : Requisition, lab : Lab, confirmationNumber : String, startTime : DateTime, endTime : DateTime, changeCancellationFee : float)
+Lab(labID : String, address : String, businessHours : String, registrationNumber : String, fee : float)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+0..1 Requisition contain 0..* Appointment
+1 Lab associate 0..* Appointment
+1 Requisition associate 1 Lab
+```
+
+### Inheritance:
+```
+(There is no inheritance in the current structure.)
+```
+
+This structured representation captures the key components of the LabTracker software, including the essential entities, attributes, and their relationships, as described in the prompt. Each class is designed to reflect the information required to manage the requisition and appointment process for laboratory tests. The enumerations specify various types and intervals to constrain valid data input within the system.
+---------------------4/10---------5/5:
+Base_AI_answer:Based on the provided description, here's a class diagram in the specified format:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestGroup(blood_tests, ultrasound_examinations, x_ray_examinations, urine_tests, stool_tests)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, digitalSignature : Image, requisitionValidityDate : Date)
+Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : Date, address : string, phoneNumber : string)
+Requisition(dateIssued : Date, tests : List<Test>, patient : Patient, doctor : Doctor, repetitionCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : int, testGroup : TestGroup, isAppointmentRequired : boolean, canBeWalkIn : boolean)
+Lab(name : string, registrationNumber : string, address : string, businessHours : string, cancellationFee : double)
+Appointment(confirmationNumber : string, date : Date, startTime : Time, endTime : Time, lab : Lab, requisition : Requisition)
+TestResult(result : string, report : string, test : Test)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Lab associate 0..* Appointment
+1 Appointment contain 1 Requisition
+1 Test associate 0..* TestResult
+1 Requisition contain 0..1 Appointment
+```
+
+### Inheritance:
+```plaintext
+N/A
+```
+
+### Composition:
+```plaintext
+1 Requisition contain 1..* Test
+1 Appointment contain 1 Lab
+```
+
+This format identifies key components and relationships within the LabTracker system based on the functionality described in the input, establishing clear types, attributes, and interactions between classes.
+---------------------5/10---------1/5:
+Base_AI_answer:Here's the class diagram representation based on your description of the LabTracker software:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound_examination, x_ray, urine_sample, stool_sample)
+AppointmentStatus(confirmed, canceled, pending)
+```
+
+### Classes:
+```plaintext
+Doctor(
+    practitionerNumber: int,
+    fullName: String,
+    address: String,
+    phoneNumber: String,
+    signature: Image,
+    requisitionValidFrom: Date
+)
+
+Patient(
+    healthNumber: String,
+    firstName: String,
+    lastName: String,
+    dateOfBirth: Date,
+    address: String,
+    phoneNumber: String
+)
+
+Requisition(
+    date: Date,
+    isSelfPrescribed: boolean,
+    repetitionPattern: RepetitionInterval,
+    numberOfRepetitions: int
+)
+
+Test(
+    duration: int,
+    testType: TestType,
+    isAppointmentRequired: boolean
+)
+
+Appointment(
+    confirmationNumber: String,
+    date: Date,
+    startTime: Time,
+    endTime: Time,
+    labName: String,
+    labRegistrationNumber: String,
+    status: AppointmentStatus
+)
+
+Lab(
+    address: String,
+    businessHours: String,
+    cancellationFee: double
+)
+
+TestResult(
+    result: String, // e.g., negative, positive
+    report: String
+)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..* Appointment
+1 Appointment associate 1 Lab
+1 Test contain 0..* TestResult
+```
+
+### Additional Notes:
+1. **Doctor and Self-Prescription:** A constraint can be added in the system level to ensure that a doctor cannot prescribe a test for themselves, as stated in the description.
+2. **Repetition Pattern:** All tests under a requisition follow the same repetition pattern which is represented with a field in `Requisition`.
+3. **Composite Tests and Appointment Logic:** The relationship between `Appointment` and `Test` accounts for the fact that some tests can be walk-in while others may require appointments.
+4. **Testing Results:** Each `Test` can have multiple `TestResults`, indicating that multiple results can be documented per test over time (especially if they are being repeated).
+---------------------5/10---------2/5:
+Base_AI_answer:Here is a class diagram based on the provided description of the LabTracker system:
+
+### Enumerations:
+```
+RepetitionPattern(Weekly, Monthly, HalfYearly, Yearly)
+AppointmentType(WalkIn, AppointmentRequired)
+ResultType(Negative, Positive)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(validityDate : Date, repetitionCount : int, repetitionPattern : RepetitionPattern)
+Test(name : String, duration : Duration, type : AppointmentType)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, labName : String, registrationNumber : String, cancellationFee : float)
+Lab(address : String, businessHours : String, fee : float)
+TestGroup(groupName : String)
+```
+
+### Relationships:
+```
+1..* Doctor associate 0..* Requisition
+0..* Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..* Appointment
+0..* Lab associate 0..* Appointment
+1..* Test Group contain 0..* Test
+1..* Appointment associate 0..* Test
+1..* Requisition contain 0..1 Patient
+1..* Requisition contain 1 Doctor
+```
+
+### Inheritance:
+```
+Test inherit TestGroup
+```
+
+### Composition:
+No specific composition relationships were defined; however, the relationships depict the components involved in creating appointments, requisitions, and tests in an associative manner. 
+
+This class diagram captures the major elements of the LabTracker software system, and it reflects the relationships and structures detailed in the provided description.
+---------------------5/10---------3/5:
+Base_AI_answer:Based on the provided description, here is a structured class diagram using the specified format:
+
+**Enumerations:**
+```
+TestType(bloodTest, ultrasound)
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+AppointmentStatus(confirmed, cancelled, pending)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, digitalSignature : Image, requisitionValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : String, dateIssued : Date, tests : List<Test>, repetitionCount : int, repetitionInterval : RepetitionInterval)
+Test(testID : String, testType : TestType, duration : int, isAppointmentRequired : boolean)
+Appointment(appointmentID : String, requisition : Requisition, lab : Lab, confirmationNumber : String, startTime : Date, endTime : Date, appointmentStatus : AppointmentStatus)
+Lab(labID : String, address : String, registrationNumber : String, businessHours : String, cancellationFee : float)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Test inherit TestType
+1 Appointment associate 1 Requisition
+1 Appointment contain 1 Lab
+0..* Lab associate 0..* Test
+```
+
+This diagram captures the essential classes, their attributes, and the relationships that define how these entities interact within the LabTracker software. The enumerations provide classification for test types, interval repetition, and appointment statuses, allowing for better organization and management of the data processed by the application.
+---------------------5/10---------4/5:
+Base_AI_answer:Here’s the class diagram for the LabTracker software description provided, including enumerations, classes, and their relationships.
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentType(appointmentRequired, walkInOnly, sampleDropOff)
+```
+
+### Class:
+```plaintext
+Doctor(practitionerNumber : int, name : String, address : String, phoneNumber : String, signature : Image, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, doctor : Doctor, patient : Patient, tests : List<Test>, repeatCount : int, repeatInterval : RepetitionInterval)
+Test(name : String, duration : int, type : TestType)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, fee : double)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab, requisition : Requisition)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..1 Appointment
+1 Lab contain 0..* Appointment
+1 Appointment associate 1 Requisition
+```
+
+### Inheritance:
+```plaintext
+None
+```
+
+### Composition:
+```plaintext
+None
+``` 
+
+### Summary of Relationships:
+- A **Doctor** can create multiple **Requisitions** but must be associated with at least one requisition.
+- A **Patient** can have multiple **Requisitions** as well.
+- Each **Requisition** contains one or more **Tests** and can be associated with an **Appointment** if required.
+- A **Lab** can host multiple **Appointments**, ensuring that all services can be booked through the lab.
+- Each **Appointment** is tied to a specific **Requisition** for better tracking and management.
+
+This model captures the relationships and entities involved in the LabTracker software, illustrating how the components interact with one another based on the provided requirements.
+---------------------5/10---------5/5:
+Base_AI_answer:Based on the provided description of the LabTracker software system, here is a representation of the class diagram using the specified format:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentStatus(confirmed, cancelled, pending)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, name : String, address : String, phoneNumber : String, signature : Image, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : String, doctor : Doctor, patient : Patient, tests : List<Test>, validFrom : Date, repeatCount : int, interval : RepetitionInterval)
+Test(testID : String, testType : TestType, duration : int, isWalkInOnly : boolean)
+Appointment(appointmentID : String, requisition : Requisition, lab : Lab, confirmationNumber : String, startTime : Date, endTime : Date, appointmentStatus : AppointmentStatus)
+Lab(labID : String, name : String, address : String, registrationNumber : String, businessHours : String, cancellationFee : float)
+```
+
+### Relationships:
+```plaintext
+1 Doctor prescribe 0..* Requisition
+1 Patient make 0..* Appointment
+1 Requisition contain 1..* Test
+0..1 Appointment for 1..* Requisition
+1 Lab perform 0..* Appointment
+1 Doctor canPrescribe 0..* Doctor
+```
+
+### Additional Notes:
+- The **Doctor** class includes a signature represented as an image and validates a requisition from a specific date.
+- The **Patient** class holds necessary patient-related information.
+- The **Requisition** class represents the tests requested by the doctor for the patient and includes details about the tests, the doctor, and the patient.
+- The **Test** class includes specifics about each test, including its duration and whether it is walk-in only.
+- The **Appointment** class captures the appointment details for the tests, including confirmation and time details.
+- The **Lab** class pertains to the various labs available for tests, each with unique characteristics such as business hours and cancellation fees.
+- The relationships define the cardinalities and multiplicity between classes, indicating how they interact within the system. 
+
+This structure should comprehensively represent the LabTracker system as described.
+---------------------6/10---------1/5:
+Base_AI_answer:Based on the provided description for the LabTracker software, I will create a class diagram representation including the relevant enumerations, classes, and their relationships. 
+
+### Enumerations:
+```plaintext
+TestGroup (BLOOD_TESTS, ULTRASOUND_EXAMS)
+RepetitionInterval (WEEKLY, MONTHLY, EVERY_HALF_YEAR, YEARLY)
+AppointmentType (REQUIRES_APPOINTMENT, WALK_IN_ONLY, SAMPLE_DROP_OFF)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, dateFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionId : int, creationDate : Date, tests : List<Test>, doctor : Doctor, patient : Patient, isSelfPrescribing : boolean, repetitionCount : int, repetitionInterval : RepetitionInterval)
+Test(testId : int, testName : String, duration : int, testGroup : TestGroup, requiresAppointment : AppointmentType, isRepeatable : boolean)
+Appointment(appointmentId : int, confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, lab : Lab)
+Lab(labId : int, name : String, registrationNumber : String, address : String, businessHours : String, changeCancellationFee : float)
+```
+
+### Relationships:
+```plaintext
+1 Doctor prescribe 0..* Requisition
+1 Patient make 0..* Appointment
+1 Requisition contain 1..* Test
+0..1 Doctor prescribe 0..* Tests
+1 Lab schedule 0..* Appointment
+```
+
+### Additional Notes:
+- The `Doctor` class allows for the representation of both the doctor making the requisition and also manages the constraint that a doctor cannot prescribe tests for themselves (enforced by the `isSelfPrescribing` attribute in `Requisition` class).
+- The `Test` class includes fields to capture whether the test requires an appointment, its group type, and if it can be repeated.
+- The composition relationship between `Requisition` and `Test` indicates that a requisition consists of multiple tests.
+- The relationship between `Lab` and `Appointment` shows that a lab can have multiple appointments scheduled.
+
+This class diagram captures the essence of the LabTracker software's requirements and constraints regarding doctors, patients, tests, requisitions, and labs.
+---------------------6/10---------2/5:
+Base_AI_answer:Here's a class diagram representation based on the provided description, including enumerations, classes, and relationships.
+
+### Enumerations:
+```
+RepetitionInterval(Weekly, Monthly, HalfYear, Yearly)
+TestType(BloodTest, Ultrasound, XRay, UrineSample, StoolSample, Other)
+AppointmentStatus(Confirmed, Changed, Canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : Integer, fullName : String, address : String, phoneNumber : String, signature : Image, validityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(doctor : Doctor, patient : Patient, tests : List<Test>, repetitionPattern : RepetitionInterval, repetitionCount : Integer)
+Test(duration : Integer, type : TestType, isWalkInOnly : Boolean, requiresAppointment : Boolean)
+Lab(registrationNumber : String, address : String, businessHours : String, appointmentFee : Double)
+Appointment(patient : Patient, requisition : Requisition, lab : Lab, confirmationNumber : String, appointmentDate : DateTime, startTime : DateTime, endTime : DateTime, status : AppointmentStatus)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 0..* Test
+1 Requisition associate 0..1 Appointment
+1 Test associate 0..* Appointment
+1 Lab contain 0..* Appointment
+``` 
+
+### Inheritance:
+There doesn't appear to be a need for inheritance in this specific case based on the description and class responsibilities. However, if needed, you could introduce a base class (like `TestType`) for various specific tests but this isn't explicitly required by the description.
+
+### Composition:
+```
+1 Lab contain 0..* Test
+```
+
+This representation provides a structured overview of the classes and their relationships as described in the LabTracker system, highlighting key entities such as Doctors, Patients, Requisitions, Tests, Labs, and Appointments, while incorporating the necessary details and constraints implied in the description.
+---------------------6/10---------3/5:
+Base_AI_answer:Here's the class diagram representation based on the given description:
+
+### Enumerations:
+```plaintext
+TestGroup(literals: BloodTests, UltrasoundExaminations, XRayExaminations, Other)
+RepetitionInterval(literals: Weekly, Monthly, EveryHalfYear, Yearly)
+AppointmentStatus(literals: Confirmed, Canceled, Changed)
+```
+
+### Classes:
+```plaintext
+Doctor(
+    practitionerNumber: String,
+    fullName: String,
+    address: String,
+    phoneNumber: String,
+    digitalSignature: Image,
+    requisitionValidDate: Date
+)
+
+Patient(
+    healthNumber: String,
+    firstName: String,
+    lastName: String,
+    dateOfBirth: Date,
+    address: String,
+    phoneNumber: String
+)
+
+Requisition(
+    requisitionDate: Date,
+    validityDate: Date,
+    repetitionCount: int,
+    repetitionInterval: RepetitionInterval
+)
+
+Test(
+    testID: String,
+    duration: int,
+    isAppointmentRequired: Boolean,
+    isWalkInOnly: Boolean,
+    group: TestGroup
+)
+
+Appointment(
+    confirmationNumber: String,
+    appointmentDate: Date,
+    startTime: Time,
+    endTime: Time,
+    labName: String,
+    labRegistrationNumber: String,
+    status: AppointmentStatus
+)
+
+Lab(
+    labName: String,
+    registrationNumber: String,
+    address: String,
+    businessHours: String,
+    cancellationFee: float
+)
+
+TestResult(
+    resultID: String,
+    resultStatus: String,
+    report: String
+)
+```
+
+### Relationships:
+```plaintext
+0..* Doctor associate 0..* Requisition
+1 Patient associate 1..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..* Appointment
+1 Requisition contain 0..* TestResult
+0..* Lab contain 0..* Appointment
+1 Appointment associate 1 Requisition
+1 Appointment associate 1 Lab
+0..* TestResult associate 1 Test
+1 Test inherit TestGroup
+``` 
+
+This class diagram captures the key entities, attributes, and relationships as per the description you provided. Each class represents a significant entity in the LabTracker system, and the relationships specify how these entities interact with each other.
+
+---------------------6/10---------4/5:
+Base_AI_answer:Based on the provided description, here’s a class diagram in the specified format for the LabTracker software:
+
+**Enumerations:**
+```
+RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+TestType(BloodTest, Ultrasound, XRay, UrineSample, StoolSample)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, validityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, tests : List<Test>, patient : Patient, doctor : Doctor, repeatCount : int, interval : RepetitionInterval)
+Test(duration : int, name : String, type : TestType, isAppointmentRequired : boolean)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, fee : double)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab, requisition : Requisition)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 0..* Test
+1 Lab contain 0..* Appointment
+1 Requisition associate 0..1 Appointment
+1 Appointment associate 1 Lab
+```
+
+**Notes:**
+1. The `Doctor` and `Patient` classes have their respective attributes as per the description.
+2. The `Requisition` class contains both the doctor and patient information, as well as repetitive count and interval.
+3. The `Test` class includes information about the test duration and type (with appointment requirement).
+4. All tests on a requisition follow the same repetition pattern and can involve multiple tests.
+5. The `Lab` class holds the lab information and its business hours.
+6. The `Appointment` class includes details like confirmation number, start and end times, and links to the requisition and lab.
+7. The relationships between classes represent the multiplicity and nature of their interactions, such as compositions for handling what belongs to what (like tests in requisitions and appointments in labs).
+
+This structured outline can be further enhanced visually using UML conventions if needed.
+---------------------6/10---------5/5:
+Base_AI_answer:Based on the provided description of the LabTracker software, here’s a structured class diagram representation including enumerations, classes, and relationships:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xray, urineSample, stoolSample)
+AppointmentStatus(confirmed, canceled, pending)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionId : String, dateRequested : Date)
+Test(testId : String, duration : int, testType : TestType)
+Appointment(appointmentId : String, confirmationNumber : String, startTime : Date, endTime : Date, labName : String, labRegistrationNumber : String, status : AppointmentStatus)
+Lab(labId : String, address : String, businessHours : String, cancellationFee : int)
+```
+
+### Relationships:
+```plaintext
+0..* Doctor associate 0..* Requisition
+1 Patient associate 1..* Requisition
+1..* Requisition contain 0..* Test
+0..1 Requisition contain 1 Appointment
+1..* Test have 1..* Appointment
+0..* Lab contain 0..* Appointment
+1..* Requisition have 1..* RepetitionPattern
+1..* Test inherit Requisition
+```
+
+### Additional Notes:
+- The **RepetitionPattern** could be a class to represent the repetition details which would follow from the `Requisition` class (not explicitly mentioned as a separate class in the provided description).
+- The relationships specify cardinalities according to the description: for example, a **doctor** can have multiple **requisitions**, but each **requisition** is associated with a specific **patient**.
+- Since **Doctor** can't prescribe tests for themselves, it implies business logic rather than class structure, but it may influence application logic when creating and managing relationships.
+- The **Lab** entity contains details regarding the appointments and how the labs operate within the system.
+
+This class diagram representation captures the vocabulary and relationships from the description comprehensively. Adjustments can be made based on further requirements or clarifications.
+---------------------7/10---------1/5:
+Base_AI_answer:Based on the provided description of the LabTracker software, here is a potential class diagram using the specified format:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, xray) 
+AppointmentStatus(confirmed, changed, cancelled)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(doc : Doctor, patient : Patient, tests : List<Test>, repeatCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : int, testType : TestType)
+Appointment(patient : Patient, requisition : Requisition, lab : Lab, confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Patient contain 0..* Appointment
+1 Lab contain 0..* Appointment
+1 Appointment associate 1 Requisition
+```
+
+### Notes:
+1. The `Doctor` class contains attributes necessary for identification and verification.
+2. The `Patient` class contains personal information useful for creating requisitions and making appointments.
+3. The `Requisition` class aggregates tests and includes details about the doctor and the patient.
+4. The `Test` class specifies the type and duration of tests, relating directly to requisition functionality.
+5. The `Appointment` class maintains details of appointments related to requisitions and labs.
+6. The `Lab` class includes information about lab details such as name, registration number, and business hours, and has relationships with both appointments and requisitions.
+
+This structured diagram captures the essential components and their relationships within the LabTracker software based on the provided description.
+---------------------7/10---------2/5:
+Base_AI_answer:Based on the provided description, here’s a class diagram representation including enumerations, classes, and relationships:
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood, ultrasound, x_ray, urine_sample, stool_sample)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, requisitionValidityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionId : int, tests : List<Test>, doctor : Doctor, patient : Patient, repeatCount : int, repetitionInterval : RepetitionInterval)
+Test(testId : int, testType : TestType, duration : int, isAppointmentRequired : boolean, isDropOffOnly : boolean)
+Lab(labName : String, registrationNumber : String, address : String, businessHours : String, appointmentFee : double)
+Appointment(appointmentId : int, requisition : Requisition, patient : Patient, lab : Lab, confirmationNumber : String, date : Date, startTime : Time, endTime : Time)
+Result(test : Test, resultStatus : String, report : String)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Lab contain 0..* Appointment
+1 Patient associate 0..* Appointment
+1 Requisition inherit Appointment
+1 Requisition associate 0..* Result
+```
+
+### Explanation:
+- **Enumerations**: Two enumerations, `RepetitionInterval` and `TestType`, specify the repetition options for tests and categorize the types of tests, respectively.
+- **Classes**: 
+  - The `Doctor` class captures the necessary information about doctors.
+  - The `Patient` class captures patient-specific details.
+  - The `Requisition` class contains details of the tests requested, including doctor and patient references and repetition parameters.
+  - The `Test` class describes individual tests with properties like duration and requirements for appointments or sample drop-off.
+  - The `Lab` class captures information about the lab handling the tests and appointments.
+  - The `Appointment` class includes details of appointments related to requisitions and patients.
+  - The `Result` class represents the outcomes of tests along with associated reports.
+  
+- **Relationships**:
+  - Doctors create requisitions for patients.
+  - Patients are associated with requisitions and can have multiple appointments.
+  - Requisitions contain many tests, and a lab can have multiple appointments.
+  - Each requisition can be linked to multiple results, indicating that tests can produce several outputs.  
+   
+This class diagram organizes the entities and their interactions according to the provided requirements effectively.
+---------------------7/10---------3/5:
+Base_AI_answer:Below is the class diagram representation based on the provided description using the specified format:
+
+### Enumerations:
+```
+TestRepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, x_ray, urine, stool)
+AppointmentStatus(confirmed, cancelled, pending)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, requisitionValidityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(dateCreated : Date, tests : List<Test>, patient : Patient, doctor : Doctor, repetitionPattern : TestRepetitionInterval, repetitions : int)
+Test(name : String, duration : int, type : TestType, requiresAppointment : boolean)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, status : AppointmentStatus, lab : Lab, requisition : Requisition)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Lab contain 0..* Appointment
+1 Requisition associate 0..1 Appointment
+1 Appointment associate 1 Lab
+``` 
+
+### Notes:
+1. The `Doctor` class has attributes that include the practitioner's number (for verification), full name, address, phone number, signature, and requisition validity date.
+2. The `Patient` class stores the relevant patient details.
+3. The `Requisition` class contains multiple tests and has a relationship with both the Doctor and Patient who created it.
+4. The `Test` class represents each individual test and includes attributes that specify whether an appointment is required for the test.
+5. The `Lab` class represents each lab with details such as name, registration number, and its business hours.
+6. The `Appointment` class contains details about appointments and links to the relevant lab and requisition.
+7. The relationships between classes demonstrate the multiplicities that are consistent with the business rules provided in the description.
+---------------------7/10---------4/5:
+Base_AI_answer:Here is the class diagram representation based on your provided description:
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentStatus(confirmed, cancelled, pending)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : Integer, fullName : String, address : String, phoneNumber : String, signature : Image, validFromDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : Integer, dateCreated : Date, tests : List<Test>, patient : Patient, doctor : Doctor, isSelfPrescribed : Boolean)
+Test(testID : Integer, testType : TestType, duration : Integer, isAppointmentRequired : Boolean, isWalkInOnly : Boolean)
+Appointment(appointmentID : Integer, confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab, requisition : Requisition, status : AppointmentStatus)
+Lab(labID : Integer, name : String, address : String, registrationNumber : String, businessHours : String, fee : Double)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 0..* Test
+1 Patient associate 0..* Appointment
+1 Requisition associate 0..* Appointment
+1 Lab contain 0..* Appointment
+```
+
+**Inheritances:**
+```
+None
+```
+
+**Compositions:**
+```
+1 Lab contain 1..* Test
+``` 
+
+This class diagram breaks down all the entities, attributes, and relationships described in the LabTracker software scenario. Each class encapsulates the necessary data, and the enumerations categorize specific constant values as per the system's requirements. The relationships illustrate how entities interact with each other within the context of the LabTracker software.
+---------------------7/10---------5/5:
+Base_AI_answer:Based on the provided description of the LabTracker software, here is a class diagram using the specified format for enumerations, classes, and relationships.
+
+### Enumerations:
+```
+TestGroup(blood, ultrasound)
+Interval(weekly, monthly, half_year, yearly)
+AppointmentStatus(confirmed, changed, cancelled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(dateValid : Date, doctor : Doctor, patient : Patient, tests : List<Test>, repeatCount : int, interval : Interval)
+Test(name : String, duration : int, group : TestGroup, requiresAppointment : boolean, isWalkIn : boolean)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, appointmentFee : double)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab, status : AppointmentStatus)
+```
+
+### Relationships:
+```
+1 Doctor associate 1..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Lab contain 0..* Appointment
+1 Requisition contain 0..* Appointment  (for repeated tests, a patient can make only one appointment at a time)
+```
+This class diagram captures the key operations and attributes described in the LabTracker software scenario, including the relationships and enumerations relevant to the domain of managing doctor requisitions and patient appointments in a laboratory context.
+---------------------8/10---------1/5:
+Base_AI_answer:Here’s the class diagram based on the provided description:
+
+**Enumerations:**
+```
+RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+TestType(BloodTest, UltrasoundExamination, XRay, UrineSample, StoolSample)
+AppointmentStatus(Confirmed, Changed, Canceled)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, dateFromValid : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+
+Requisition(requisitionId : int, doctor : Doctor, patient : Patient, tests : List<Test>, validFrom : Date, isSelfPrescribed : boolean, repetitionPattern : RepetitionInterval, repetitionCount : int)
+
+Test(testId : int, testType : TestType, duration : int, isAppointmentRequired : boolean, isWalkInOnly : boolean)
+
+Lab(labId : int, name : String, address : String, registrationNumber : String, businessHours : String, cancellationFee : double)
+
+Appointment(appointmentId : int, patient : Patient, requisition : Requisition, lab : Lab, confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, status : AppointmentStatus)
+```
+
+**Relationships:**
+```
+1 Doctor prescribe 0..* Requisition
+1 Patient book 0..* Appointment
+1 Requisition contains 1..* Test
+1 Lab conduct 0..* Test
+1 Appointment associate 1 Requisition
+1 Appointment associate 1 Lab
+```
+
+This class diagram captures the essential elements and relationships described in the LabTracker application, covering the interactions between doctors, patients, requisitions, tests, labs, and appointments.
+---------------------8/10---------2/5:
+Base_AI_answer:Here’s a class diagram representation based on the provided description. This includes enumerations, classes, and their relationships.
+
+### Enumerations:
+```plaintext
+TestType(BloodTest, Ultrasound, XRay, UrineSample, StoolSample, Other)
+RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+AppointmentStatus(Confirmed, Changed, Cancelled)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : int, name : String, address : String, phoneNumber : String, signature : Image)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(validFrom : Date, isSelfPrescribed : boolean)
+Test(testType : TestType, duration : int, isAppointmentRequired : boolean)
+Appointment(confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, labName : String, labRegistrationNumber : String, status : AppointmentStatus)
+Lab(registrationNumber : String, address : String, businessHours : String, fee : double)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..1 Appointment
+1 Test inherit 0..1 RepetitionPattern  // assuming RepetitionPattern is defined elsewhere if needed
+1 Lab contain 0..* Appointment
+1 Requisition associate 1 Lab
+```
+
+### Explanation of Relationships:
+- **Doctor and Requisition**: A doctor can create multiple requisitions, but each requisition is associated with one doctor.
+- **Patient and Requisition**: A patient is linked with multiple requisitions, meaning each requisition must be associated with one patient.
+- **Requisition and Test**: A requisition can contain multiple tests, defining a one-to-many relationship with tests.
+- **Requisition and Appointment**: A requisition can have at most one associated appointment, which reflects the capacity of making appointments for the tests linked to that requisition.
+- **Test and RepetitionPattern**: Tests may inherit a repetition pattern (which is not fully defined here but could include the interval and count of repetitions).
+- **Lab and Appointment**: A lab can host multiple appointments depending on the requests, creating a one-to-many relationship.
+- **Requisition and Lab**: A requisition must be linked to a lab where the tests will be conducted.
+
+This model breaks down the various entities as described in your requirements, establishing how they interact with one another in the system.
+---------------------8/10---------3/5:
+Base_AI_answer:Based on the provided description of the LabTracker software, here is the structured output including enumerations, classes, and relationships:
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound, x_ray, urine_sample, stool_sample, other)
+AppointmentStatus(confirm, change_cancel)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionId : int, doctor : Doctor, patient : Patient, tests : List<Test>, validFrom : Date, repeatInterval : RepetitionInterval, repeatCount : int)
+Test(testId : int, duration : int, type : TestType, isAppointmentRequired : boolean, isWalkInOnly : boolean)
+Appointment(appointmentId : int, requisition : Requisition, lab : Lab, confirmationNumber : String, date : Date, startTime : Time, endTime : Time, status : AppointmentStatus)
+Lab(labId : int, address : String, registrationNumber : String, businessHours : String, changeCancellationFee : double)
+```
+
+### Relationships:
+```
+1 Doctor prescribe 0..* Requisition
+1 Patient book 0..* Appointment
+1 Requisition contain 1..* Test
+0..* Test belongTo 1 Requisition
+1 Requisition manage 1 Patient
+1 Requisition manage 1 Doctor
+1 Appointment scheduledFor 1 Requisition
+1 Appointment at 1 Lab
+``` 
+
+### Additional Notes:
+- A doctor can prescribe multiple requisitions but not for themselves, hence the relationship to Patient.
+- A requisition can contain multiple tests and is specifically tied to one doctor and one patient.
+- A patient can make multiple appointments for different requisitions, but for repeated tests, only one appointment is allowed at a time.
+- Tests can belong to the same requisition depending on their type.
+- Each lab can accommodate many appointments but is linked to specific business hours and fees.
+
+This class diagram encapsulates the relationships and attributes relevant to the LabTracker system as described in the provided specifications.
+---------------------8/10---------4/5:
+Base_AI_answer:Based on the given description, here is the structured class diagram representation using the specified format:
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound_exam, x_ray_exam, urine_test, stool_test)
+AppointmentStatus(active, cancelled, completed)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : Image, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, doctor : Doctor, patient : Patient, tests : List<Test>, repetitionPattern : RepetitionInterval, repetitionCount : int)
+Test(duration : int, testType : TestType)
+Appointment(date : Date, startTime : Time, endTime : Time, confirmationNumber : String, lab : Lab)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, fee : double)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 1 Appointment
+1 Appointment associate 1 Lab
+1 Lab contain 0..* Appointment
+```
+
+### Inheritance:
+```
+Test inherit BloodTest
+Test inherit UltrasoundExam
+Test inherit XRayExam
+Test inherit UrineTest
+Test inherit StoolTest
+```
+
+### Composition:
+(Since the requirements indicate that a requisition can have multiple tests and that appointments are associated with requisitions and labs, no additional compositions are noted as the aforementioned relationships imply composition naturally.)
+
+This structure captures the essential components and relationships of the LabTracker system based on the description provided, including enumerations for repetition intervals and test types, a list of relevant classes for doctors, patients, requisitions, tests, appointments, and labs, as well as their relationships clearly defined.
+---------------------8/10---------5/5:
+Base_AI_answer:Here's a class diagram based on the provided description, including enumerations, classes, and relationships.
+
+**Enumerations:**
+```
+RepetitionInterval(weekly, monthly, half_year, yearly)
+TestType(blood_test, ultrasound_exam, x_ray_exam, urine_sample, stool_sample)
+AppointmentStatus(confirmed, canceled)
+```
+
+**Classes:**
+```
+Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, signature : String, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(requisitionID : int, tests : List<Test>, patient : Patient, doctor : Doctor, validFrom : Date, isReferredToSelf : boolean)
+Test(testID : int, testType : TestType, duration : int, isAppointmentRequired : boolean, isRepeatable : boolean)
+Appointment(appointmentID : int, lab : Lab, requisition : Requisition, appointmentDate : Date, startTime : Time, endTime : Time, confirmationNumber : String, status : AppointmentStatus)
+Lab(labID : int, address : String, businessHours : String, registrationNumber : String, cancellationFee : double)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+0..* Requisition contain 1..* Test
+0..* Requisition contain 0..* Appointment
+1 Lab contain 0..* Appointment
+0..* Lab associate 0..* Test
+1 Test contain 0..* Appointment
+```
+
+### Explanation of the Diagram:
+1. **Enumerations**:
+   - **RepetitionInterval**: Defines options for the intervals at which tests can be repeated.
+   - **TestType**: Defines various types of tests that can be ordered.
+   - **AppointmentStatus**: Describes the possible states for appointments.
+
+2. **Classes**:
+   - **Doctor**: Holds information about the doctor, including contact details and a signature.
+   - **Patient**: Holds information about the patient, including their health number and contact details.
+   - **Requisition**: Represents the order for tests, associated with a doctor and a patient. It includes information on tests and validity.
+   - **Test**: Represents individual tests, including type, duration, and whether an appointment is required.
+   - **Appointment**: Represents scheduled appointments for tests, associated with a requisition and providing confirmation details.
+   - **Lab**: Represents the laboratory, providing details such as address, registration number, and business hours.
+
+3. **Relationships**:
+   - A **Doctor** can create multiple **Requisitions**, but each **Requisition** is linked to one **Doctor**.
+   - A **Patient** can have multiple **Requisitions**, but each **Requisition** is linked to one **Patient**.
+   - A **Requisition** can have multiple **Tests**, which means a doctor can prescribe several tests in one requisition.
+   - A **Requisition** may also contain multiple **Appointments**, particularly for repeated tests.
+   - A **Lab** can have multiple **Appointments** scheduled.
+   - A **Test** can also link with multiple **Appointments**, relating to whether an appointment is required for scheduling.
+
+This structured representation allows for a clear understanding of the software functionality described, enabling better organization of the classes and their interactions.
+
+---------------------9/10---------1/5:
+Base_AI_answer:Based on the provided description for the LabTracker software, here is a class diagram representation using the specified format:
+
+**Enumerations:**
+```
+RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+TestType(BloodTest, Ultrasound, XRay, UrineSample, StoolSample, Other)
+```
+
+**Class:**
+```
+Doctor(practitionerNumber: int, fullName: String, address: String, phoneNumber: String, digitalSignature: Image, requisitionValidityDate: Date)
+Patient(healthNumber: String, firstName: String, lastName: String, dateOfBirth: Date, address: String, phoneNumber: String)
+Requisition(date: Date, doctor: Doctor, patient: Patient, tests: List<Test>, shouldRepeat: boolean, repetitionCount: int, repetitionInterval: RepetitionInterval)
+Test(testType: TestType, duration: int, isAppointmentRequired: boolean)
+Appointment(confirmationNumber: String, appointmentDate: Date, startTime: Time, endTime: Time, lab: Lab)
+Lab(name: String, registrationNumber: String, address: String, businessHours: String, changeCancellationFee: float)
+```
+
+**Relationships:**
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+0..1 Appointment associate 1 Requisition
+1 Lab contain 0..* Appointment
+1 Test inherit TestType
+```
+
+**Composition:**
+```
+1 Requisition contain 0..* Appointment
+1 Lab contain 0..* Test
+```
+
+### Explanation of Relationships:
+- A `Doctor` can create multiple `Requisitions` (1 to many).
+- A `Patient` can have multiple `Requisitions` (1 to many).
+- Each `Requisition` can have multiple `Tests` (1 to many).
+- An `Appointment` is optional for a `Requisition` but if it exists, it relates to exactly one `Requisition`.
+- Each `Lab` can have multiple `Appointments` related to the tests they offer.
+- A `Test` inherits characteristics from the `TestType`.
+
+### Notes:
+- The `TestType` enumeration helps categorize the type of tests available.
+- The `RepetitionInterval` enumeration is used to specify the interval between repeated tests.
+- The `digitalSignature` attribute in `Doctor` is represented as an image type to store the signature. 
+- Each `Requisition` may indicate whether tests should be repeated; if so, it includes the repetition details.
+---------------------9/10---------2/5:
+Base_AI_answer:Based on the provided description, the following is a structured class diagram representation, including enumerations, classes, and relationships.
+
+### Enumerations:
+``` 
+RepetitionInterval(weekly, monthly, every_half_year, yearly)
+TestType(blood_test, ultrasound, x_ray, urine_sample, stool_sample)
+AppointmentStatus(confirmed, canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(doctor : Doctor, patient : Patient, date : Date, tests : List<Test>, repeatCount : int, repeatInterval : RepetitionInterval)
+Test(duration : int, type : TestType, isAppointmentRequired : boolean, requiresSampleDropOff : boolean)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, appointmentFees : double)
+Appointment(patient : Patient, requisition : Requisition, lab : Lab, confirmationNumber : String, appointmentDate : Date, startTime : Time, endTime : Time, status : AppointmentStatus)
+```
+
+### Relationships:
+```
+1 Doctor 1..* Requisition
+1 Patient 1..* Requisition
+1..* Requisition 0..* Test
+1 Lab 0..* Appointment
+1 Patient 1..* Appointment
+1 Requisition 0..1 Appointment
+``` 
+
+### Notes:
+- A `Doctor` can create multiple `Requisition`s.
+- A `Patient` can also have multiple `Requisition`s.
+- A `Requisition` can contain multiple `Test`s and is associated with one `Doctor` and one `Patient`.
+- A `Lab` can have multiple `Appointment`s.
+- A `Patient` can book multiple `Appointment`s.
+- An `Appointment` is linked to one `Requisition` (which may be a recurring requisition) but can exist without one, especially in the context of walk-in tests.
+
+This structure captures the key elements and their relationships as described in the LabTracker software.
+---------------------9/10---------3/5:
+Base_AI_answer:Based on the provided description, here’s a structured representation of the class diagram using the specified format:
+
+### Enumerations:
+``` 
+RepetitionInterval(weekly, monthly, half_yearly, yearly)
+TestType(blood_test, ultrasound_exam, x_ray_exam, urine_sample, stool_sample)
+```
+
+### Classes:
+``` 
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(tests : List<Test>, doctor : Doctor, patient : Patient, startDate : Date, repetitionPattern : RepetitionInterval, repetitionCount : int)
+Test(duration : int, type : TestType, isAppointmentRequired : boolean, isWalkInOnly : boolean)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, fee : double)
+```
+
+### Relationships:
+```
+0..* Requisition associate 1 Doctor
+0..* Requisition associate 1 Patient
+0..* Test associate 1 Requisition
+1 Lab contain 0..* Appointment
+0..* Appointment associate 1 Requisition
+1..* Doctor inherit Doctor 
+0..* Patient associate 0..* Test
+```
+
+### Explanation:
+- **Enumerations** are defined to specify types of intervals for test repetitions and types of tests available.
+- **Classes** represent the different entities described in the system, including `Doctor`, `Patient`, `Requisition`, `Test`, `Appointment`, and `Lab`, complete with their respective attributes.
+- **Relationships** outline how these classes interact, illustrating which classes can be associated with multiple instances of other classes and how classes may contain instances of others. 
+
+This structure outlines the key components and their interrelations to enable understanding of how the LabTracker software's requirements can be implemented in an object-oriented manner.
+---------------------9/10---------4/5:
+Base_AI_answer:Sure! Based on the provided description, here is a class diagram with classes, enumerations, and relationships:
+
+### Enumerations:
+```
+Interval (WEEKLY, MONTHLY, HALF_YEAR, YEARLY)
+TestType (BLOOD_TEST, ULTRASOUND, X_RAY, URINE_TEST, STOOL_TEST)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber: int, fullName: String, address: String, phoneNumber: String, signature: Image, validFrom: Date)
+Patient(healthNumber: String, firstName: String, lastName: String, dateOfBirth: Date, address: String, phoneNumber: String)
+Requisition(requisitonID: String, patient: Patient, doctor: Doctor, tests: List<Test>, repeatCount: int, repeatInterval: Interval)
+Test(testName: String, duration: int, testType: TestType, isWalkInOnly: boolean)
+Appointment(appointmentID: String, requisition: Requisition, lab: Lab, confirmationNumber: String, date: Date, startTime: Time, endTime: Time)
+Lab(labID: String, address: String, businessHours: String, fee: double)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+0..* Requisition contain 1..* Test
+0..* Requisition contain 0..1 Appointment
+1 Lab associate 0..* Appointment
+```
+
+### Inheritance:
+```
+```
+(No inheritance is explicitly described in the scenario, so this section remains empty.)
+
+### Composition:
+```
+0..* Requisition contain 1..* Appointment
+```
+
+This class diagram encapsulates the key attributes and relationships necessary for the LabTracker software system you described. Each class is focused on the entities involved, and the relationships allow for clear associations between those entities.
+---------------------9/10---------5/5:
+Base_AI_answer:Here is a class diagram based on the provided description of the LabTracker software:
+
+### Enumerations:
+```
+TestRepetitionInterval(weekly, monthly, halfYearly, yearly)
+TestResultStatus(positive, negative)
+AppointmentStatus(confirmed, changed, canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, name : String, address : String, phone : String, signature : Image, requisitionValidityStartDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phone : String)
+
+Requisition(patient : Patient, doctor : Doctor, date : Date)
+Test(name : String, duration : int, isRepeated : boolean, testGroup : TestGroup)
+TestGroup(name : String)
+
+Appointment(patient : Patient, requisition : Requisition, lab : Lab, confirmationNumber : String, startTime : DateTime, endTime : DateTime, status : AppointmentStatus)
+Lab(registrationNumber : String, address : String, businessHours : String, fee : double)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 TestGroup contain 0..* Test
+0..* Requisition associate 0..* Appointment
+1 Lab contain 0..* Appointment
+``` 
+
+### Explanation of Relationships:
+- A **Doctor** can manage several **Requisitions**, but each **Requisition** is associated with exactly one **Doctor**.
+- A **Patient** can have several **Requisitions**, but each **Requisition** is linked to exactly one **Patient**.
+- Each **Requisition** can contain multiple **Test** instances, and a **Test** can only belong to one **Requisition**.
+- Each **Test** belongs to a **TestGroup**, and a **TestGroup** can contain multiple **Tests**.
+- A **Requisition** can result in multiple **Appointments**, and each **Appointment** is for exactly one **Requisition**.
+- A **Lab** can have multiple **Appointments**, but each **Appointment** is scheduled at exactly one **Lab**.
+
+This model captures the essential aspects of the LabTracker software as described in your provided text.
+---------------------10/10---------1/5:
+Base_AI_answer:Based on the provided description, we can create the following class diagram representation with enumerations, classes, and their relationships.
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, halfYear, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+AppointmentStatus(confirmed, canceled, pending)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : String, signature : Image, fullName : String, address : String, phoneNumber : String, validFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+
+Requisition(date : Date, doctor : Doctor, patient : Patient, tests : List<Test>, repeatCount : Integer, repetitionInterval : RepetitionInterval)
+
+Test(name : String, duration : Integer, type : TestType)
+Appointment(date : Date, startTime : Time, endTime : Time, confirmationNumber : String, status : AppointmentStatus, lab : Lab)
+
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, cancellationFee : Double)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Test inherit TestType
+1 Requisition contain 0..* Appointment
+1 Lab contain 0..* Appointment
+0..* Appointment associate 1 Lab
+```
+
+### Additional Notes:
+1. **Doctor** and **Patient** classes have their respective attributes as defined in the description. 
+2. **Requisition** is a composition of **Doctor**, **Patient**, and has a list of **Test** instances, capturing the one-to-many relationship with tests.
+3. **Test** class allows inheritance from **TestType** enumeration representing the types of tests.
+4. **Appointment** can refer to a **Lab** and contain relevant details like confirmation number, status, start and end times.
+5. The **Lab** class has attributes necessary for its operation, including business hours and cancellation fees.
+6. The relationships represent doctors' associations with their requisitions, patients' requisitions, and the relationships between requisitions and appointments with labs.
+
+This structure effectively captures the essence of the LabTracker software as described.
+---------------------10/10---------2/5:
+Base_AI_answer:Based on the given description of the LabTracker software system, here is a proposed class diagram structure including enumerations, classes, and relationships:
+
+### Enumerations:
+```plaintext
+RepetitionInterval(weekly, monthly, halfYearly, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber: int, fullName: string, address: string, phoneNumber: string, digitalSignature: Image, requisitionValidityDate: Date)
+Patient(healthNumber: string, firstName: string, lastName: string, dateOfBirth: Date, address: string, phoneNumber: string)
+Requisition(requisitionID: string, date: Date, tests: List<Test>, isDoctorSelfPrescribing: boolean)
+Test(testID: string, testType: TestType, duration: int, isAppointmentRequired: boolean, isRepeatable: boolean)
+Appointment(appointmentID: string, requisitionID: string, lab: Lab, startTime: DateTime, endTime: DateTime, confirmationNumber: string, changeCancellationFee: double)
+Lab(name: string, registrationNumber: string, address: string, businessHours: string, fee: double)
+TestResult(testID: string, result: string, report: string)
+```
+
+### Relationships:
+```plaintext
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Requisition contain 0..1 Appointment
+1 Patient contain 0..* Appointment
+0..* Lab contain 0..* Appointment
+1 Test associate 0..* TestResult
+```
+
+### Notes:
+- The `Doctor` class includes attributes for personal information, a practitioner number for identification, and a digital signature for verification.
+- The `Patient` class has personal identification fields along with a health number.
+- The `Requisition` class ties together doctors’ orders for tests and contains a list of tests associated with it, along with validation on self-prescribing.
+- The `Test` class identifies the different tests available along with their duration and whether they require an appointment.
+- The `Appointment` class outlines the details needed for scheduling an appointment including time, confirmation number, and potential fees.
+- The `Lab` class represents different labs, their business hours, and fees.
+- The `TestResult` class holds the result of each test along with reports. 
+
+This structure reflects the relationships and properties mentioned in the description of the LabTracker software.
+---------------------10/10---------3/5:
+Base_AI_answer:Based on the provided description, here is a class diagram representation using the specified format:
+
+### Enumerations:
+```plaintext
+TestGroup(blood, ultrasound, xRay, urineSample, stoolSample)
+Interval(weekly, monthly, halfYearly, yearly)
+TestResult(positive, negative)
+```
+
+### Classes:
+```plaintext
+Doctor(practitionerNumber : Integer, fullName : String, address : String, phoneNumber : String, digitalSignature : Image, requisitionValidityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, tests : List<Test>, doctor : Doctor, patient : Patient, repetitionPattern : RepetitionPattern)
+Test(name : String, duration : Integer, testGroup : TestGroup, isAppointmentRequired : Boolean, isWalkInOnly : Boolean, isSampleDropOff : Boolean)
+RepetitionPattern(count : Integer, interval : Interval)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, fee : Double)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab, requisition : Requisition)
+```
+
+### Relationships:
+```plaintext
+1 Doctor prescribe 0..* Requisition
+1 Requisition belong 1 Patient
+1 Requisition contain 0..* Test
+1 Lab handle 0..* Appointment
+1 Appointment for 1 Requisition
+0..1 Requisition repeat 0..1 RepetitionPattern
+```
+
+### Description of Relationships:
+- A **Doctor** can prescribe multiple **Requisitions**, but each **Requisition** must be associated with one **Doctor**.
+- Each **Requisition** is for one **Patient** but can contain multiple **Tests**.
+- A **Lab** can handle multiple **Appointments**, while each **Appointment** is specifically for one **Requisition**.
+- A **Requisition** can have one optional **RepetitionPattern**, defining how many times and at what interval the tests should be repeated.
+
+This class diagram encapsulates the fundamental elements and relationships of the LabTracker software as described.
+---------------------10/10---------4/5:
+Base_AI_answer:Based on the provided description, here is a structured class diagram representation with enumerations, classes, and relationships.
+
+### Enumerations:
+```
+RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+TestType(BloodTest, Ultrasound, XRay, UrineSample, StoolSample)
+AppointmentStatus(Confirmed, Changed, Canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, signature : Image, validFromDate : Date)
+Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : Date, address : string, phoneNumber : string)
+Requisition(requisitionID : int, date : Date, tests : List<Test>, patient : Patient, doctor : Doctor, repeat : boolean, repetitionInterval : RepetitionInterval, repeatCount : int)
+Test(testID : int, testName : string, testType : TestType, duration : int, isAppointmentRequired : boolean)
+Appointment(appointmentID : int, requisition : Requisition, date : DateTime, startTime : Time, endTime : Time, lab : Lab, confirmationNumber : string, status : AppointmentStatus)
+Lab(labID : int, address : string, businessHours : string, registrationNumber : string, fee : double)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 0..* Test
+1 Requisition contain 0..1 Appointment
+1 Appointment associate 1 Lab
+```
+
+### Notes: 
+- Each class has attributes that are consistent with the information provided in your description.
+- The enumeration for `RepetitionInterval` indicates the allowable intervals for repeat tests.
+- The `TestType` enumeration indicates the types of tests that can be included in the requisition.
+- The `AppointmentStatus` enumeration tracks the status of an appointment.
+- The relationships indicate that a Doctor can create multiple Requisitions, a Patient can have multiple Requisitions, but each Requisition can contain multiple Tests and one Appointment. Additionally, the Appointment is associated with one Lab.
+---------------------10/10---------5/5:
+Base_AI_answer:Based on the provided description, we can break down the components into enumerations, classes, and relationships. Below is the structured representation respecting the UML class diagram conventions specified.
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, every_half_year, yearly)
+TestType(blood_test, ultrasound_exam, x_ray_exam, urine_sample, stool_sample)
+AppointmentStatus(confirmed, changed, canceled)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : String, signature : String, fullName : String, address : String, phoneNumber : String, validityDate : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(date : Date, tests : List<Test>, doctor : Doctor, patient : Patient, repetitionCount : Integer, repetitionInterval : RepetitionInterval)
+Test(name : String, duration : Integer, testType : TestType)
+Lab(name : String, registrationNumber : String, address : String, businessHours : String, appointmentRequired : Boolean, fee : Double)
+Appointment(confirmationNumber : String, date : Date, startTime : Time, endTime : Time, lab : Lab, patient : Patient, status : AppointmentStatus)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Appointment contain 1 Requisition
+1 Lab contain 0..* Appointment
+```
+
+### Explanation of the Representation:
+1. **Enumerations** capture specific values such as different test types and repetition intervals.
+2. **Classes** encapsulate the key entities within the system, defining relevant attributes.
+3. **Relationships** illustrate how the different classes interact with one another, detailing the multiplicity and containment where necessary.
+
+Here, the `Doctor` and `Patient` classes are associated with `Requisition`, indicating that each requisition is linked to exactly one doctor and one patient. Further, a requisition may contain multiple tests. The class `Lab` manages appointments and connects to them via the `Appointment` class, ensuring a structured relationship among the entities of the lab management system.

@@ -1,0 +1,59 @@
+Base_AI_answer:@startuml
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    -numericPractitionerNumber : int
+    -signatureImage : string
+    -fullName : string
+    -address : string
+    -phoneNumber : string
+    +createRequisition()
+    +viewTestResults()
+}
+
+class Patient {
+    -healthNumber : string
+    -firstName : string
+    -lastName : string
+    -dateOfBirth : string
+    -address : string
+    -phoneNumber : string
+    +bookAppointment()
+    +viewTestResults()
+}
+
+class Requisition {
+    -validFromDate : string
+    -repeatedTimes : int
+    -repeatedInterval : Interval
+    +addTest()
+    +combineTests()
+}
+
+class Test {
+    -type : string
+    -duration : int
+}
+
+class Lab {
+    -address : string
+    -businessHours : string
+    -fee : int
+    -registrationNumber : string
+    +makeAppointment()
+    +changeAppointment()
+    +cancelAppointment()
+}
+
+Doctor "1" -- "1" Patient
+Patient "1" -- "1" Requisition
+Requisition "1" -- "1..*" Test
+Test "1" -- "1" Lab
+
+@enduml

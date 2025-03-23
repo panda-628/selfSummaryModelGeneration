@@ -1,0 +1,63 @@
+Summary_rules:```rule
++ Rule 1: Ensure all necessary enums are defined in the model (e.g., AccessType, DayOfWeek, Interval).
++ Rule 2: Avoid missing essential classes from the model (e.g., BusinessHour, TestResult, TestType, SpecificTest).
+```
+Improve_result:```plantuml
+@startuml
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - name: string
+    - address: string
+    - phone: string
+    - signature: image
+    + createRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phone: string
+    + makeAppointment()
+}
+
+class Test {
+    - name: string
+    - duration: int
+}
+
+class Requisition {
+    - validFromDate: date
+}
+
+class Lab {
+    - address: string
+    - registrationNumber: int
+    + getBusinessHours()
+}
+
+class TestResult {
+    - result: string
+    - report: string
+}
+
+Doctor "1" --> "1..*" Requisition
+Doctor <|-- Patient
+Patient --> "1..*" Requisition
+Requisition *--> Test
+Requisition "1" *--> Interval
+Requisition *--> TestResult
+Test <|-- Lab
+
+@enduml
+```

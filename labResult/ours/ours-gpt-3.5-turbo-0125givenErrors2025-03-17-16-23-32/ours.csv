@@ -1,0 +1,67 @@
+Summary_rules:```rule
++ Rule 1: Ensure all necessary classes are included in the diagram (e.g., Test, BusinessHour, Patient, Lab, Doctor, Requisition, TestResult, SpecificTest, Appointment, TestType)
++ Rule 2: Include all required associations between classes in the diagram (e.g., Patient "1" -- "*" Requisition, Requisition "*" -- "*" Appointment, Doctor "1" -- "*" Requisition, Test "1" -- "*" SpecificTest)
++ Rule 3: Define all necessary attributes for each class (e.g., Doctor class should have attribute signature, Lab class should have attributes registrationNumber, name, address, changeCancelFee)
+```
+Improve_result:@startuml
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEAR
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Test {
+}
+
+class Requisition {
+    - validFromDate: date
+}
+
+class SpecificTest {
+}
+
+class TestResult {
+    - result: string
+    - report: string
+}
+
+class Appointment {
+    - confirmationNumber: int
+    - date: date
+    - startTime: time
+    - endTime: time
+}
+
+class Lab {
+    - registrationNumber: int
+    - name: string
+    - address: string
+    - changeCancelFee: int
+}
+
+Doctor "1" -- "*" Requisition
+Patient "1" -- "*" Requisition
+Requisition "*" -- "*" Appointment
+Test "1" -- "*" SpecificTest
+Lab "*" -- "*" Appointment
+
+@enduml

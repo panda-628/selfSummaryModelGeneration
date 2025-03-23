@@ -1,0 +1,25 @@
+Summary_rules:```rule
++ Rule 1: Always include all relevant classes that represent distinct entities in the system, ensuring that their purpose is clear and their attributes are well-defined.
++ Rule 2: Relationships between classes must accurately reflect the cardinality and directionality based on the operational requirements of the system, avoiding inappropriate associations that misrepresent the functional interactions.
+```
+Improve_result:```plaintext
+enumeration TestType(blood, ultrasound, xRay, urineSample, stoolSample)
+enumeration RepetitionInterval(weekly, monthly, halfYear, yearly)
+
+class Doctor(practitionerNumber: int, fullName: String, address: String, phoneNumber: String, signature: Image, requisitionValidityDate: Date)
+class Patient(healthNumber: String, firstName: String, lastName: String, dateOfBirth: Date, address: String, phoneNumber: String)
+class Test(testName: String, duration: int, testType: TestType)
+class Requisition(requisitionDate: Date, tests: List<Test>, repeatCount: int, repetitionInterval: RepetitionInterval)
+class Appointment(confirmationNumber: String, appointmentDate: Date, startTime: Time, endTime: Time, labName: String, labRegNumber: String)
+class Lab(address: String, businessHours: String, cancellationFee: float)
+
+Doctor inherit Person
+Patient inherit Person
+
+1 Doctor associate 0..* Requisition
+1 Requisition contain 1..* Test
+1 Patient associate 0..* Appointment
+1 Appointment contain 1 Lab
+1 Lab associate 0..* Appointment
+```
+

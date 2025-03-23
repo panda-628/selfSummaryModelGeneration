@@ -1,0 +1,177 @@
+---------------------1/10------:
+Base_AI_answer:Enumerations:
+- TestType(bloodTest, ultrasoundExamination, xRayExamination, urineSample, stoolSample)
+- RepetitionInterval(weekly, monthly, halfYearly, yearly)
+
+Class:
+- Doctor(practitionerNumber : int, signature : image, fullName : string, address : string, phoneNumber : string)
+- Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : string, address : string, phoneNumber : string)
+- Test(duration : int)
+- Requisition(validFromDate : string, repeatTimes : int, repetitionInterval : RepetitionInterval)
+- Lab(address : string, businessHours : string, registrationNumber : string)
+- Appointment(appointmentDate : string, startTime : string, endTime : string, confirmationNumber : string, labName : string, labRegistrationNumber : string)
+
+Relationships:
+- 1 Doctor can create 0..* Requisitions
+- 1 Patient can have 0..1 Appointments
+- 1 Requisition can contain 1..* Tests
+- 0..* Tests can belong to 1 TestType
+- 1 Patient can make 1 Appointment to 1 Lab
+---------------------2/10------:
+Base_AI_answer:Enumerations:
+- TestType(Blood, Ultrasound, XRay, Urine, Stool)
+
+Class:
+- Doctor(practitionerNumber: int, signature: image, fullName: string, address: string, phoneNumber: string)
+- Patient(healthNumber: string, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+- Test(duration: int)
+- Lab(name: string, address: string, registrationNumber: string, fee: float, businessHours: string)
+
+Relationships:
+- 1 Doctor prescribe 0..* Test
+- 0..* TestType combined with 0..* Test
+- 1 Patient books 0..* Appointment
+- 1 Appointment assigned to 1 Lab
+---------------------3/10------:
+Base_AI_answer:Enumerations:
+- TestType (BloodTest, Ultrasound, XRay, UrineTest, StoolSample)
+
+Class:
+- Doctor(practitionerNumber : int, signature : image, fullName : string, address : string, phoneNumber : string)
+- Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+- Test(duration : int)
+- Requisition(validFromDate : date, repetitionInterval : string, repetitionTimes : int)
+- Lab(address : string, businessHours : string, registrationNumber : int)
+- Appointment(confirmNumber : int, date : date, startTime : time, endTime : time)
+
+Relationships:
+- Doctor prescribe 1..* Requisition
+- Doctor inherit Patient
+- Requisition contain 1..* Test
+- Lab contain 1..* Appointment
+---------------------4/10------:
+Base_AI_answer:Enumerations:
+- TestType(bloodTest, ultrasoundExamination, xRayExamination, urineSample, stoolSample)
+
+Classes:
+- Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, digitalSignature : Image)
+- Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+- Requisition(validFrom : Date, repetitionInterval : Interval, testType : TestType, repetitionCount : int)
+- TestLab(address : String, businessHours : String, registrationNumber : String)
+- TestResult(result : String, report : String)
+- AppointmentConfirmation(confirmNumber : String, date : Date, startTime : Time, endTime : Time)
+
+Relationships:
+- Doctor1 prescribe 0..* Requisition
+- Patient1 makeAppointment 0..* AppointmentConfirmation
+- Requisition contain 1..* TestType
+- TestType inherit Requisition
+---------------------5/10------:
+Base_AI_answer:Enumerations:
+- IntervalType(weekly, monthly, every_half_year, yearly)
+
+Class:
+- Doctor(practitionerNumber : numeric, signature : image, fullName : string, address : string, phoneNumber : string)
+- Patient(healthNumber : alpha_numeric, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+- Test(duration : int)
+- Lab(address : string, businessHours : string, registrationNumber : string, fee : int)
+
+Relationships:
+- 1 Doctor contain * Test
+- 1 Patient contain 1 Lab
+- * Test inherit 1 Lab
+- * Lab associate 1 Test
+---------------------6/10------:
+Base_AI_answer:Enumerations:
+- TestType(ultrasound, blood, x-ray, urine, stool)
+
+Class:
+- Doctor(practitionerNumber : int, signature : image, fullName : string, address : string, phoneNumber : string)
+- Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+- Test(duration : int)
+- Lab(address : string, businessHours : string, registrationNumber : int)
+
+Relationships:
+- Doctor prescribe 1..* Test
+- Requisition contain 1..* Test
+- Requisition repeat 0..1 for int times with interval enum
+- Patient schedule 0..1 Appointment for 1..* Test
+- Appointment confirm at 1 Lab
+---------------------7/10------:
+Base_AI_answer:Enumerations:
+- RepetitionInterval(Weekly,Monthly,EveryHalfYear,Yearly)
+
+Class:
+- Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, digitalSignature : Image)
+- Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+- Test(duration : int)
+- Lab(address : String, businessHours : String, registrationNumber : int)
+- Requisition(validFromDate : Date)
+- Appointment(date : Date, startTime : Time, endTime : Time, confirmationNumber : int)
+
+Relationships:
+- 1 Doctor can prescribe 0..* Tests
+- 1 Test can be part of 1..* Requisitions
+- 1 Requisition can contain 1..* Appointments
+- 1 Patient can have 1..* Appointments
+- 1 Lab can have 0..* Appointments
+---------------------8/10------:
+Base_AI_answer:Enumerations:
+- RepetitionInterval(Weekly, Monthly, EveryHalfYear, Yearly)
+
+Classes:
+- Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, digitalSignature : Image)
+- Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+- Test(duration : int)
+- Lab(address : String, businessHours : String, registrationNumber : int)
+
+Relationships:
+- 1 Doctor prescribe * Test
+- * Test belongTo 1 Lab
+- 1 Patient makeAppointment * Lab
+- * Requisition include * Test
+- 1 Requisition has * Repetition
+- 1 Appointment madeFor 1 Requisition
+---------------------9/10------:
+Base_AI_answer:Enumerations:
+
+- TestType(BloodTest, UrineTest, XRay, Ultrasound)
+
+Classes:
+
+- Doctor(practitionerNumber : int, fullName : String, address : String, phoneNumber : String, digitalSignature : Image)
+- Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+- Requisition(validFrom : Date)
+- Test(duration : int)
+- Lab(address : String, businessHours : String, registrationNumber : int, fee : double)
+
+Relationships:
+
+- 1 Doctor prescribe 0..* Test
+- 1 Test belong to 1 TestType
+- 1 Requisition include 0..* Test
+- 1 Patient make 1 Appointment
+- 1 Appointment schedule at 1 Lab
+---------------------10/10------:
+Base_AI_answer:Enumerations:
+- TestType(normal, special)
+- RepetitionInterval(weekly, monthly, halfYearly, yearly)
+
+Classes:
+- Doctor(practitionerNumber: int, fullName: string, address: string, phoneNumber: string, signature: image)
+- Patient(healthNumber: string, firstName: string, lastName: string, dateOfBirth: string, address: string, phoneNumber: string)
+- Test(duration: int, testType: TestType)
+- Requisition(validFrom: date)
+- TestRepetition(repeatTimes: int, repetitionInterval: RepetitionInterval)
+- TestResult(result: string, report: string)
+- Lab(address: string, businessHours: string, registrationNumber: int, fee: int)
+
+Relationships:
+- 1 Doctor associate 0..* Requisition
+- 1 Patient associate 0..* Requisition
+- 1 Requisition contain 1..* Test
+- 1 Requisition contain 0..* TestRepetition
+- 1 Requisition contain 1..* TestResult
+- 1 Requisition associate 1 Lab
+- 1 Patient associate 1..* Appointment
+- 1 Lab contain 1..* Appointment

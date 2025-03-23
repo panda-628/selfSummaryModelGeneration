@@ -1,0 +1,104 @@
+Summary_rules:```rule
++ Rule 1: Use consistent naming and casing for enumerations, ensuring they convey the model's intent clearly and avoid ambiguity.
++ Rule 2: Ensure that each class captures all necessary attributes relevant to its role while maintaining appropriate visibility levels for encapsulation; avoid omitting important properties.
++ Rule 3: Define methods where applicable to illustrate the behavior associated with each class, thereby enhancing the model's richness and functionality.
++ Rule 4: Accurately represent relationships between classes, specifying cardinality and direction clearly to reflect the true associations in the system being modeled.
++ Rule 5: Utilize clear and uniform relationship labels across the model to maintain consistency and enhance understanding of interactions between entities.
+```
+Improve_result:Here is the PlantUML class diagram for the LabTracker software based on the provided description:
+
+```plantuml
+@startuml
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    EVERY_HALF_YEAR
+    YEARLY
+}
+
+class Doctor {
+    +practitionerNumber: int
+    +fullName: String
+    +address: String
+    +phoneNumber: String
+    +signature: Image
+    +dateOfRequisitionValidFrom: Date
+    -prescribeTest(prescription: Requisition)
+    +viewResults(testId: int): TestResult
+}
+
+class Patient {
+    +healthNumber: String
+    +firstName: String
+    +lastName: String
+    +dateOfBirth: Date
+    +address: String
+    +phoneNumber: String
+    +bookAppointment(requisition: Requisition, lab: Lab)
+    +cancelAppointment(appointmentId: int)
+}
+
+class Lab {
+    +labName: String
+    +labRegistrationNumber: String
+    +businessHours: String
+    +fee: double
+    +getAvailableAppointments(test: Test): List<Appointment>
+}
+
+class Requisition {
+    +tests: List<Test>
+    +isForSelf: boolean
+    +repeatCount: int
+    +repeatInterval: Interval
+    +viewResults(): List<TestResult>
+}
+
+class Test {
+    +duration: Duration
+    +testType: String
+    +isAppointmentRequired: boolean
+    +isWalkInOnly: boolean
+}
+
+class Appointment {
+    +confirmationNumber: String
+    +date: Date
+    +startTime: Time
+    +endTime: Time
+    +lab: Lab
+}
+
+class TestResult {
+    +result: String
+    +report: String
+}
+
+Doctor "1" -- "1..*" Requisition : creates >
+Requisition "1" -- "1..*" Test : contains >
+Patient "1" -- "1..*" Appointment : books >
+Appointment "1" -- "1" Lab : at >
+Doctor "1" -- "0..1" Doctor : prescribes to >
+Requisition "0..*" -- "0..*" TestResult : shows >
+  
+@enduml
+```
+
+### Explanation of the Diagram:
+
+1. **Enumerations**: 
+   - The `Interval` enumeration defines the possible intervals for repeating tests.
+
+2. **Classes**:
+   - `Doctor`: Represents a doctor with attributes for their practitioner number, contact information, and signature. They can make requisitions and view test results.
+   - `Patient`: Represents a patient with personal information and methods to book or cancel appointments.
+   - `Lab`: Represents a lab with its attributes, including business hours and fees, and a method to get available appointments.
+   - `Requisition`: Represents the requisition, linking it to the doctor and the tests it contains, as well as attributes for repetition.
+   - `Test`: Represents medical tests with details about duration, type, and whether an appointment is required.
+   - `Appointment`: Represents an appointment made by a patient, including essential details like confirmation numbers and times.
+   - `TestResult`: Represents the result of a test including the result string and accompanying report.
+
+3. **Relationships**:
+   - The relationships between classes are clearly defined with cardinalities depicting how many instances can exist for each class in relation to another.
+   - The arrows and labels indicate the nature of each relationship, such as a doctor creating requisitions, patients making appointments at labs, and requisitions showing test results.

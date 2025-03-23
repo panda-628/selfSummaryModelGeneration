@@ -1,0 +1,162 @@
+---------------------1/5------:
+Base_AI_answer:**Actors:**
+- Customer
+- Administrator
+- Keyman
+
+**Use Cases:**
+- Register
+- Login
+- Browse Goods
+- View Product Details
+- Buy Goods
+- Make Payment
+- Apply Discount
+- Leave Comment
+- Respond to Comments
+- Manage Users
+- Update Product Information
+
+**Associations:**
+- Customer Register
+- Customer Login
+- Customer Browse Goods
+- Customer View Product Details
+- Customer Buy Goods
+- Customer Make Payment
+- Customer Apply Discount
+- Customer Leave Comment
+- Administrator Respond to Comments
+- Administrator Manage Users
+- Keyman Update Product Information
+- Customer Browse Goods (multiple customers can browse at the same time)
+---------------------2/5------:
+Base_AI_answer:Actors:
+- Customer
+- Administrator
+- Keyman
+
+Use Cases:
+- Register
+- Login
+- Browse Goods
+- View Product Details
+- Buy Goods
+- Make Payment
+- Apply Discount
+- Leave Comment
+- Answer Question
+- Manage Users
+- Update Product Information
+
+Associations:
+- Customer Register
+- Customer Login
+- Customer Browse Goods
+- Customer View Product Details
+- Customer Buy Goods
+- Customer Make Payment
+- Customer Apply Discount
+- Customer Leave Comment
+- Administrator Answer Question
+- Administrator Manage Users
+- Keyman Update Product Information
+---------------------3/5------:
+Base_AI_answer:Actors:
+- Customer
+- Administrator
+- Keyman
+
+Use Cases:
+- Register
+- Login
+- Browse Goods
+- View Product Details
+- Purchase Goods
+- Make Payment
+- Apply Discount
+- Leave Comment
+- Answer Comments
+- Manage Users
+- Update Product Information
+- Add New Product
+
+Associations:
+- Customer Register
+- Customer Login
+- Customer Browse Goods
+- Customer View Product Details
+- Customer Purchase Goods
+- Customer Make Payment
+- Customer Apply Discount
+- Customer Leave Comment
+- Administrator Answer Comments
+- Administrator Manage Users
+- Keyman Update Product Information
+- Keyman Add New Product
+---------------------4/5------:
+Base_AI_answer:**Actors:**
+- Customer
+- Administrator
+- Keyman
+
+**Use Cases:**
+- Register
+- Login
+- Browse Goods
+- View Product Details
+- Buy Goods
+- Select Payment Method
+- Apply Discounts
+- Leave Comments
+- Answer Customer Questions
+- Manage Registered Users
+- Update Product Information
+
+**Associations:**
+- Customer Register
+- Customer Login
+- Customer Browse Goods
+- Customer View Product Details
+- Customer Buy Goods
+- Customer Select Payment Method
+- Customer Apply Discounts
+- Customer Leave Comments
+- Administrator Answer Customer Questions
+- Administrator Manage Registered Users
+- Keyman Update Product Information
+---------------------5/5------:
+Base_AI_answer:Here's the use case diagram representation based on your description:
+
+**Actors:**
+- Customer
+- Administrator
+- Keyman
+
+**Use Cases:**
+- Register
+- Login
+- Browse Goods
+- View Goods Information
+- Buy Goods
+- Make Payment
+- Apply Discount
+- Leave Comment
+- Answer Comments
+- Manage Users
+- Update Product Information
+
+**Associations:**
+- Customer Register
+- Customer Login
+- Customer Browse Goods
+- Customer View Goods Information
+- Customer Buy Goods
+- Customer Make Payment
+- Customer Apply Discount
+- Customer Leave Comment
+- Administrator Answer Comments
+- Administrator Manage Users
+- Keyman Update Product Information
+
+This structure outlines the interactions and functionalities of the system as described in your scenario.

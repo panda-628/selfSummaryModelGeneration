@@ -1,0 +1,67 @@
+Summary_rules:```rule
++ Rule 1: Ensure all required classes are included in the model (e.g., Appointment, SpecificTest, TestType, BusinessHour, TestResult).
++ Rule 2: Define all necessary associations between classes (e.g., Doctor "1" -- "1" Patient, Patient "1" -- "1" Requisition).
++ Rule 3: Include all required enumerations in the model (e.g., AccessType, DayOfWeek).
+```
+Improve_result:@startuml
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+class Doctor {
+  - practitionerNumber: int
+  - signature: Image
+  - fullName: string
+  - address: string
+  - phoneNumber: string
+  + prescribeTest()
+}
+
+class Patient {
+  - healthNumber: string
+  - firstName: string
+  - lastName: string
+  - dateOfBirth: date
+  - address: string
+  - phoneNumber: string
+  + makeAppointment()
+  + viewTestResult()
+}
+
+class Requisition {
+  - validFromDate: date
+  + addTest()
+  + setRepeatPattern()
+}
+
+class Test {
+  - duration: int
+}
+
+class Lab {
+  - address: string
+  - registrationNumber: string
+  + getBusinessHours()
+}
+
+class BusinessHour {
+  - dayOfWeek: DayOfWeek
+  - startTime: time
+  - endTime: time
+}
+
+Doctor "1" -- "1" Patient
+Doctor "1" -- "1" Requisition
+Requisition "1" -- "n" Test
+Requisition "1" -- "1" Lab
+Lab "1" -- "n" BusinessHour
+Patient "1" -- "n" Lab
+
+@enduml

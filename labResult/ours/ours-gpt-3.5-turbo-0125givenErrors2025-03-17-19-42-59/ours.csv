@@ -1,0 +1,65 @@
+Summary_rules:```rule
++ Rule 1: Enumerations should be used to represent fixed sets of values in the system.
++ Rule 2: Each class should represent a distinct entity or concept within the system.
++ Rule 3: Relationships between classes should accurately reflect the associations and interactions in the system.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - numericPractitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + createRequisition()
+    + viewTestResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+    + viewTestResults()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: TestType[]
+    - repetitionInterval: string
+    - repetitionTimes: int
+    + addTest()
+}
+
+class Test {
+    - type: TestType
+    - duration: int
+    + performTest()
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: string
+    - fee: int
+    + makeAppointment()
+}
+
+Doctor "1" --> "1" Requisition
+Patient "1" --> "1" Requisition
+Requisition "1" --> "n" Test
+Requisition "1" --> "1" Lab
+
+@enduml

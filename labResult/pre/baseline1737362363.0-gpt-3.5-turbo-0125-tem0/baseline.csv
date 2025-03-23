@@ -1,0 +1,234 @@
+---------------------1/10------:
+Base_AI_answer:Enumerations:
+- Category(134 categories)
+
+Class:
+- Resident(name : string, streetAddress : string, phoneNumber : string, email : string, itemsDescription : string)
+- PickupVehicle(storageSpace : int, availableDays : array)
+- VolunteerDriver(name : string, availableDays : array)
+- SecondHandArticle(description : string, quality : boolean)
+- NonPerishableFood()
+- DistributionCenter()
+- RFIDDevice()
+- XFoodBank()
+- H2SEmployee()
+- Client()
+
+Relationships:
+- 1 PickupVehicle contain 1..* VolunteerDriver
+- 1 PickupVehicle contain 1..* SecondHandArticle
+- 1 VolunteerDriver pickup 1..* SecondHandArticle
+- 1 DistributionCenter contains 1..* SecondHandArticle
+- 1 SecondHandArticle tagged with RFIDDevice
+- 1 SecondHandArticle have 1 Category
+- 1 DistributionCenter offers 1..* Client
+- 1 DistributionCenter delivers 1..* SecondHandArticle to Client
+---------------------2/10------:
+Base_AI_answer:Enumerations:
+- DayOfWeek(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Class:
+- Resident(name : String, streetAddress : String, phone : String, email : String, itemsDescription : String)
+- PickupVehicle(storageSpace : int)
+- VolunteerDriver(availableDays : set<DayOfWeek>)
+- SecondHandArticle(description : String, quality : boolean, category : String)
+- FoodBank
+- DistributionCenter
+- RFIDDevice
+- CategoryList(categories : array of String)
+
+Relationships:
+- 1 PickupVehicle contain * Resident
+- 1 VolunteerDriver available * DayOfWeek
+- 1 PickupVehicle associate 1 PickupRoute
+- 1 PickupRoute contain * Resident
+- 1 PickupRoute associate 1 PickupVehicle
+- 1 SecondHandArticle inherit 1 RFIDDevice
+- 1 SecondHandArticle inherit * CategoryList
+- 1 DistributionCenter contain * SecondHandArticle
+- 1 DistributionCenter associate 1 FoodBank
+- 1 DistributionCenter contain * Resident
+---------------------3/10------:
+Base_AI_answer:Enumerations:
+- Category (baby clothing, women's winter boots, fridge, microwave...)
+
+Class:
+- Resident(name: String, streetAddress: String, phoneNumber: String, emailAddress: String, itemsDescription: String)
+- PickupVehicle(storageSpace: int, availableDays: List<String>)
+- VolunteerDriver(availableDays: List<String>)
+- SecondHandArticle(itemDescription: String, quality: String, category: Category)
+- FoodBank
+- H2SEmployee
+
+Relationships:
+- 1 PickupVehicle contains 1..* Resident
+- 1 VolunteerDriver is assigned to 1 PickupVehicle
+- 1 PickupVehicle picks up 1..* SecondHandArticle
+- 1 H2SEmployee examines 1..* SecondHandArticle
+- 1 H2SEmployee assigns 1 Category to 1..* SecondHandArticle
+- 1 SecondHandArticle can be delivered to 1 Resident
+---------------------4/10------:
+Base_AI_answer:Enumerations:
+- Category (baby clothing, women's winter boots, fridge, microwave...)
+
+Class:
+- Resident(name : string, streetAddress : string, phoneNumber : string, emailAddress : string, itemsDescription : string)
+- PickupVehicle(vehicleID : int, storageSpace : int)
+- VolunteerDriver(driverID : int, availableDays : string)
+- SecondHandArticle(articleID : int, quality : string, RFIDTag : string, category : Category)
+- NonPerishableFood(foodID : int)
+
+Relationships:
+- 1 PickupVehicle contain * SecondHandArticle
+- 1 PickupVehicle contain * NonPerishableFood
+- 1 VolunteerDriver schedules * PickupRoute
+- 1 PickupRoute include * ScheduledItem
+- 1 Resident schedule 1 Pickup
+- 1 Pickup pickUp * ScheduledItem
+- 1 ScheduledItem dropOff 1 PickupVehicle
+- 1 PickupVehicle dropOff * SecondHandArticle at 1 DistributionCenter
+- 1 SecondHandArticle examineBy 1 H2SEmployee
+- H2SEmployee assign 1 Category to * SecondHandArticle
+---------------------5/10------:
+Base_AI_answer:Enumerations:
+- ItemCategory(baby clothing, women’s winter boots, fridge, microwave, etc.)
+
+Class:
+- Resident(name: String, streetAddress: String, phoneNumber: String, email: String, itemsDescription: String)
+- PickupVehicle(storageSpace: int, availableDays: String[])
+- VolunteerDriver(name: String, availableDays: String[])
+- H2SEmployee
+- Article(description: String, category: ItemCategory, RFIDTag: boolean)
+- FoodBank
+
+Relationships:
+- 1 PickupVehicle associates * Resident
+- 0..* VolunteerDriver associate * PickupVehicle
+- 1..* PickupVehicle contain * Resident
+- H2SEmployee inherit Resident
+- H2SEmployee inherit VolunteerDriver
+- H2SEmployee contain * Article
+- H2SEmployee contain * Resident
+- FoodBank inherit H2SEmployee
+---------------------6/10------:
+Base_AI_answer:Enumerations:
+- Category (baby clothing, women's winter boots, fridge, microwave, etc.)
+
+Classes:
+- Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+- PickupVehicle(storageSpace: int, dimensions: string, weights: string)
+- VolunteerDriver(availableDays: string)
+- SecondHandArticle(RFID: string, category: Category)
+- NonPerishableFood
+- PickupRoute(day: string, timeRange: string)
+- DistributionCenter
+- Client(categoriesNeeded: List<Category>, address: string)
+
+Relationships:
+- 1 PickupVehicle contain * PickupRoute
+- 1 PickupRoute associate 1 PickupVehicle
+- 1 VolunteerDriver associate * PickupRoute
+- 1 PickupRoute associate * Resident
+- 1 PickupRoute contain * SecondHandArticle
+- 1 DistributionCenter contain * SecondHandArticle
+- 1 SecondHandArticle inherit NonPerishableFood
+- 1 DistributionCenter contain * Client
+- 1 Client associate 1 SecondHandArticle
+- 1 VolunteerDriver associate * Client
+---------------------7/10------:
+Base_AI_answer:Enumerations:
+- DaysOfWeek(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday)
+
+Class:
+- Resident(name: string, streetAddress: string, phoneNumber: string, email: string, itemsDescription: string)
+- PickupVehicle(storageSpace: int, driverAvailability: DaysOfWeek[])
+- Employee
+- SecondHandArticle(description: string, quality: string, RFIDTag: string)
+- Category(name: string)
+- FoodBank
+
+Relationships:
+- 1 PickupVehicle associates 0..* Resident
+- 1 Employee contains 0..* SecondHandArticle
+- 1 SecondHandArticle inherit Category
+- 1 DistributionCenter offers 0..1 AdditionalService
+- 0..* Resident inherit AdditionalService
+- 1 FoodBank receive 0..* NonPerishableFood items
+
+(Note: This is a simplified class diagram based on the given description)
+---------------------8/10------:
+Base_AI_answer:Enumerations:
+
+- ItemCategory(baby clothing, women's winter boots, fridge, microwave, etc.)
+
+Class:
+
+- Resident(name: String, streetAddress: String, phoneNumber: String, email: String, itemsDescription: String)
+- PickupVehicle(vehicleID: int, availableStorageSpace: int)
+- VolunteerDriver(driverID: int, availableDays: String)
+- H2SEmployee(employeeID: int)
+- Article(articleID: int, description: String, RFIDTag: boolean, category: ItemCategory)
+- DistributionCenter(centerID: int)
+- FoodBank(bankID: int)
+
+Relationships:
+
+- 1 PickupVehicle contain 0..* Article
+- 1 VolunteerDriver associate 0..* PickupVehicle
+- 1 PickupVehicle associate 1 DistributionCenter
+- 1 Resident associate 1..* PickupVehicle
+- H2SEmployee inherit VolunteerDriver
+- DistributionCenter contain 0..* Article
+- FoodBank contain 0..* Article
+---------------------9/10------:
+Base_AI_answer:Enumerations:
+- Category (e.g., baby clothing, women's winter boots, fridge, microwave...)
+
+Class:
+- Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+- PickupVehicle(storageSpace: int, dimensions: string, weights: string)
+- VolunteerDriver(availableDays: string)
+- SecondHandArticle(description: string, quality: string)
+- NonPerishableFood(description: string)
+
+Relationships:
+- 1 PickupVehicle contain * ScheduledPickup
+- 1 PickupVehicle associate * VolunteerDriver
+- 1 VolunteerDriver associate 1..* ScheduledPickup
+- 1 ScheduledPickup associate 1 Resident
+- 1 Resident contain 1..* SecondHandArticle
+- 1 SecondHandArticle inherit Category
+- 1 SecondHandArticle contain 1 RFIDDevice
+- 1 SecondHandArticle associate * ScheduledPickup
+- 1 DistributionCenter contain * SecondHandArticle
+- 1 DistributionCenter contain * NonPerishableFood
+- 1 DistributionCenter associate * Client
+- 1 Client inherit Category
+- 1 Client associate * DeliverySchedule
+- 1 DeliverySchedule associate 1 VolunteerDriver
+---------------------10/10------:
+Base_AI_answer:Enumerations:
+- Category(134 categories)
+
+Class:
+- Resident(name : String, streetAddress : String, phoneNumber : String, emailAddress : String, itemsDescription : String)
+- PickupVehicle(storageSpace : int, dimensions : String, weight : int)
+- VolunteerDriver(availableDays : String)
+- SecondHandArticle(quality : String, RFID : String, category : Category)
+- FoodBank
+- PickupRequest(dayOfWeek : String, timeRange : String)
+- DistributionCenter
+- Client(neededCategories : List<Category>, homeAddress : String)
+
+Relationships:
+- 1 PickupRequest associate * Resident
+- * PickupVehicle contain 1 PickupRequest
+- * VolunteerDriver contain * PickupVehicle
+- * PickupVehicle inherit Vehicle
+- 1 PickupVehicle associate 1 DistributionCenter
+- 1 SecondHandArticle inherit Article
+- * SecondHandArticle associate 1 Resident
+- * SecondHandArticle contain 1 Category
+- * DistributionCenter associate * SecondHandArticle
+- * Client inherit Resident
+- 1 Client contain * Category

@@ -1,0 +1,53 @@
+Base_AI_answer:Based on the description provided, here is a class diagram formatted in the requested way:
+
+### Enumerations:
+```
+RepetitionInterval(weekly, monthly, halfYearly, yearly)
+TestType(bloodTest, ultrasound, xRay, urineSample, stoolSample)
+```
+
+### Classes:
+```
+Doctor(practitionerNumber : int, signature : Image, fullName : String, address : String, phoneNumber : String, dateValidFrom : Date)
+Patient(healthNumber : String, firstName : String, lastName : String, dateOfBirth : Date, address : String, phoneNumber : String)
+Requisition(tests : List<Test>, doctor : Doctor, patient : Patient, repetitionCount : int, repetitionInterval : RepetitionInterval)
+Test(duration : Duration, testType : TestType)
+Lab(labName : String, registrationNumber : String, address : String, businessHours : String)
+Appointment(appointmentDate : Date, startTime : Time, endTime : Time, confirmationNumber : String, lab : Lab)
+```
+
+### Relationships:
+```
+1 Doctor associate 0..* Requisition
+1 Patient associate 0..* Requisition
+1 Requisition contain 1..* Test
+0..* Test associate 1 Requisition
+1 Lab associate 1..* Appointment
+1 Patient associate 0..* Appointment
+1 Requisition contain 0..1 Appointment
+```
+
+### Inheritance:
+```
+Test inherit BloodTest
+Test inherit Ultrasound
+Test inherit XRay
+Test inherit UrineTest
+Test inherit StoolTest
+```
+
+### Composition:
+```
+1 Requisition contain 1 Doctor
+1 Requisition contain 1 Patient
+1 Appointment contain 1 Lab
+```
+
+### Notes:
+1. **Enumerations**: Two enumerations are defined for repetition intervals and test types to organize possible values for these attributes.
+2. **Classes**: Classes like `Doctor`, `Patient`, `Requisition`, `Test`, `Lab`, and `Appointment` are defined with their attributes.
+3. **Relationships**: The connections detail which classes are associated and the multiplicity of those associations.
+4. **Inheritance**: Different types of tests inherit from a base `Test` class and can be specialized for different test types.
+5. **Composition**: `Requisition` contains both a `Doctor` and a `Patient`, and `Appointment` contains a `Lab`, indicating that these classes are integral components of their respective classes. 
+
+This structured format gives a clear representation of the classes and their relationships based on your requirements.

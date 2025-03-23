@@ -1,0 +1,75 @@
+@startuml
+enum Interval {
+    weekly
+    monthly
+    everyHalfYear
+    yearly
+}
+enum AccessType {
+    reservable
+    walkIn
+    dropOff
+}
+enum DayOfWeek {
+    Monday
+    Tuesday
+    Wednesday
+    Thursday
+    Friday
+    Saturday
+    Sunday
+}
+class Patient {
+    -dateOfBirth: string
+}
+class Doctor {
+    -signature: string
+}
+class Requisition {
+    -effectiveDate: string
+    -repetitionCount: int
+    -repetitionInterval: Interval
+}
+class TestResult {
+    -negative: boolean
+    -report: string
+}
+class SpecificTest {
+    -date: Data
+}
+class Appointment {
+    -confirmation: string
+    -date: Date
+    -startTime: string
+    -endTime: string
+}
+class BusinessHour {
+    -dayOfWeek: DayOfWeek
+    -startTime: string
+    -endTime: string
+}
+class Lab {
+    -registrationNumber: string
+    -name: string
+    -address: string
+    -changeCancelFee: boolean
+}
+class Test {
+    -name: string
+    -duration: string
+}
+class TestType {
+    -name: string
+    -durationAdditive: string
+    -access: AccessType
+}
+Patient "1" -- "*" Requisition : associate
+Requisition "*" -- "*" Appointment : associate
+Appointment "*" -- "1" Lab : associate
+Doctor "1" -- "*" Requisition : associate
+Requisition "1" -- "*" SpecificTest : associate
+TestResult "0..1" -- "*" SpecificTest : associate
+Lab "1" -- "7" BusinessHour : associate
+Test "1" -- "*" SpecificTest : associate
+TestType "1" -- "*" Test : associate
+@enduml

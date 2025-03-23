@@ -1,0 +1,77 @@
+{
+    "enumeration": {
+        "TestType": [
+            "BLOOD",
+            "ULTRASOUND",
+            "X_RAY",
+            "URINE",
+            "STOOL",
+            ""
+        ]
+    },
+    "class": {
+        "Doctor": [
+            "- practitionerNumber: int",
+            "- signature: Image",
+            "- fullName: String",
+            "- address: String",
+            "- phoneNumber: String",
+            "- isValidRequisition(requisition): boolean",
+            "- prescribeTest()",
+            ""
+        ],
+        "Patient": [
+            "- healthNumber: String",
+            "- firstName: String",
+            "- lastName: String",
+            "- dateOfBirth: Date",
+            "- address: String",
+            "- phoneNumber: String",
+            "- makeAppointment()",
+            "- viewTestResults()",
+            ""
+        ],
+        "Requisition": [
+            "- doctor: Doctor",
+            "- patient: Patient",
+            "- tests: TestType[]",
+            "- validFrom: Date",
+            ""
+        ],
+        "Test": [
+            "- duration: int",
+            "",
+            ""
+        ],
+        "TestRepetition": [
+            "- numberOfTimes: int",
+            "- interval: enum{WEEKLY, MONTHLY, HALF_YEARLY, YEARLY}",
+            ""
+        ],
+        "Appointment": [
+            "- patient: Patient",
+            "- lab: Lab",
+            "- appointmentNumber: int",
+            "- date: Date",
+            "- startTime: Time",
+            "- endTime: Time",
+            ""
+        ],
+        "Lab": [
+            "- address: String",
+            "- businessHours: Time",
+            "- registrationNumber: int",
+            "- makeAppointment()",
+            ""
+        ]
+    },
+    "relationships": [
+        "Doctor o-- Requisition",
+        "Patient o-- Appointment",
+        "Patient o-- Test",
+        "Requisition o-- Test",
+        "Requisition o-- TestRepetition",
+        "Appointment o-- Lab",
+        ""
+    ]
+}

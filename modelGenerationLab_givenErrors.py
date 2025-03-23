@@ -359,6 +359,8 @@ def main():
     f_baseline_file.close()
     f_ours_file.close()
 
+    print("这是测试GitHub添加代码后的显示结果！")
+
 
 if __name__ == '__main__':
     main()

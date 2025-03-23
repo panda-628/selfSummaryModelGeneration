@@ -21,15 +21,15 @@ running_params = {
 }
 
 file = {
-    'path': 'C:\AppAndData\codeAndproject\modelGeneratelab',
-    'baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult\pre',
-    'usecase_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult-usecase\pre',
-    'statemachine_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult-statemachine\pre',
-    'compare_usecase_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult-compare\pre',
-    'ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult\ours',
-    'usecase_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult-usecase\ours',
-    'statemachine_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult-statemachine\ours',
-    'compare_usecase_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\labResult-compare\ours',
+    'path': 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration',
+    'baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult\pre',
+    'usecase_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-usecase\pre',
+    'statemachine_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-statemachine\pre',
+    'compare_usecase_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-compare\pre',
+    'ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult\ours',
+    'usecase_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-usecase\ours',
+    'statemachine_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-statemachine\ours',
+    'compare_usecase_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-compare\ours',
 }
 
 class stateMachine:

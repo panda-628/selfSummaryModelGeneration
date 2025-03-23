@@ -331,13 +331,13 @@ def main():
     print(f'Base_AI_answer:{AI_answer}',file=f_baseline_file)
 
     #将AI生成的结果转换为json文件
-    output_json_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/baseline/LBTK.json'
+    output_json_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/selfSummaryModelGeneration/baseline/LBTK.json'
     output_json_file = open(output_json_file_path,'w',encoding='UTF-8')
     convert_string_to_json(AI_answer,output_json_file)
     output_json_file.close()
 
     #调用fileCopmare.py中的函数进行比较
-    oracle_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/oracle/LBTKoracle.json'
+    oracle_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/selfSummaryModelGeneration/oracle/LBTKoracle.json'
     # f_oracle_file = open(oracle_file_path,'r',encoding='UTF-8')
     error_list = fileCompare.main(output_json_file_path,oracle_file_path)
     print("错误列表: ",error_list)

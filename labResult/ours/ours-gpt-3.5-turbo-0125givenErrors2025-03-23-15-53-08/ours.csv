@@ -1,0 +1,73 @@
+Summary_rules:```rule
++ Rule 1: Define all necessary enumerations (e.g., types, intervals) before referring to them in classes.
++ Rule 2: Ensure all essential classes related to the system are included in the model.
++ Rule 3: Establish all relevant relationships between classes, especially those crucial for system functionality.
+```
+Improve_result:```plantuml
+@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - id: int
+    - name: string
+    - address: string
+    - phone: string
+    - signature: image
+    + provideRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dob: date
+    - address: string
+    - phone: string
+    + makeAppointment()
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: string
+    - testDuration: int
+    - testType: TestType
+    - fee: int
+    + viewResults()
+}
+
+class Requisition {
+    - doctorId: int
+    - patientHealthNumber: string
+    - validFromDate: date
+    - tests: List<Test>
+    + addTest()
+}
+
+class Test {
+    - type: TestType
+    - repetitionTimes: int
+    - repetitionInterval: RepetitionInterval
+}
+
+Doctor "1" -- "1" Requisition
+Patient "1" -- "1" Requisition
+Requisition "1" -- "n" Test
+Lab "n" -- "n" Test
+
+@enduml
+```

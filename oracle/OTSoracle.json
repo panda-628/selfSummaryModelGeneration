@@ -1,0 +1,76 @@
+{
+    "enumerations": {
+        "DayOfWeek": [
+            "MONDAY",
+            "TUESDAY",
+            "WEDNESDAY",
+            "THURSDAY",
+            "FRIDAY",
+            "SATURDAY",
+            "SUNDAY"
+        ],
+        "RequestStatus": [
+            "CREATED",
+            "CONFIRMED"
+        ],
+        "SessionStatus": [
+            "APPROVED",
+            "COMPLETED",
+            "CANCELED_BY_STUDENT",
+            "CANCELED_BY_TUTOR",
+            "PAID"
+        ]
+    },
+    "classes": {
+        "User": [
+            "name: String",
+            "email: String"
+        ],
+        "UserRole": [],
+        "Tutor": [
+            "bankAccount: String"
+        ],
+        "TutoringRequest": [
+            "requestedTime: Date",
+            "canceledTime: Date",
+            "requestStatus: RequestStatus"
+        ],
+        "TutoringSession": [
+            "startTime: Date",
+            "endTime: Date",
+            "status: SessionStatus"
+        ],
+        "Student": [],
+        "TutorOffer": [
+            "expertiseLevel: String",
+            "hourlyPrice: double",
+            "subject: String"
+        ],
+        "Subject": [
+            "name: String"
+        ],
+        "WeeklyAvailability": [
+            "dayOfWeek: DayOfWeek",
+            "startTime: Date",
+            "endTime: Date"
+        ],
+        "TutorOfTheMonthAward": [
+            "year: Integer",
+            "month: Integer"
+        ]
+    },
+    "relationships": [
+        "User \"1\" -- \"1..2\" UserRole (roles)",
+        "UserRole \"1\" -- \"1\" Tutor",
+        "UserRole \"1\" -- \"1\" Student",
+        "Tutor \"1\" -- \"*\" TutorOffer (expertise)",
+        "TutorOffer \"1\" -- \"1\" Subject",
+        "Student \"1\" -- \"*\" TutoringRequest (request)",
+        "TutoringRequest \"1\" -- \"1\" TutoringSession (session)",
+        "Tutor \"1\" -- \"*\" TutoringSession (after)",
+        "TutoringSession \"1\" -- \"1\" Student (student)",
+        "TutoringSession \"0..1\" -- \"1\" TutoringSession (followUpSession)",
+        "Student \"1\" -- \"*\" WeeklyAvailability (sessions)",
+        "Tutor \"1\" -- \"*\" TutorOfTheMonthAward"
+    ]
+}

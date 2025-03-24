@@ -1,0 +1,68 @@
+{
+    "enumerations": {
+        "Position": [
+            "GK",
+            "RB",
+            "LB",
+            "CB",
+            "CM",
+            "RM",
+            "LM",
+            "ST"
+        ],
+        "ScoutingStatus": [
+            "IN_PROGRESS",
+            "COMPLETED"
+        ],
+        "Recommendation": [
+            "KEY_PLAYER",
+            "FIRST_TEAM_PLAYER",
+            "SECOND_TEAM_PLAYER",
+            "PROSPECTIVE_PLAYER",
+            "NOT_GOOD_SIGNING"
+        ]
+    },
+    "classes": {
+        "Club": [],
+        "Employee": [
+            "name: String"
+        ],
+        "Director": [],
+        "HeadCoach": [],
+        "Offer": [],
+        "PlayerProfile": [
+            "targetPositions: Position[]"
+        ],
+        "Player": [
+            "name: String",
+            "recommendation: Recommendation"
+        ],
+        "ScoutingAssignment": [
+            "status: ScoutingStatus"
+        ],
+        "Scout": [
+            "isHead: boolean"
+        ],
+        "ScoutingReport": [
+            "pros: String",
+            "cons: String"
+        ],
+        "PlayerAttribute": [
+            "name: String",
+            "value: String"
+        ]
+    },
+    "relationships": [
+        "Club \"1\" -- \"1\" Director (director)",
+        "Club \"1\" -- \"1\" HeadCoach (headCoach)",
+        "Director \"1\" -- \"*\" Offer (createdOffers)",
+        "HeadCoach \"1\" -- \"*\" PlayerProfile (targetProfiles)",
+        "Offer \"1\" -- \"1\" Player (player)",
+        "PlayerProfile \"1\" -- \"*\" Player (longList / shortList)",
+        "Player \"1\" -- \"1\" ScoutingAssignment (assignment)",
+        "ScoutingAssignment \"1\" -- \"1\" Scout (scout)",
+        "Scout \"1\" -- \"1\" Club (outs / headScout)",
+        "ScoutingAssignment \"1\" -- \"1\" ScoutingReport (report)",
+        "Player \"1\" -- \"*\" PlayerAttribute"
+    ]
+}

@@ -331,13 +331,13 @@ def main():
     print(f'Base_AI_answer:{AI_answer}',file=f_baseline_file)
 
     #将AI生成的结果转换为json文件
-    output_json_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/selfSummaryModelGeneration/baseline/LBTK.json'
+    output_json_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/selfSummaryModelGeneration/baseline/LRMS.json'
     output_json_file = open(output_json_file_path,'w',encoding='UTF-8')
     convert_string_to_json(AI_answer,output_json_file)
     output_json_file.close()
 
     #调用fileCopmare.py中的函数进行比较
-    oracle_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/selfSummaryModelGeneration/oracle/LBTKoracle.json'
+    oracle_file_path = 'C:/AppAndData/codeAndproject/modelGeneratelab/selfSummaryModelGeneration/oracle/LRMSoracle.json'
     # f_oracle_file = open(oracle_file_path,'r',encoding='UTF-8')
     error_list = fileCompare.main(output_json_file_path,oracle_file_path)
     print("错误列表: ",error_list)
@@ -359,7 +359,6 @@ def main():
     f_baseline_file.close()
     f_ours_file.close()
 
-    print("这是测试GitHub添加代码后的显示结果！")
 
 
 if __name__ == '__main__':

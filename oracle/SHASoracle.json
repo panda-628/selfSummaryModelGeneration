@@ -1,0 +1,75 @@
+
+{
+    "enumerations": {
+        "CommandStatus": [
+            "REQUESTED",
+            "COMPLETED",
+            "FAILED"
+        ],
+        "BooleanOperator": [
+            "AND",
+            "OR",
+            "NOT"
+        ],
+        "RelationalOperator": [
+            "LESS",
+            "GREATER",
+            "EQUAL"
+        ]
+    },
+    "classes": {
+        "SmartHome": [
+            "physicalAddress: String"
+        ],
+        "RuleExecution": [
+            "timestamp: Date"
+        ],
+        "AutomationRule": [
+            "isActive: boolean",
+            "actions: String[]"
+        ],
+        "Room": [],
+        "LogEntry": [
+            "timestamp: long"
+        ],
+        "Expression": [],
+        "DeviceStatusExpression": [],
+        "BooleanExpression": [
+            "operator: BooleanOperator"
+        ],
+        "RelationalExpression": [
+            "operator: RelationalOperator"
+        ],
+        "CommandStatusExpression": [
+            "command: String"
+        ],
+        "SensorReading": [
+            "value: double"
+        ],
+        "ControlCommand": [
+            "command: String",
+            "status: CommandStatus"
+        ],
+        "Device": [
+            "identifier: String",
+            "isActive: boolean"
+        ],
+        "Sensor": [],
+        "Actuator": []
+    },
+    "relationships": [
+        "SmartHome \"1\" -- \"*\" AutomationRule (rules)",
+        "SmartHome \"1\" -- \"*\" Room (rooms)",
+        "SmartHome \"1\" -- \"*\" LogEntry (logEntries)",
+        "AutomationRule \"1\" -- \"*\" RuleExecution (rule)",
+        "AutomationRule \"1\" -- \"1\" Expression (predicate)",
+        "AutomationRule \"*\" -- \"*\" AutomationRule (dependedRules)",
+        "AutomationRule \"*\" -- \"*\" AutomationRule (conflictRules)",
+        "Room \"1\" -- \"*\" Device (devices)",
+        "Expression \"*\" -- \"*\" Expression (operands)",
+        "DeviceStatusExpression \"1\" -- \"1\" Device (device)",
+        "SensorValueExpression \"1\" -- \"1\" Sensor (sensor)",
+        "ControlCommand \"1\" -- \"1\" Sensor (source)",
+        "ControlCommand \"1\" -- \"1\" Actuator (target)"
+    ]
+}

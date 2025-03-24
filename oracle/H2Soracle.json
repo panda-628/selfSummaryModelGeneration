@@ -1,0 +1,52 @@
+{
+    "enumerations": {},
+    "classes": {
+        "Route": [
+            "date: Date"
+        ],
+        "PickupRequest": [
+            "name: String",
+            "streetAddress: String",
+            "phoneNumber: String",
+            "emailAddress: String",
+            "pickupDate: Date"
+        ],
+        "Volunteer": [
+            "availableDates: Date[]"
+        ],
+        "Vehicle": [
+            "storageDimensions: int[]",
+            "storageCapacity: double"
+        ],
+        "DeliveryRequest": [
+            "date: Date"
+        ],
+        "Item": [
+            "description: String",
+            "dimension: double[]",
+            "weight: double"
+        ],
+        "Client": [
+            "name: String",
+            "address: String",
+            "phoneNumber: String",
+            "neededCategories: String[]"
+        ],
+        "NonPerishableFood": [],
+        "SecondHandArticle": [
+            "category: String",
+            "rfidTag: String"
+        ]
+    },
+    "relationships": [
+        "Route \"1\" -- \"*\" PickupRequest (pickupRequests)",
+        "Route \"1\" -- \"1\" Volunteer (driver)",
+        "Route \"1\" -- \"1\" Vehicle (vehicle)",
+        "Route \"1\" -- \"*\" DeliveryRequest (deliveryRequests)",
+        "PickupRequest \"1\" -- \"*\" Item (items)",
+        "DeliveryRequest \"1\" -- \"1\" Client (client)",
+        "DeliveryRequest \"1\" -- \"*\" Item (items)",
+        "NonPerishableFood \"1\" -- \"1\" Item",
+        "SecondHandArticle \"1\" -- \"1\" Item"
+    ]
+}

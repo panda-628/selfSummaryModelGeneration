@@ -1,0 +1,68 @@
+{
+    "enumeration": {
+        "TestType": [
+            "BLOOD",
+            "URINE",
+            "STOOL",
+            "XRAY",
+            "ULTRASOUND",
+            ""
+        ]
+    },
+    "class": {
+        "Doctor": [
+            "- numericPractitionerNumber: int",
+            "- signature: Image",
+            "- fullName: string",
+            "- address: string",
+            "- phoneNumber: string",
+            ""
+        ],
+        "Patient": [
+            "- healthNumber: string",
+            "- firstName: string",
+            "- lastName: string",
+            "- dateOfBirth: date",
+            "- address: string",
+            "- phoneNumber: string",
+            ""
+        ],
+        "Test": [
+            "- duration: int",
+            "- type: TestType",
+            ""
+        ],
+        "Requisition": [
+            "- doctor: Doctor",
+            "- patient: Patient",
+            "- tests: List<Test>",
+            "- repeatTimes: int",
+            "- repeatInterval: string",
+            ""
+        ],
+        "Lab": [
+            "- address: string",
+            "- businessHours: string",
+            "- registrationNumber: int",
+            ""
+        ],
+        "Appointment": [
+            "- patient: Patient",
+            "- lab: Lab",
+            "- confirmationNumber: int",
+            "- date: date",
+            "- startTime: time",
+            "- endTime: time",
+            "- appointmentType: string",
+            ""
+        ]
+    },
+    "relationships": [
+        "Doctor \"1\" -- \"n\" Requisition : creates",
+        "Patient \"1\" -- \"n\" Requisition : requests",
+        "Requisition \"1\" -- \"n\" Test : includes",
+        "Requisition \"1\" -- \"1\" Appointment : schedules",
+        "Appointment \"1\" -- \"1\" Lab : takes place at",
+        ""
+    ]
+}

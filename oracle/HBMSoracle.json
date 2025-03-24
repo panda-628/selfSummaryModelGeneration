@@ -1,0 +1,63 @@
+{
+    "enumerations": {
+        "RoomType": [
+            "SINGLE",
+            "DOUBLE",
+            "TWIN"
+        ],
+        "BookingStatus": [
+            "PRELIMINARY",
+            "FINALIZED",
+            "CONFIRMED",
+            "CANCELLED"
+        ],
+        "PaymentType": [
+            "PRE_PAID",
+            "PAY_AT_HOTEL"
+        ]
+    },
+    "classes": {
+        "Traveller": [
+            "name: String",
+            "travelPreferences: String[]",
+            "companyName: String",
+            "address: String",
+            "reliabilityRating: double"
+        ],
+        "Booking": [
+            "bookingId: String",
+            "arrivalDate: Date",
+            "departureDate: Date",
+            "numberOfRooms: integer",
+            "numberOfGuests: integer",
+            "creationDate: Date",
+            "finalizedDate: Date",
+            "confirmationDate: Date",
+            "cancellationDeadline: Date",
+            "paymentType: PaymentType",
+            "creditCardNumber: String"
+        ],
+        "SpecialOffer": [
+            "price: double"
+        ],
+        "Hotel": [
+            "name: String",
+            "city: String",
+            "address: String"
+        ],
+        "AvailableRoomType": [
+            "bookedOut: boolean",
+            "roomType: RoomType",
+            "price: double"
+        ]
+    },
+    "relationships": [
+        "Traveller \"1\" -- \"*\" Booking (bookings)",
+        "Booking \"1\" -- \"0..5\" SpecialOffer (specialOffers)",
+        "Booking \"1\" -- \"1\" Hotel (hotel)",
+        "Booking \"1\" -- \"1\" AvailableRoomType (bookedRoomType)",
+        "SpecialOffer \"1\" -- \"1\" Hotel (offeredBy)",
+        "Hotel \"1\" -- \"*\" AvailableRoomType (roomTypes)",
+        "AvailableRoomType \"1\" -- \"1\" RoomType (offeredRoomType)"
+    ]
+}

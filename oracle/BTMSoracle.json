@@ -1,0 +1,31 @@
+{
+    "enumeration": {
+        "ShiftType": [
+            "MORNING",
+            "AFTERNOON",
+            "NIGHT"
+        ]
+    },
+    "class": {
+        "Driver": [
+            "-driverId: String",
+            "-name: String",
+            "-isSick: boolean"
+        ],
+        "DriverShiftAssignment": [
+            "-shiftType: ShiftType",
+            "-date: Date"
+        ],
+        "BusRoute": [
+            "-routeNumber: integer",
+            "-licensePlate: String",
+            "-isInRepair: boolean"
+        ],
+        "BusRouteAssignment": []
+    },
+    "relationships": [
+        "Driver \"1\" -- \"*\" DriverShiftAssignment",
+        "DriverShiftAssignment \"1\" -- \"1\" BusRouteAssignment",
+        "BusRouteAssignment \"1\" -- \"1\" BusRoute"
+    ]
+}

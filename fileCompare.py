@@ -50,15 +50,38 @@ def compare_files(generated_data, oracle_data):
 
     return result
 
+def get_changes_summary(result):
+    total_insertions = 0
+    total_deletions = 0
+    summary = []
+
+    for category, data in result.items():
+        total_insertions += len(data['add'])
+        total_deletions += len(data['miss'])
+
+    summary.append(f"{len(result)} categories changed, {total_insertions} insertions(+), {total_deletions} deletions(-)")
+
+    for category, data in result.items():
+        summary.append(f"- **{category}**: {len(data['add'])} insertions(+), {len(data['miss'])} deletions(-)")
+        if data['add']:
+            summary.append("  added: " + ', '.join(data['add']))
+        else:
+            summary.append("  added: []")
+        if data['miss']:
+            summary.append("  absent: " + ', '.join(data['miss']))
+
+    return '\n'.join(summary)
+
 def main(generated_file_path, oracle_file_path):
     generated_data = load_file(generated_file_path)
     oracle_data = load_file(oracle_file_path)
 
     comparison_result = compare_files(generated_data, oracle_data)
+    summary = get_changes_summary(comparison_result)
     
     print(json.dumps(comparison_result, indent=4, ensure_ascii=False))
 
-    return comparison_result
+    return summary
 
 if __name__ == '__main__':
     generated_file_path = 'path/to/generated_file.json'

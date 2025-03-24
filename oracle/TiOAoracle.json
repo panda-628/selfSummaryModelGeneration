@@ -1,0 +1,53 @@
+{
+    "enumerations": {
+        "TileKind": [
+            "NORMAL",
+            "ACTION",
+            "HIDDEN"
+        ],
+        "ActionKind": [
+            "ROLL_THE_DIE_FOR_AN_EXTRA_TURN",
+            "CONNECT_TWO_ADJACENT_TILES_WITH_A_CONNECTION_PIECE_FROM_THE_PILE_OF_32_SPARE_CONNECTION_PIECES",
+            "REMOVE_A_CONNECTION_PIECE_FROM_THE_BOARD_AND_PLACE_IT_IN_THE_PILE_OF_SPARE_CONNECTION_PIECES",
+            "MOVE_YOUR_PLAYING_PIECE_FROM_THE_TILE_TO_AN_ARBITRARY_TILE_THAT_IS_NOT_YOUR_CURRENT_TILE",
+            "LOSE_YOUR_NEXT_TURN"
+        ]
+    },
+    "classes": {
+        "PlayingGame": [
+            "currentTurn: integer",
+            "nextAction: integer",
+            "nextPlayer: integer"
+        ],
+        "Game": [
+            "actionCards: ActionKind[32]"
+        ],
+        "Player": [
+            "skipNextTurn: boolean"
+        ],
+        "PlayingTile": [
+            "isVisited: boolean",
+            "lastTriggeredTurn: integer"
+        ],
+        "Tile": [
+            "kind: TileKind",
+            "coolDuration: integer"
+        ]
+    },
+    "relationships": [
+        "PlayingGame \"1\" -- \"2..4\" Player (players)",
+        "PlayingGame \"1\" -- \"*\" PlayingTile (currentTiles)",
+        "PlayingGame \"1\" -- \"1\" Game",
+        "Player \"1\" -- \"*\" PlayingTile (position)",
+        "Player \"1\" -- \"1\" Game",
+        "PlayingTile \"1\" -- \"1\" Tile (definingTile)",
+        "Game \"1\" -- \"*\" Tile (tiles)",
+        "Game \"1\" -- \"1\" Tile (startingPointOfPlayerA)",
+        "Game \"1\" -- \"1\" Tile (startingPointOfPlayerB)",
+        "Game \"1\" -- \"1\" Tile (startingPointOfPlayerC)",
+        "Game \"1\" -- \"1\" Tile (startingPointOfPlayerD)",
+        "Player \"1\" -- \"*\" Tile (startingPoint)",
+        "PlayingTile \"1\" -- \"*\" Tile (left, right, top, bottom)",
+        "Tile \"1\" -- \"*\" Tile (left, right, top, bottom)"
+    ]
+}

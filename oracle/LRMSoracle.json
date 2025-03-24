@@ -1,0 +1,86 @@
+{
+    "enumerations": {
+        "RepeatInterval": [
+            "WEEKLY",
+            "MONTHLY",
+            "HALF_YEARLY",
+            "YEARLY"
+        ],
+        "AppointmentType": [
+            "APPOINTMENT_REQUIRED",
+            "DROP_OFF"
+        ],
+        "TestResultType": [
+            "POSITIVE",
+            "NEGATIVE"
+        ],
+        "DayOfWeek": [
+            "MONDAY",
+            "TUESDAY",
+            "WEDNESDAY",
+            "THURSDAY",
+            "FRIDAY",
+            "SATURDAY",
+            "SUNDAY"
+        ]
+    },
+    "classes": {
+        "Requisition": [
+            "validFrom: Date",
+            "doctor: String",
+            "repeatInterval: RepeatInterval"
+        ],
+        "Doctor": [
+            "practitionerNumber: String",
+            "specialty: String",
+            "name: String",
+            "address: String",
+            "phone: String"
+        ],
+        "Patient": [
+            "healthNumber: String",
+            "firstName: String",
+            "lastName: String",
+            "address: String",
+            "phone: String"
+        ],
+        "TestGroup": [
+            "name: String",
+            "isCombinedTest: boolean"
+        ],
+        "RequisitionItem": [
+            "result: TestResultType",
+            "report: String"
+        ],
+        "Appointment": [
+            "name: String",
+            "appointmentNumber: String",
+            "appointmentType: AppointmentType",
+            "confirmationDate: Date",
+            "startTime: DateTime",
+            "endTime: DateTime"
+        ],
+        "Test": [],
+        "Lab": [
+            "registrationNumber: String",
+            "address: String",
+            "capacity: double",
+            "cancellationFee: double"
+        ],
+        "BusinessHour": [
+            "dayOfWeek: DayOfWeek",
+            "openTime: Time",
+            "closeTime: Time"
+        ]
+    },
+    "relationships": [
+        "Requisition \"1\" -- \"1\" Doctor (doctor)",
+        "Requisition \"1\" -- \"1\" Patient (patient)",
+        "Requisition \"1\" -- \"*\" TestGroup (testGroup)",
+        "Requisition \"*\" -- \"*\" RequisitionItem (items)",
+        "TestGroup \"*\" -- \"*\" Test (tests)",
+        "Test \"1\" -- \"1\" Appointment (appointment)",
+        "Appointment \"1\" -- \"1\" Lab (lab)",
+        "Lab \"1\" -- \"*\" BusinessHour (businessHours)"
+    ]
+}

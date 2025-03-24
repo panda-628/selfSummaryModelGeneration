@@ -1,0 +1,70 @@
+{
+    "enumerations": {},
+    "classes": {
+        "User": [
+            "username: String",
+            "password: String"
+        ],
+        "Role": [],
+        "PlayerRole": [],
+        "AdminRole": [],
+        "GameSave": [
+            "currentLevel: int",
+            "paddleX: double",
+            "lives: int"
+        ],
+        "Game": [
+            "name: String",
+            "minimumBallSpeed: double",
+            "speedIncreaseFactor: double",
+            "maximumBallSpeed: double",
+            "minimumPaddleLength: double",
+            "paddleDecreaseFactor: double"
+        ],
+        "RuntimeGameSave": [
+            "paddleLength: double",
+            "paddleX: double",
+            "ballSpeed: double",
+            "ballY: double",
+            "ballVelocityX: double",
+            "ballVelocityY: double",
+            "currentBlockPlacements"
+        ],
+        "Level": [
+            "levelNumber: integer",
+            "levelWidth: integer",
+            "gridHeight: integer",
+            "isRandom: boolean",
+            "numberOfBlocks: integer"
+        ],
+        "BlockPlacement": [
+            "x: integer",
+            "y: integer"
+        ],
+        "Block": [
+            "points: integer"
+        ],
+        "Color": [
+            "red: integer",
+            "green: integer",
+            "blue: integer"
+        ],
+        "HallOfFameEntry": [
+            "score: int"
+        ]
+    },
+    "relationships": [
+        "User \"1\" -- \"1..2\" Role (roles)",
+        "Role \"1\" -- \"1\" PlayerRole",
+        "Role \"1\" -- \"1\" AdminRole (achievedBy)",
+        "PlayerRole \"0..1\" -- \"1\" GameSave (save)",
+        "AdminRole \"*\" -- \"*\" Game (designedGames)",
+        "Game \"1\" -- \"1\" GameSave (game)",
+        "Game \"*\" -- \"*\" Level (levels)",
+        "Game \"*\" -- \"*\" HallOfFameEntry (hallEntries)",
+        "Level \"*\" -- \"*\" BlockPlacement (blockPlacements)",
+        "BlockPlacement \"1\" -- \"1\" Block (block)",
+        "Block \"1\" -- \"1\" Color (color)",
+        "RuntimeGameSave \"1\" -- \"1\" BlockPlacement (currentBlockPlacements)"
+    ]
+}

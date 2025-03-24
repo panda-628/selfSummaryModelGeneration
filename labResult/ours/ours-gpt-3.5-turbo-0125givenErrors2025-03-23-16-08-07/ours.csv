@@ -1,0 +1,83 @@
+Summary_rules:```rule
++ Rule 1: Enumerations should be clearly defined and used appropriately.
++ Rule 2: Ensure that all necessary classes are included in the model.
++ Rule 3: Relationships should accurately represent the associations between classes.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition()
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + bookAppointment()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<TestType>
+    - validFromDate: Date
+    - repeatInterval: Interval
+    + addTest()
+    + setRepeatPattern()
+}
+
+class Appointment {
+    - patient: Patient
+    - lab: Lab
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - confirmationNumber: String
+    + reschedule()
+    + cancel()
+}
+
+class Lab {
+    - address: String
+    - businessHours: List<BusinessHour>
+    - registrationNumber: String
+    + determineFee()
+}
+
+class TestResult {
+    - testType: TestType
+    - result: String
+    - report: String
+}
+
+class BusinessHour {
+    - dayOfWeek: String
+    - startTime: Time
+    - endTime: Time
+}
+
+Doctor "1" -- "0..*" Requisition
+Requisition "1" -- "0..*" TestType
+Requisition "1" -- "1" Patient
+Patient "1" -- "0..*" Appointment
+Appointment "1" -- "1" Lab
+TestResult "1" -- "0..*" TestType
+Lab "1" -- "1..*" BusinessHour
+
+@enduml

@@ -1,0 +1,64 @@
+{
+    "enumerations": {
+        "TaskType": [
+            "NEEDED",
+            "DONE",
+            "NOT_APPLICABLE"
+        ],
+        "InvitationStatus": [
+            "NO_RESPONSE",
+            "ATTENDING",
+            "MAYBE",
+            "NOT_ATTENDING"
+        ]
+    },
+    "classes": {
+        "Event": [
+            "name: String",
+            "startDateTime: Date",
+            "endDateTime: Date",
+            "occasion: String"
+        ],
+        "Invitation": [
+            "firstName: String",
+            "lastName: String",
+            "emailAddress: String",
+            "status: InvitationStatus"
+        ],
+        "Location": [
+            "name: String",
+            "address: String"
+        ],
+        "Task": [
+            "taskType: TaskType",
+            "description: String",
+            "isAttendeeTask: boolean"
+        ],
+        "User": [
+            "firstName: String",
+            "lastName: String",
+            "emailAddress: String",
+            "password: String",
+            "phoneNumber: String",
+            "postalAddress: String"
+        ],
+        "EventKind": [
+            "name: String"
+        ],
+        "TaskTemplate": [
+            "taskType: TaskType",
+            "description: String",
+            "isAttendeeTask: boolean"
+        ]
+    },
+    "relationships": [
+        "Event \"*\" -- \"*\" Invitation (invitations)",
+        "Event \"1\" -- \"1\" Location (location)",
+        "Event \"*\" -- \"*\" Task (checklist)",
+        "Invitation \"1\" -- \"0..1\" User (invitee)",
+        "Task \"1\" -- \"1\" User (accomplisher)",
+        "User \"*\" -- \"*\" Event (organizers)",
+        "Event \"*\" -- \"*\" EventKind (eventKinds)",
+        "EventKind \"*\" -- \"*\" TaskTemplate (taskTemplates)"
+    ]
+}

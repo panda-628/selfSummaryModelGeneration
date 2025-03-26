@@ -104,6 +104,9 @@ Transitions:
 PROMPT_MODEL_COMPARE="""
 Compare the generated content with the correct enumerations, classes, and relationships to identify any errors in the generated content. Note: Only identify errors, do not modify them.
 
+#Generated content:
+{}
+
 #Correct enumerations, classes, and relationships:
 {}
 """
@@ -149,7 +152,7 @@ including any assumptions that might have been made during the modeling process 
 
 #summary the rules
 PROMPT_MODEL_SUMMARY="""
-Based on the above errors and the results of the analysis, summarize some rules to follow when generating enums, classes, and relationships.
+Based on the above errors, summarize some rules to follow when generating enums, classes, and relationships.
 The rules should be presented in the following "Do and Don't" format:
 - **Do**: List actions that should be taken when generating enums, classes, and relationships. For example, "Do clearly define the scope of each class."
 - **Don't**: List actions that should be avoided when generating enums, classes, and relationships. For example, "Don't create overly complex inheritance hierarchies without proper justification."
@@ -370,34 +373,92 @@ Initial state When entering the boiling water process, the water burner is in th
 
 #correct answer
 CORRECT_ANSWER = """
-Enumeration:
-Interval(weekly, monthly, everyHalfYear, yearly)
-AccessType(reservable, walkIn, dropOff)
-DayOfWeek(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday)
-
-Classes:
-
-Patient(string dateOfBirth)
-Doctor(string signature)
-Requisition(string effectiveDate, int repetitionCount, Interval repetitionInterval)
-TestResult(boolean negative, string report)
-SpecificTest(Data date)
-Appointment(string confirmation, Date date, string startTime, string endTime)
-BusinessHour(DayOfWeek: dayOfWeek, string startTime, string endTime)
-Lab(string registrationNumber, string name, string address, boolean changeCancelFee)
-Test(string name, string duration)
-TestType(string name, string durationAdditive, AccessType access)
-
-Relationships:
-1 Patient associate * Requisition
-* Requisition associate *Appointment
-* Appointment associate 1 Lab
-1 Docter associate * Requisition
-1 Requsition associate *SpecificTest
-0..1 TestResult associate *SpecificTest
-1 Lab associate 7 BusinessHour
-1 Test associate *SpecificTest
-1 TestType associate * Test
+{
+    "enumerations": {
+        "RepeatInterval": [
+            "WEEKLY",
+            "MONTHLY",
+            "HALF_YEARLY",
+            "YEARLY"
+        ],
+        "AppointmentType": [
+            "APPOINTMENT_REQUIRED",
+            "DROP_OFF"
+        ],
+        "TestResultType": [
+            "POSITIVE",
+            "NEGATIVE"
+        ],
+        "DayOfWeek": [
+            "MONDAY",
+            "TUESDAY",
+            "WEDNESDAY",
+            "THURSDAY",
+            "FRIDAY",
+            "SATURDAY",
+            "SUNDAY"
+        ]
+    },
+    "classes": {
+        "Requisition": [
+            "validFrom: Date",
+            "doctor: String",
+            "repeatInterval: RepeatInterval"
+        ],
+        "Doctor": [
+            "practitionerNumber: String",
+            "specialty: String",
+            "name: String",
+            "address: String",
+            "phone: String"
+        ],
+        "Patient": [
+            "healthNumber: String",
+            "firstName: String",
+            "lastName: String",
+            "address: String",
+            "phone: String"
+        ],
+        "TestGroup": [
+            "name: String",
+            "isCombinedTest: boolean"
+        ],
+        "RequisitionItem": [
+            "result: TestResultType",
+            "report: String"
+        ],
+        "Appointment": [
+            "name: String",
+            "appointmentNumber: String",
+            "appointmentType: AppointmentType",
+            "confirmationDate: Date",
+            "startTime: DateTime",
+            "endTime: DateTime"
+        ],
+        "Test": [],
+        "Lab": [
+            "registrationNumber: String",
+            "address: String",
+            "capacity: double",
+            "cancellationFee: double"
+        ],
+        "BusinessHour": [
+            "dayOfWeek: DayOfWeek",
+            "openTime: Time",
+            "closeTime: Time"
+        ]
+    },
+    "relationships": [
+        "Requisition \"1\" -- \"1\" Doctor (doctor)",
+        "Requisition \"1\" -- \"1\" Patient (patient)",
+        "Requisition \"1\" -- \"*\" TestGroup (testGroup)",
+        "Requisition \"*\" -- \"*\" RequisitionItem (items)",
+        "TestGroup \"*\" -- \"*\" Test (tests)",
+        "Test \"1\" -- \"1\" Appointment (appointment)",
+        "Appointment \"1\" -- \"1\" Lab (lab)",
+        "Lab \"1\" -- \"*\" BusinessHour (businessHours)"
+    ]
+}
 """
 
 #correct answer

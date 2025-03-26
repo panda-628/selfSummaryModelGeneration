@@ -1,0 +1,72 @@
+Base_AI_answer:@startuml
+
+enum TestType {
+  BLOOD
+  ULTRASOUND
+  XRAY
+  URINE
+  STOOL
+}
+
+enum RepetitionInterval {
+  WEEKLY
+  MONTHLY
+  HALF_YEARLY
+  YEARLY
+}
+
+class Doctor {
+  - practitionerNumber: int
+  - signature: Image
+  - fullName: String
+  - address: String
+  - phoneNumber: String
+  {static} - instance: Doctor
+}
+
+class Patient {
+  - healthNumber: String
+  - firstName: String
+  - lastName: String
+  - dateOfBirth: Date
+  - address: String
+  - phoneNumber: String
+  - appointments: Appointment[]
+  {static} - instance: Patient
+}
+
+class Requisition {
+  - doctor: Doctor
+  - patient: Patient
+  - tests: Test[]
+  - repetitionInterval: RepetitionInterval
+}
+
+class Test {
+  - type: TestType
+  - durationInMinutes: int
+}
+
+class Lab {
+  - address: String
+  - businessHours: String
+  - registrationNumber: String
+  - fees: float
+  - appointments: Appointment[]
+  {static} - instance: Lab
+}
+
+class Appointment {
+  - confirmationNumber: int
+  - date: Date
+  - startTime: Time
+  - endTime: Time
+}
+
+Doctor "1" --> "many" Requisition
+Patient "1" --> "many" Appointment
+Requisition "1" --> "many" Test
+Requisition "1" --> RepetitionInterval
+Test <-- Lab
+
+@enduml

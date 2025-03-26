@@ -21,19 +21,19 @@ def generate_baseline_prompt(description):
 
     return prompt_list
 
-# def generate_compare_prompt(correct_answer):
-#     prompt_list = {
-#         'prompt':''
-#     }
-#     message = []
-#     prompt1 = PROMPT_MODEL_COMPARE.format(correct_answer)
-#     message = [
-#         {"role":"system","content":"Compare the generated content with the correct enumerations, classes, and relationships to identify any errors in the generated content. Note: Only identify errors, do not modify them."},
-#         {"role":"user","content":f"{prompt1}"},
-#     ]
-#     prompt_list['prompt'] = message
+def generate_compare_prompt(generated_contents,correct_answer):
+    prompt_list = {
+        'prompt':''
+    }
+    message = []
+    prompt1 = PROMPT_MODEL_COMPARE.format(generated_contents,correct_answer)
+    message = [
+        {"role":"system","content":"Compare the generated content with the correct enumerations, classes, and relationships to identify any errors in the generated content. Note: Only identify errors, do not modify them."},
+        {"role":"user","content":f"{prompt1}"},
+    ]
+    prompt_list['prompt'] = message
 
-#     return prompt_list
+    return prompt_list
 
 # def generate_analyze_prompt(error_list):
 #     prompt_list = {
@@ -131,13 +131,13 @@ def main():
 
     current_time = datetime.datetime.now()
     formatted_time = current_time.strftime('%Y-%m-%d-%H-%M-%S')
-    new_baseline_folder = 'baseline'+'-'+running_params['llm'] + formatted_time
+    new_baseline_folder = 'full-automatic-baseline'+'-'+running_params['llm'] + formatted_time
     os.mkdir(new_baseline_folder)
 
     ours_path = file['ours']
     os.chdir(ours_path)
 
-    new_ours_folder = 'ours'+'-'+running_params['llm']+ formatted_time
+    new_ours_folder = 'full-automatic-ours'+'-'+running_params['llm']+ formatted_time
     os.mkdir(new_ours_folder)
 
     cycle = running_params['cycle']
@@ -153,30 +153,37 @@ def main():
         description = DESCRIPTION
         prompt_list = generate_baseline_prompt(description)
         error_list = []
-        for i in range(1,6):
-            AI_answer = run_llm(prompt_list,running_params['llm'],running_params['temperature'])
-            print("初始prompt生成的内容: ",AI_answer)
-            print(f'---------------------{c}/{cycle}---------{i}/5:',file=f_baseline_file)
-            print(f'Base_AI_answer:{AI_answer}',file=f_baseline_file)
-            error_list.append(AI_answer)
+
+        AI_answer = run_llm(prompt_list,running_params['llm'],running_params['temperature'])
+        print("初始prompt生成的内容: ",AI_answer)
+        print(f'---------------------{c}/{cycle}---------{i}/5:',file=f_baseline_file)
+        print(f'Base_AI_answer:{AI_answer}',file=f_baseline_file)
+
+        #compare the results
+        correct_answer = CORRECT_ANSWER
+        prompt_compare = generate_compare_prompt(AI_answer,correct_answer)
+        compare_result = run_llm(prompt_compare,running_params['llm'],running_params['temperature'])
+        print("比较得出的错误结果: ",compare_result)
+        print(f'---------------------{c}/{cycle}---------:',file=f_baseline_file)
+        print(f'Compare_result:{compare_result}',file=f_baseline_file)
+        error_list = compare_result
 
         #summary the rules
-        correct_answer = CORRECT_ANSWER
         prompt_summary = generate_summary_prompt(description,correct_answer,error_list)
         summary_rules = run_llm(prompt_summary,running_params['llm'],running_params['temperature'])
         print("总结的规则: ",summary_rules)
         print(f'---------------------{c}/{cycle}---------:',file=f_ours_file)
         print(f'Summary_rules:{summary_rules}',file=f_ours_file)
 
-        #improve the rules
-        prompt_improve_rules = generate_improve_rules_prompt(summary_rules,error_list)
-        improve_rules = run_llm(prompt_improve_rules,running_params['llm'],running_params['temperature'])
-        print("改进的规则: ",improve_rules)
-        print(f'---------------------{c}/{cycle}---------:',file=f_ours_file)
-        print(f'Improve_rules:{improve_rules}',file=f_ours_file)
+        # #improve the rules
+        # prompt_improve_rules = generate_improve_rules_prompt(summary_rules,error_list)
+        # improve_rules = run_llm(prompt_improve_rules,running_params['llm'],running_params['temperature'])
+        # print("改进的规则: ",improve_rules)
+        # print(f'---------------------{c}/{cycle}---------:',file=f_ours_file)
+        # print(f'Improve_rules:{improve_rules}',file=f_ours_file)
 
         #generate improved results
-        prompt_improve = generate_improve_prompt(improve_rules,description)
+        prompt_improve = generate_improve_prompt(summary_rules,description)
         improve_result = run_llm(prompt_improve,running_params['llm'],running_params['temperature'])
         print("改进后的结果: ",improve_result)
         print(f'---------------------{c}/{cycle}---------:',file=f_ours_file)

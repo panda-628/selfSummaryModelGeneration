@@ -1,0 +1,73 @@
+Summary_rules:```rule
++ Rule 1: Clearly define the attributes and methods within each class.
++ Rule 2: Ensure that the relationships between classes are clearly specified and follow the appropriate cardinality.
++ Rule 3: Use enums for representing fixed sets of values.
++ Rule 4: Avoid redundancy by carefully considering which classes and relationships are necessary for the model.
+```
+Improve_result:@startuml
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    - digitalSignature: Image
+    + provideTestRequisition()
+    + viewTestResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + bookAppointment()
+    + viewTestResults()
+}
+
+class TestRequisition {
+    - validFromDate: date
+    - repeatedTimes: int
+    - repetitionInterval: RepetitionInterval
+    + addTest()
+    + specifyRepetitions()
+}
+
+class Test {
+    - duration: int
+}
+
+class Lab {
+    - labName: string
+    - labAddress: string
+    - registrationNumber: int
+    - businessHours: string
+    + makeAppointment()
+    + cancelAppointment()
+}
+
+class Appointment {
+    - confirmationNumber: int
+    - date: date
+    - startTime: time
+    - endTime: time
+    - labName: string
+    - labRegistrationNumber: int
+}
+
+Doctor "1" -- "1" TestRequisition
+TestRequisition "1" -- "0..*" Test
+TestRequisition "0..1" -- "1" Patient
+Patient "1" -- "1" Appointment
+Appointment "1" -- "1" Lab
+
+@enduml

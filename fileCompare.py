@@ -7,10 +7,11 @@ def load_file(file_path):
 
 def normalize_relationship(relationship):
     # 提取关系中的主体并返回一个标准化的元组，确保顺序不影响比较
-    pattern = r'(\w+)\s*["\']?\d*\.{0,1}\d*["\']?\s*(--|-->)\s*["\']?\d*\.{0,1}\d*["\']?\s*(\w+)'
+    # 单独一行，确保引号闭合且无后续未分隔语句
+    pattern = r'(\w+)\s*["\']([^"\']*)["\']\s*(--|-->)\s*["\']([^"\']*)["\']\s*(\w+)'
     match = re.match(pattern, relationship)
     if match:
-        return (match.group(1), match.group(3))  # 返回主体，确保顺序一致
+        return (match.group(1), match.group(5))  # 返回主体，确保顺序一致
     return None
 
 def compare_files(generated_data, oracle_data):
@@ -24,7 +25,10 @@ def compare_files(generated_data, oracle_data):
     for key in result.keys():
         if key != 'relationships':
             generated_set = set(generated_data.get(key, []))
+            print("生成的枚举/类：", generated_set)
             oracle_set = set(oracle_data.get(key, []))
+            # print("原始数据为：", oracle_data)
+            print("oracle 枚举/类：", oracle_set)
 
             result[key]['add'] = list(generated_set - oracle_set)
             result[key]['miss'] = list(oracle_set - generated_set)

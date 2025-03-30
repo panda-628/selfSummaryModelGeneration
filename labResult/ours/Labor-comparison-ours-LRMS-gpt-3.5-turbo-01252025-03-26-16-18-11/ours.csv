@@ -1,0 +1,357 @@
+Summary_rules:```rule
++ Rule 1: Define all necessary classes based on the system description to represent key entities.
++ Rule 2: Clearly specify relationships between classes to capture the interactions and associations accurately.
++ Rule 3: Include relevant enumerations to represent distinct values or options within the model.
++ Rule 4: Ensure that classes have attributes reflecting the essential data elements described in the system.
++ Rule 5: Model associations between classes as needed to represent the connections between entities.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + prescribeTest()
+    + viewResults()
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + makeAppointment()
+    + viewResults()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<TestType>
+    - validFromDate: Date
+    + addTest()
+    + setRepetition()
+}
+
+class Test {
+    - duration: int
+}
+
+class Appointment {
+    - appointmentNumber: int
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - labName: String
+    - labRegistrationNumber: int
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+Doctor "prescribeTest()" --> "1" Requisition
+Patient "makeAppointment()" --> "1" Appointment
+Requisition "addTest()" --> "n" Test
+Requisition "setRepetition()" --> "1" Appointment
+
+@enduml
+Summary_rules:```rule
++ Rule 1: Define all necessary classes explicitly based on the system description.
++ Rule 2: Avoid introducing new classes or enumerations without a clear justification.
++ Rule 3: Ensure that relationships between classes are accurately captured and reflect the system requirements.
++ Rule 4: Use appropriate multiplicity indicators in relationships to signify the cardinality between classes.
++ Rule 5: When modeling associations between classes, consider both directions of the relationship for completeness.
++ Rule 6: Include all relevant attributes in each class based on the provided system description.
+```
+Improve_result:@startuml
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition()
+    + viewTestResults()
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + bookAppointment()
+    + viewTestResults()
+}
+
+class Requisition {
+    - validFromDate: Date
+    - repeatedTimes: int
+    - repetitionInterval: RepetitionInterval
+    + addTest()
+}
+
+class Test {
+    - group: String
+    - duration: int
+}
+
+class Appointment {
+    - confirmationNumber: String
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - labName: String
+    - labRegistrationNumber: String
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class Lab {
+    - address: String
+    - businessHours: String
+    - fee: double
+    - testsOffered: List<Test>
+}
+
+class Result {
+    - status: String
+    - report: String
+}
+
+Doctor "1" -- "0..*" Requisition
+Requisition "1" *-- "1..*" Test
+Patient "1" -- "0..*" Requisition
+Requisition "1" -- "0..*" Test
+Patient "1" *-- "0..*" Appointment
+Lab "1" *-- "0..*" Appointment
+Appointment "1" -- "0..1" Requisition
+Result "1" -- "1" Test
+
+@enduml
+Summary_rules:```rule
++ Rule 1: Use descriptive names for classes, attributes, and relationships.
++ Rule 2: Ensure relationships between classes represent real-world associations accurately.
++ Rule 3: Implement correct multiplicity in relationships to capture the cardinality accurately.
++ Rule 4: Make proper use of enumerations for defining specific types or states.
++ Rule 5: Avoid unnecessary class duplication or redundancy.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - name: string
+    - address: string
+    - phone: string
+    - signature: image
+    + provideRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dob: date
+    - address: string
+    - phone: string
+    + bookAppointment()
+}
+
+class Requisition {
+    - validFrom: date
+    + addTest()
+    + repeatTests()
+}
+
+class Test {
+    - type: TestType
+    - duration: int
+    - result: string
+    - report: string
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    - fee: float
+    + makeAppointment()
+}
+
+Doctor "1" -- "1" Patient : prescribes
+Patient "1" -- "0..*" Requisition : has
+Requisition "1" -- "1..*" Test : includes
+Requisition "1" -- "1" Lab : appointment
+Lab "0..*" -- "1" Test : performs
+
+@enduml
+Summary_rules:```rule
++ Rule 1: Define all necessary enumerations before referencing them in classes.
++ Rule 2: Clearly define relationships between classes, ensuring clarity and consistency in cardinality and directionality.
++ Rule 3: Include all relevant classes required for the model, ensuring comprehensive coverage of entities in the system.
++ Rule 4: Avoid arbitrary additions of classes, enumerations, or relationships that do not directly correspond to the system description.
++ Rule 5: Ensure each class contains all necessary attributes for the specific entity it represents.
++ Rule 6: Clearly define the cardinality and directionality of relationships between classes to accurately represent the associations in the system.
+```
+Improve_result:```plantuml
+@startuml
+
+/**** Enumerations ****/
+
+enum TestGroup {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    OTHER
+}
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+enum TestResult {
+    NEGATIVE
+    POSITIVE
+}
+
+/**** Classes ****/
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: img
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + provideRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: string
+    - address: string
+    - phoneNumber: string
+    + bookAppointment()
+}
+
+class Test {
+    - duration: int
+    - group: TestGroup
+    - necessaryAppointment: bool
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: string
+    - startTime: string
+    - endTime: string
+    - labName: string
+}
+
+/**** Relationships ****/
+
+Doctor --> Patient : prescribes
+Doctor --> Test : prescribes
+Patient --> Appointment : makes
+
+Test --> TestGroup
+Test --> RepetitionInterval
+Test --> TestResult
+
+@enduml
+```
+Summary_rules:```rule
++ Rule 1: Clearly define the classes and their attributes based on the system description.
++ Rule 2: Ensure that relationships between classes accurately represent the interactions and associations described in the system.
++ Rule 3: Include any necessary enumerations to represent specific types or categories within the system.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + createRequisition()
+    + viewResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - startDate: date
+    - tests: List<TestType>
+    - repeatTimes: int
+    - repeatInterval: enum{WEEKLY, MONTHLY, SEMI_ANNUAL, YEARLY}
+}
+
+class Test {
+    - duration: int
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    - fee: double
+    + makeAppointment()
+}
+
+Doctor "1" --> "1..*" Requisition
+Patient "1" --> "1..*" Requisition
+Requisition "1" --> "1..*" Test
+Requisition "1" --> "1" Lab
+Patient "1" --> "0..*" Lab
+
+@enduml

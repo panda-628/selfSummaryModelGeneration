@@ -1,0 +1,44 @@
+{
+    "enumeration": {
+        "Shift": [
+            "MORNING",
+            "AFTERNOON",
+            "NIGHT",
+            ""
+        ]
+    },
+    "class": {
+        "City": [
+            "-String name",
+            "-List<BusRoute> busRoutes",
+            "-List<BusDriver> busDrivers",
+            "+void assignBusToRoute(Bus bus, BusRoute busRoute, Date date)",
+            "+void assignDriverToShift(BusDriver busDriver, Shift shift, Bus bus, Date date)",
+            ""
+        ],
+        "BusRoute": [
+            "-int routeNumber",
+            "-List<Bus> buses",
+            "+void addBus(Bus bus)",
+            ""
+        ],
+        "Bus": [
+            "-String licencePlate",
+            "-boolean inRepairShop",
+            ""
+        ],
+        "BusDriver": [
+            "-String name",
+            "-int driverID",
+            "-boolean onSickLeave",
+            ""
+        ]
+    },
+    "relationships": [
+        "City \"1\" o-- \"1..*\" BusRoute",
+        "City \"1\" o-- \"1..*\" BusDriver",
+        "BusRoute \"1\" o-- \"0..*\" Bus",
+        "BusDriver .. Shift",
+        ""
+    ]
+}

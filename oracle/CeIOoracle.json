@@ -58,7 +58,8 @@
         "Invitation \"1\" -- \"0..1\" User (invitee)",
         "Task \"1\" -- \"1\" User (accomplisher)",
         "User \"*\" -- \"*\" Event (organizers)",
-        "Event \"*\" -- \"*\" EventKind (eventKinds)",
+        "Event \"*\" -- \"*\" EventKind (Kind)",
+        "User \"*\" -- \"*\" EventKind (EventKinds)",
         "EventKind \"*\" -- \"*\" TaskTemplate (taskTemplates)"
     ]
 }

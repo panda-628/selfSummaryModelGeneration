@@ -1,0 +1,88 @@
+---------------------1/1---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - id: int
+    - signature: Image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + prescribeTest()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+}
+
+class Requisition {
+    - doctorId: int
+    - patientHealthNumber: string
+    - tests: List<TestType>
+    - validFromDate: date
+    - repetitionPattern: List<Repetition>
+    + addTest()
+    + addRepetition()
+}
+
+class Test {
+    - type: TestType
+    - duration: int
+}
+
+class Repetition {
+    - times: int
+    - interval: Frequency
+}
+
+class Lab {
+    - address: string
+    - businessHours: List<BusinessHour>
+    - fees: List<Fee>
+    + makeAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: date
+    - startTime: time
+    - endTime: time
+    - labName: string
+    - labRegistrationNumber: string
+}
+
+class BusinessHour {
+    - day: DayOfWeek
+    - startTime: time
+    - endTime: time
+}
+
+class Fee {
+    - testType: TestType
+    - amount: int
+}
+
+Doctor "1" -- "0..*" Requisition
+Patient "1" -- "0..*" Requisition
+Requisition "1" -- "1..*" Test
+Requisition "1" -- "0..*" Repetition
+Lab "1" -- "0..*" Appointment
+Lab "1" -- "1..*" BusinessHour
+Lab "1" -- "0..*" Fee
+
+@enduml

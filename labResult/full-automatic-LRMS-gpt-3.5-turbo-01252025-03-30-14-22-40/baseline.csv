@@ -1,0 +1,743 @@
+---------------------1/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    - isValidRequisition(date: Date): boolean
+    - prescribeTest(patient: Patient, testType: TestType): Requisition
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    - makeAppointment(testType: TestType, lab: Lab): Appointment
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<TestType>
+    - duration: int
+    - repetitionPattern: RepetitionInterval
+}
+
+class TestResult {
+    - test: TestType
+    - result: String
+    - report: String
+}
+
+class Lab {
+    - address: String
+    - businessHours: String
+    - registrationNumber: int
+    - fee: int
+    - scheduleAppointment(date: Date): Appointment
+}
+
+class Appointment {
+    - confirmationNumber: String
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - lab: Lab
+    - cancelAppointment(): void
+    - rescheduleAppointment(date: Date): void
+}
+
+Doctor "1" --> "1" Requisition
+Patient "1" --> "0..*" Appointment
+Requisition "1" --> "1..*" TestResult
+Lab "1" --> "0..*" Appointment
+
+@enduml
+
+---------------------1/10---------:
+Compare_result:Errors in the generated content:
+1. The enumeration "RepetitionInterval" is named incorrectly as "RepeatInterval".
+2. The class attributes in the "Requisition" class are different from the correct attributes.
+3. The "Requisition" class does not have the "validFrom" attribute as specified in the correct content.
+4. The "Doctor" class attributes are different from the correct attributes.
+5. The "Patient" class attributes are different from the correct attributes.
+6. The relationship between "Requisition" and "Doctor" classes is missing the attribute mapping "doctor".
+7. The relationship between "Requisition" and "Patient" classes is missing the attribute mapping "patient".
+8. The relationship between "Requisition" and "TestGroup" classes is missing in the generated content.
+---------------------2/10---------:
+Base_AI_answer:@startuml
+
+enum Interval {
+  WEEKLY
+  MONTHLY
+  HALF_YEAR
+  YEARLY
+}
+
+enum TestType {
+  BLOOD
+  ULTRASOUND
+  XRAY
+  URINE
+  STOOL
+}
+
+class Doctor {
+  - practitionerNumber: int
+  - signature: image
+  - fullName: string
+  - address: string
+  - phoneNumber: string
+  + createRequisition()
+}
+
+class Patient {
+  - healthNumber: string
+  - firstName: string
+  - lastName: string
+  - dateOfBirth: date
+  - address: string
+  - phoneNumber: string
+  + bookAppointment()
+}
+
+class Requisition {
+  - validFromDate: date
+  - tests: List<Test>
+  - repetitionInterval: Interval
+  - repeatTimes: int
+  + addTest()
+}
+
+class Test {
+  - type: TestType
+  - duration: int
+  + getResult()
+}
+
+class Lab {
+  - address: string
+  - businessHours: string
+  - registrationNumber: string
+  - fees: float
+  + makeAppointment()
+}
+
+Doctor --> Requisition
+Requisition o-- Test
+Test --> Lab
+Patient --> Lab
+
+@enduml
+
+---------------------2/10---------:
+Compare_result:Errors in the generated content:
+
+1. Incorrect enum value: HALF_YEAR should be HALF_YEARLY
+2. Missing TestResultType enumeration
+3. Inconsistent attribute names in classes: fullName in Doctor should be name, firstName and lastName in Patient should be name
+4. Missing TestGroup class
+5. Missing RequisitionItem class
+6. Incorrect relationships: 
+   - Doctor --> Requisition should have cardinality 1 to 1
+   - Test --> Lab should be 1 to 1
+   - Patient --> Lab relationship is missing
+---------------------3/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    XRAY
+    ULTRASOUND
+}
+
+class Doctor {
+    -id: int
+    -practitionerNumber: int
+    -signature: Image
+    -fullName: String
+    -address: String
+    -phoneNumber: String
+    +createRequisition()
+    +viewResults()
+}
+
+class Patient {
+    -healthNumber: String
+    -firstName: String
+    -lastName: String
+    -dateOfBirth: Date
+    -address: String
+    -phoneNumber: String
+    +bookAppointment()
+    +viewResults()
+}
+
+class Test {
+    -duration: int
+}
+
+class Requisition {
+    -validFromDate: Date
+    -repeatedTimes: int
+    -repeatedInterval: Enum {WEEKLY, MONTHLY, HALF_YEARLY, YEARLY}
+    +addTest()
+    +setRepetition()
+}
+
+class Lab {
+    -address: String
+    -businessHours: String
+    -registrationNumber: int
+    -fees: Map<TestType, int>
+    +makeAppointment()
+    +changeAppointment()
+    +cancelAppointment()
+}
+
+Lab --> TestType
+Doctor "1" -- "n" Requisition
+Requisition "1" -- "n" Test
+Patient "1" -- "n" Requisition
+Lab "*" -- "1" Test
+
+@enduml
+---------------------3/10---------:
+Compare_result:Errors in the generated content:
+1. The Requisition class in the generated content has attributes "validFromDate", "repeatedTimes", and "repeatedInterval" which do not match the correct attributes of "validFrom", "doctor", and "repeatInterval" in the correct classes section.
+2. The Doctor class in the generated content has attributes "practitionerNumber", "signature", "fullName", and "phoneNumber" which do not match the correct attributes of "practitionerNumber", "specialty", "name", "address", and "phone" in the correct classes section.
+3. The Patient class in the generated content has attributes "healthNumber", "firstName", "lastName", "dateOfBirth", "address", and "phoneNumber" which do not match the correct attributes of "healthNumber", "firstName", "lastName", "address", and "phone" in the correct classes section.
+---------------------4/10---------:
+Base_AI_answer:@startuml
+
+!define LabTracker << (R,#FF7700) LabTracker >>
+
+enum RequisitionType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition(): Requisition
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + bookAppointment(): void
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<Test>
+    - repetitionPattern: String
+}
+
+class Test {
+    - duration: int
+    - type: RequisitionType
+    - results: String
+    - report: String
+}
+
+class Lab {
+    - address: String
+    - businessHours: String
+    - registrationNumber: int
+    - fee: int
+    + makeAppointment(): void
+    + changeAppointment(): void
+    + cancelAppointment(): void
+}
+
+Doctor "1" o-- "*" Requisition : creates
+Patient "1" o-- "*" Requisition : books
+Requisition "1" o-- "*" Test : includes
+Lab "1" o-- "*" Requisition : processes
+
+@enduml
+---------------------4/10---------:
+Compare_result:Errors in the generated content:
+
+1. `Requisition` class in the correct content has a `validFrom: Date` attribute, while in the generated content, it has a `repetitionPattern: String` attribute.
+
+2. The `Doctor` class in the correct content has a `specialty: String` attribute, while in the generated content, it has a `signature: Image` attribute.
+
+3. The `Patient` class in the correct content has a `healthNumber: String` attribute, while in the generated content, it has a `healthNumber: int` attribute.
+
+4. The relationship between `Requisition` and `Doctor` in the correct content specifies `practitionerNumber` as a String attribute, whereas in the generated content, it is shown as an int attribute.
+---------------------5/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    XRAY
+    ULTRASOUND
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + createRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<TestType>
+    - duration: int
+    - repetition: int
+    - interval: string
+    + addTest()
+}
+
+class TestResult {
+    - result: string
+    - report: string
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    + makeAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+Doctor "1" -- "1" Patient
+Patient "*" -- "1" Requisition
+Requisition "*" -- "1" TestType
+Requisition "*" -- "1" TestResult
+Patient "1" -- "*" Lab
+
+@enduml
+---------------------5/10---------:
+Compare_result:Errors in the generated content:
+1. TestType enumeration is missing values like RepeatInterval, AppointmentType, TestResultType, and DayOfWeek.
+2. In the Doctor class, the attribute practitionerNumber should be of type String instead of int.
+3. In the Requisition class, the attribute duration should be of type String instead of int.
+4. Missing classes like Appointment, TestGroup, RequisitionItem, Test, and BusinessHour in the generated content.
+5. Incorrect relationship between Patient and Lab in the generated content. It should be Patient "*" -- "*" Lab.
+
+These are the errors in the generated content compared to the correct enumerations, classes, and relationships provided.
+---------------------6/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + provideRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + bookAppointment()
+}
+
+class Requisition {
+    - validFromDate: date
+    + addTest()
+    + setRepetition()
+}
+
+class Test {
+    - duration: int
+    + getResult()
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    + makeAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+Doctor -- Requisition
+Patient -- Requisition
+Requisition -- Test
+Test -- Lab
+
+@enduml
+---------------------6/10---------:
+Compare_result:Errors in the generated content:
+
+1. In the Doctor class, the attribute "specialty" is missing.
+2. In the Doctor class, the attribute names are slightly different ("fullName" should be "name").
+3. In the Patient class, the attribute "dateOfBirth" is missing.
+4. In the Requisition class, the attribute "doctor" is missing.
+5. The relationship between Test and Lab is missing in the generated content.
+---------------------7/10---------:
+Base_AI_answer:@startuml
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - numericPractitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + provideRequisition(): Requisition
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dob: Date
+    - address: String
+    - phoneNumber: String
+    + bookAppointment(): Appointment
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - validFromDate: Date
+    - tests: List<Test>
+    - repetitionInterval: RepetitionInterval
+    - numberOfRepetitions: int
+    + addTest(test: Test): void
+    + viewResults(): void
+}
+
+class Test {
+    - type: String
+    - duration: int
+}
+
+class Lab {
+    - address: String
+    - businessHours: String
+    - registrationNumber: String
+    - tests: List<Test>
+    + makeAppointment(requisition: Requisition): Appointment
+}
+
+class Appointment {
+    - confirmationNumber: int
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - lab: Lab
+    + changeAppointment(): void
+    + cancelAppointment(): void
+}
+
+Doctor --> Requisition: creates
+Patient --> Appointment: books
+Requisition "1" --> "0..*" Test: contains
+Requisition "1" --> RepetitionInterval: requires
+Lab "1" --> "1..*" Test: offers
+Appointment "1" --> Lab: takes place at
+
+@enduml
+---------------------7/10---------:
+Compare_result:Errors in the generated content:
+
+1. The enumeration "RepetitionInterval" should be named "RepeatInterval" to match the correct enumeration.
+2. The class "Doctor" has a "- numericPractitionerNumber: int" attribute, but it should be "practitionerNumber: String" according to the correct class attributes.
+3. The class "Requisition" in the generated content has a relationship with "RepetitionInterval", but it should have a relationship with "RepeatInterval" as per the correct relationships.
+4. The class "Appointment" should have attributes "name: String" and "appointmentNumber: String" as specified in the correct class definitions.
+5. The relationship between "Requisition" and "Test" in the generated content needs to be corrected to match the correct relationship between "Requisition" and "TestGroup" containing "Test".
+6. The attribute "duration: int" in the class "Test" appears in the generated content but is not specified in the correct class definition.
+---------------------8/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+  BLOOD
+  ULTRASOUND
+  XRAY
+  URINE
+  STOOL
+}
+
+class Doctor {
+  - numericPractitionerNumber: int
+  - signature: image
+  - fullName: string
+  - address: string
+  - phoneNumber: string
+  + prescribeTest()
+}
+
+class Patient {
+  - healthNumber: string
+  - firstName: string
+  - lastName: string
+  - dateOfBirth: date
+  - address: string
+  - phoneNumber: string
+  + makeAppointment()
+  + viewResults()
+}
+
+class Requisition {
+  - doctor: Doctor
+  - patient: Patient
+  - tests: List<TestType>
+  - repetitionPattern: string
+  + addTest()
+  + repeatTests()
+}
+
+class Lab {
+  - address: string
+  - registrationNumber: int
+  - businessHours: string
+  - fees: double
+  + makeAppointment()
+  + changeAppointment()
+  + cancelAppointment()
+}
+
+Doctor "1" --> "1" Requisition
+Patient "1" --> "n" Requisition
+Requisition "1" --> "n" Lab
+
+@enduml
+---------------------8/10---------:
+Compare_result:Errors in the generated content:
+1. The "Requisition" class does not include the "validFrom" attribute.
+2. The "Doctor" class has a different attribute name "practitionerNumber" instead of "numericPractitionerNumber".
+3. The "Doctor" class has an additional attribute "specialty" which is missing in the correct classes.
+4. The "Doctor" class attribute "name" is separated into "firstName" and "lastName" in the correct classes.
+5. The "Doctor" class attribute "phone" is missing in the correct classes.
+6. The "Patient" class has an additional attribute "dateOfBirth" which is missing in the correct classes.
+7. The "TestGroup" class is missing in the generated content which is present in the correct classes.
+8. The relationships between classes are not defined in the correct format as in the correct relationships.
+---------------------9/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber : int
+    - fullName : string
+    - address : string
+    - phoneNumber : string
+    - digitalSignature : image
+    + verifySignature()
+}
+
+class Patient {
+    - healthNumber : string
+    - firstName : string
+    - lastName : string
+    - dateOfBirth : date
+    - address : string
+    - phoneNumber : string
+}
+
+class Test {
+    - duration : int
+    + scheduleAppointment()
+}
+
+class Requisition {
+    - validFromDate : date
+    + addTest()
+    + addRepetitionPattern()
+}
+
+class Lab {
+    - address : string
+    - businessHours : string
+    - registrationNumber : int
+    - fee : decimal
+    + makeAppointment()
+    + confirmAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+Doctor "1" -- "n" Requisition : creates
+Patient "1" -- "n" Requisition : has
+Requisition "n" -- "m" Test : contains
+Test "1" -- "1" TestType : has
+Requisition "1" -- "1" Lab : for
+Lab "n" -- "n" Appointment : has
+
+@enduml
+---------------------9/10---------:
+Compare_result:Errors in the generated content:
+
+1. The TestType enum in the generated content does not correspond to the correct enumeration TestResultType.
+2. The Doctor class in the generated content has different attributes compared to the correct Doctor class.
+3. The Patient class in the generated content has a different attribute dateOfBirth compared to the correct Patient class.
+4. The Test class in the generated content is missing attributes compared to the correct Test class.
+5. The Requisition class in the generated content has different attributes compared to the correct Requisition class.
+6. The Lab class in the generated content has different attributes compared to the correct Lab class.
+7. The relationships defined in the generated content do not match the correct relationships provided.
+---------------------10/10---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition()
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + makeAppointment()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<Test>
+    - repeatTimes: int
+    - repeatInterval: Interval
+    + addTest()
+    + addRepeatPattern()
+}
+
+class Test {
+    - type: TestType
+    - duration: int
+}
+
+class Appointment {
+    - confirmationNumber: int
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - labName: String
+    - labRegistrationNumber: String
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class Lab {
+    - address: String
+    - businessHours: BusinessHours
+    - fees: Map<TestType, int>
+    + makeAppointment()
+}
+
+class BusinessHours {
+    - startTime: Time
+    - endTime: Time
+}
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+Doctor "1" -- "1" Requisition
+Patient "1" -- "1" Appointment
+Requisition "1" -- "n" Test
+Lab "1" -- "n" Test
+
+@enduml
+---------------------10/10---------:
+Compare_result:Errors identified in the generated content compared to the correct enumerations, classes, and relationships:
+1. TestType enumeration is missing TestResultType enumeration.
+2. Doctor class attributes do not match the correct class attributes.
+3. Patient class attributes do not match the correct class attributes.
+4. Requisition class attributes do not match the correct class attributes.
+5. Appointment class attributes do not match the correct class attributes.
+6. Lab class attributes do not match the correct class attributes.
+7. BusinessHours class is missing from the generated content.
+8. Relationship between Test and Appointment is missing in the generated content.

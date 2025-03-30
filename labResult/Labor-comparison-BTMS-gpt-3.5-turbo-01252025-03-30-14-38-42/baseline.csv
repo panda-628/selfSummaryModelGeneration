@@ -1,0 +1,496 @@
+---------------------1/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class City {
+  + String name
+  + List<BusRoute> busRoutes
+  + List<Driver> drivers
+  + List<Bus> buses
+}
+
+class BusRoute {
+  + int routeNumber
+  + List<Bus> assignedBuses
+}
+
+class Bus {
+  + String licencePlate
+  + boolean inRepairShop
+}
+
+class Driver {
+  + String name
+  + int driverID
+  + boolean onSickLeave
+}
+
+class BusTransportationManagementSystem {
+  + void assignBusToRoute(Bus bus, BusRoute route)
+  + void assignDriverToShift(Driver driver, Bus bus, Shift shift)
+  + void markDriverSick(Driver driver)
+  + void markBusInRepairShop(Bus bus)
+}
+
+City "1" o-- "0..*" BusRoute
+City "1" o-- "0..*" Driver
+City "1" o-- "0..*" Bus
+BusRoute "1" o-- "0..*" Bus
+Bus "1" o-- "0..*" Driver
+BusTransportationManagementSystem "1" o-- "0..*" Bus
+BusTransportationManagementSystem "1" o-- "0..*" Driver
+
+@enduml
+---------------------2/10---------:
+Base_AI_answer:@startuml
+
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor Black
+}
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    +String name
+}
+
+class Bus {
+    +String licencePlate
+    +Boolean isRepair
+}
+
+class Driver {
+    +String name
+    +String ID
+    +Boolean isSick
+}
+
+class BusRoute {
+    +int routeNumber
+}
+
+class BusAssignment {
+    +Bus bus
+    +BusRoute route
+}
+
+class DriverAssignment {
+    +Driver driver
+    +Bus bus
+    +Shift shift
+}
+
+City "1" -- "1" BusTransportationManagementSystem
+City *-- BusRoute
+Bus *-- BusAssignment
+Driver *-- DriverAssignment
+
+@enduml
+---------------------3/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+enum Status {
+    AVAILABLE
+    SICK_LEAVE
+    REPAIR_SHOP
+}
+
+class City {
+    + BusTransportationManagementSystem
+}
+
+class Bus {
+    - int licencePlateNumber
+    + getLicencePlateNumber()
+}
+
+class BusRoute {
+    - int routeNumber
+    + getRouteNumber()
+}
+
+class Driver {
+    - String name
+    - int uniqueID
+    - Status status
+    + getName()
+    + getUniqueID()
+    + getStatus()
+}
+
+class Schedule {
+    - Bus bus
+    - Driver driver
+    - Shift shift
+    - Date date
+    + getBus()
+    + getDriver()
+    + getShift()
+    + getDate()
+}
+
+City "1" --|> "1" BusTransportationManagementSystem
+Bus "1" -- "1" BusRoute
+Driver "1" -- "0..*" Schedule
+Bus "0..*" -- "0..*" BusRoute : "assigned to"
+Driver "0..*" -- "0..*" Schedule : "assigned to"
+
+@enduml
+---------------------4/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class City {
+  -String name
+  -Bus[] buses
+  -Driver[] drivers
+  +void addBus(Bus bus)
+  +void deleteBus(Bus bus)
+  +void addDriver(Driver driver)
+  +void deleteDriver(Driver driver)
+}
+
+class Bus {
+  -String licencePlate
+  -Route[] routes
+  -Boolean inRepairShop
+  +void assignRoute(Route route)
+}
+
+class Driver {
+  -String name
+  -int uniqueID
+  -Boolean onSickLeave
+  +void assignShift(Shift shift, Bus bus, Route route)
+}
+
+class Route {
+  -int routeNumber
+  -Bus[] buses
+  +void assignBus(Bus bus)
+}
+
+City "1" - "routes" Route
+City "1" - "buses" Bus
+City "1" - "drivers" Driver
+
+Bus "*" - "routes" Route
+Bus "1" - "*" Driver
+
+Driver "1" - "*" Shift
+
+@enduml
+---------------------5/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    -name: String
+}
+
+class Bus {
+    -licencePlate: String
+}
+
+class Driver {
+    -id: int
+    -name: String
+    -onSickLeave: boolean
+}
+
+class Route {
+    -number: int
+}
+
+class Schedule {
+    -date: Date
+}
+
+City "1" -- "1" BusTransportationManagementSystem : uses
+BusTransportationManagementSystem "1" -- "1" Driver : tracks Driver
+BusTransportationManagementSystem "1" -- "1" Bus : tracks Bus
+BusTransportationManagementSystem "1" -- "1" Route : tracks Route
+BusTransportationManagementSystem "1" -- "1" Schedule : posts
+
+Bus "1" -- "1" Route : assigned to
+Driver "1" -- "N" Shift : assigned to
+Route "1" -- "3" Shift : has
+Driver "1" -- "N" Schedule : assigned to
+
+@enduml
+---------------------6/10---------:
+Base_AI_answer:@startuml
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    +String name
+}
+
+class BTMS {
+    -List<Driver> drivers
+    -List<Bus> buses
+    +Driver assignDriverToShift(Driver driver, Shift shift, Bus bus, Date date)
+    +Bus assignBusToRoute(Bus bus, Route route, Date date)
+    +void removeDriver(Driver driver)
+    +void removeBus(Bus bus)
+}
+
+class Driver {
+    -int id
+    -String name
+    -boolean onSickLeave
+    +int getId()
+}
+
+class Bus {
+    -String licencePlate
+    -boolean inRepairShop
+    +String getLicencePlate()
+}
+
+class Route {
+    -int routeNumber
+}
+
+City "1" -- "1" BTMS
+BTMS "1" *-- "*" Bus
+BTMS "1" *-- "*" Driver
+BTMS "1" *-- "*" Route
+Driver "1" o-- "1" Shift
+Bus "1" o-- "1" Route
+
+@enduml
+---------------------7/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    Morning
+    Afternoon
+    Night
+}
+
+class City {
+    + String name
+}
+
+class Bus {
+    + String licencePlate
+}
+
+class Driver {
+    + String name
+    + int uniqueID
+}
+
+class Route {
+    + int routeNumber
+}
+
+class BusRoute {
+    + int busRouteNumber
+    + Bus bus
+    + Route route
+}
+
+class DriverShift {
+    + Shift shift
+    + Driver driver
+    + Bus bus
+}
+
+City --> Bus
+City --> Driver
+City --> Route
+City --> BusRoute
+City --> DriverShift
+
+@enduml
+---------------------8/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+enum Status {
+    HEALTHY
+    SICK
+    REPAIR_SHOP
+}
+
+class BTMS {
+    + driverList
+    + busList
+    + assignedRoutes
+    + schedule
+    + getDriverInfo(driverID)
+    + getBusInfo(licensePlate)
+    + assignBusToRoute(busNumber, routeNumber, date)
+    + assignDriverToShift(driverID, shift, busNumber, date)
+    + updateDriverStatus(driverID, status)
+    + updateBusStatus(licensePlate, status)
+}
+
+class Driver {
+    - driverID: String
+    - name: String
+
+    + getDriverID()
+    + getName()
+}
+
+class Bus {
+    - licensePlate: String
+
+    + getLicensePlate()
+}
+
+class Route {
+    - routeNumber: Int
+
+    + getRouteNumber()
+}
+
+BTMS *-- "1" Driver: contains
+BTMS *-- "1" Bus: contains
+BTMS *-- "1" Route: contains
+BTMS o-- Shift: available shifts
+BTMS o-- Status: possible statuses
+Driver *-- "1" Schedule: assigned shifts
+Bus *-- "1" Schedule: assigned routes
+Route *-- "1" Schedule: assigned buses
+
+class Schedule {
+    - routeNumber: Int
+    - licensePlate: String
+    - driverID: String
+    - shift: Shift
+    - date: Date
+
+    + getRouteNumber()
+    + getLicensePlate()
+    + getDriverID()
+    + getShift()
+    + getDate()
+}
+
+@enduml
+---------------------9/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class City {
+  -String name
+}
+
+class Bus {
+  -String licencePlate
+  -boolean inRepairShop
+}
+
+class Driver {
+  -String name
+  -int uniqueID
+  -boolean onSickLeave
+}
+
+class BusRoute {
+  -int routeNumber
+}
+
+class BTMS {
+  -Map<BusRoute, List<Bus>> routeAssignment
+  -Map<Bus, List<Shift>> busSchedule
+  -Map<Driver, Map<Bus, Map<Shift, String>>> driverAssignments
+  +showOverview(date: Date): void
+  +assignBusToRoute(bus: Bus, route: BusRoute): void
+  +assignDriverToShift(driver: Driver, bus: Bus, shift: Shift, date: Date): void
+}
+
+City "1" *-- "1" BTMS
+BTMS "1" *-- "0..*" Bus
+BTMS "1" *-- "0..*" Driver
+BTMS "1" *-- "0..*" BusRoute
+BusRoute "1" *-- "0..*" Bus
+BusRoute "1" *-- "0..*" Shift
+Bus "1" *-- "0..*" Shift
+Driver "1" *-- "0..*" Shift
+
+@enduml
+---------------------10/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    -String name
+    -List<BusRoute> busRoutes
+    -List<BusDriver> busDrivers
+    +void assignBusToRoute(Bus bus, BusRoute busRoute, Date date)
+    +void assignDriverToShift(BusDriver busDriver, Shift shift, Bus bus, Date date)
+}
+
+class BusRoute {
+    -int routeNumber
+    -List<Bus> buses
+    +void addBus(Bus bus)
+}
+
+class Bus {
+    -String licencePlate
+    -boolean inRepairShop
+}
+
+class BusDriver {
+    -String name
+    -int driverID
+    -boolean onSickLeave
+}
+
+City "1" o-- "1..*" BusRoute
+City "1" o-- "1..*" BusDriver
+BusRoute "1" o-- "0..*" Bus
+BusDriver .. Shift
+
+@enduml

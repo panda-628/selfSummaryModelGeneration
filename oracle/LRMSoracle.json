@@ -1,5 +1,5 @@
 {
-    "enumerations": {
+    "enumeration": {
         "RepeatInterval": [
             "WEEKLY",
             "MONTHLY",
@@ -24,7 +24,7 @@
             "SUNDAY"
         ]
     },
-    "classes": {
+    "class": {
         "Requisition": [
             "validFrom: Date",
             "doctor: String",
@@ -79,6 +79,7 @@
         "Requisition \"1\" -- \"*\" TestGroup (testGroup)",
         "Requisition \"*\" -- \"*\" RequisitionItem (items)",
         "TestGroup \"*\" -- \"*\" Test (tests)",
+        "RequisitionItem \"1\" -- \"1\" Appointment (appointment)",
         "Test \"1\" -- \"1\" Appointment (appointment)",
         "Appointment \"1\" -- \"1\" Lab (lab)",
         "Lab \"1\" -- \"*\" BusinessHour (businessHours)"

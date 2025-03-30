@@ -1,0 +1,527 @@
+---------------------1/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    -name: String
+    -btms: BusTransportationManagementSystem
+}
+
+class BusTransportationManagementSystem {
+    +addDriver(driver: Driver): void
+    +deleteDriver(driver: Driver): void
+    +addBus(bus: Bus): void
+    +deleteBus(bus: Bus): void
+    +assignBusToRoute(bus: Bus, route: Route, date: Date): void
+    +assignDriverToShift(driver: Driver, bus: Bus, shift: Shift, date: Date): void
+    +updateDriverStatus(driver: Driver, status: String): void
+    +updateBusStatus(bus: Bus, status: String): void
+    +generateOverviewForDay(date: Date): void
+}
+
+class Driver {
+    -name: String
+    -id: int
+    -onSickLeave: boolean
+}
+
+class Bus {
+    -licencePlate: String
+    -inRepairShop: boolean
+}
+
+class Route {
+    -number: int
+}
+
+City "1" --> "1" BusTransportationManagementSystem
+BusTransportationManagementSystem "1" --> "*" Driver
+BusTransportationManagementSystem "1" --> "*" Bus
+BusTransportationManagementSystem "1" --> "*" Route
+Bus "1" --> "1" Route
+Driver "1" --> "1" Shift
+
+@enduml
+---------------------1/10---------:
+Compare_result:Errors in the generated content:
+1. The Shift enum is not included in the correct enumerations.
+2. The City class and its relationship are not included in the correct classes and relationships.
+3. The Driver class and its relationship with Shift are not included in the correct classes and relationships.
+---------------------2/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    + String name
+}
+
+class Bus {
+    + String licencePlate
+    + Driver assignedDriver
+}
+
+class Route {
+    + int routeNumber
+    + List<Bus> buses
+}
+
+class Driver {
+    + String name
+    + int uniqueID
+    + boolean isOnSickLeave
+}
+
+class BusTransportationManagementSystem {
+    + void assignBusToRoute(Bus bus, Route route)
+    + void assignDriverToShift(Driver driver, Bus bus, Shift shift)
+    + void showOverviewForDay(Date date)
+}
+
+City "1" o-- "1" BusTransportationManagementSystem
+Bus "1" o-- "*" Route
+Bus "*" -- "1" Driver
+
+@enduml
+---------------------2/10---------:
+Compare_result:Errors in the generated content:
+
+1. The enumeration "Shift" is missing the values "MORNING", "AFTERNOON", and "NIGHT".
+2. The class "City" is missing the attributes specified in the correct classes section.
+3. The class "Bus" is missing the attribute of type "Driver" as specified in the correct classes section.
+4. The class "Route" is missing the attribute "routeNumber" of type int and the relationship with "Bus" as specified in the correct classes and relationships sections.
+5. The class "Driver" is missing the attributes specified in the correct classes section.
+6. The relationship between "City" and "BusTransportationManagementSystem" is different in the generated content compared to the correct relationships section.
+7. The relationship between "Bus" and "Route" is different in the generated content compared to the correct relationships section.
+---------------------3/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+enum Status {
+    SICK_LEAVE
+    IN_REPAIR_SHOP
+}
+
+class City {
+    BusTransportationManagementSystem BTMS
+}
+
+class BusTransportationManagementSystem {
+    void addDriver(name: String)
+    void deleteDriver(driverID: int)
+    
+    void addBus(licencePlate: String)
+    void deleteBus(busRoute: int)
+    
+    void assignBusToRoute(busRoute: int, licencePlate: String, date: Date)
+    void assignDriverToShift(driverID: int, shift: Shift, busRoute: int, date: Date)
+    
+    void updateDriverStatus(driverID: int, status: Status)
+    void updateBusStatus(licencePlate: String, status: Status)
+    
+    void generateOverview(date: Date)
+}
+
+class Driver {
+    uniqueID: int
+    name: String
+}
+
+class Bus {
+    licencePlate: String
+    busRoute: int
+}
+
+City "1" -- "1" BusTransportationManagementSystem
+BusTransportationManagementSystem "1" -- "0..*" Driver
+BusTransportationManagementSystem "1" -- "0..*" Bus
+
+@enduml
+---------------------3/10---------:
+Compare_result:Errors in generated content:
+
+1. The classes "City", "Driver", and "Bus" are missing from the correct enumerations, classes, and relationships.
+2. The relationships defined in the correct enumerations, classes, and relationships are not present in the generated content.
+3. The enumerations "RepeatInterval", "AppointmentType", "TestResultType", and "DayOfWeek" are missing from the generated content.
+---------------------4/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+}
+
+class BusTransportationManagementSystem {
+    + BusTransportationManagementSystem()
+    + assignDriver(driverName: String): String
+    + assignBusToRoute(busPlate: String, routeNumber: int): void
+    + assignDriverToShift(driverID: String, shift: Shift, busPlate: String, date: Date): void
+    + updateDriverStatus(driverID: String, isSick: boolean): void
+    + updateBusStatus(busPlate: String, isInRepairShop: boolean): void
+}
+
+class Driver {
+    - name: String
+    - driverId: String
+    + getName(): String
+    + getDriverId(): String
+}
+
+class Bus {
+    - plateNumber: String
+    + getPlateNumber(): String
+}
+
+City "1" --> "1" BusTransportationManagementSystem
+BusTransportationManagementSystem "1" --> "0..*" Driver
+BusTransportationManagementSystem "1" --> "0..*" Bus
+
+Driver "*" --> "*" Shift
+Bus "*" --> "*" Shift
+
+@enduml
+---------------------4/10---------:
+Compare_result:Errors in the generated content:
+1. The Shift enumeration in the generated content does not match any of the correct enumerations provided.
+2. The classes Bus, Driver, and City in the generated content do not match any of the correct classes provided.
+3. The relationships defined in the generated content do not match the relationships provided in the correct relationships section.
+---------------------5/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class City {
+  -name
+  -busTransportationManagementSystem
+}
+
+class Bus {
+  -licencePlate
+}
+
+class BusRoute {
+  -number
+}
+
+class Driver {
+  -name
+  -id
+}
+
+class BusTransportationManagementSystem {
+  +assignDriver(driver: Driver, shift: Shift, bus: Bus, route: BusRoute, day: Date)
+  +assignBusToRoute(bus: Bus, route: BusRoute, day: Date)
+  +postSchedule(driver: Driver, shift: Shift, bus: Bus, route: BusRoute, day: Date)
+  +updateDriverInformation(driver: Driver, onSickLeave: boolean)
+  +updateBusInformation(bus: Bus, inRepairShop: boolean)
+}
+
+City "1" *-- "1" BusTransportationManagementSystem
+BusRoute "1" *-- "n" Bus
+BusTransportationManagementSystem "1" *-- "n" Driver
+
+@enduml
+---------------------5/10---------:
+Compare_result:Errors in the generated content:
+1. The enumeration "Shift" is missing the comma between the enum values.
+2. The class "City" has an attribute "busTransportationManagementSystem", which is not mentioned in the correct classes.
+3. The class "BusRoute" is missing attributes from the correct classes.
+4. The relationship between "BusRoute" and "Bus" is not defined correctly in the generated content.
+5. The class "Driver" is missing attributes from the correct classes.
+---------------------6/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    -String name
+    -BusTransportationManagementSystem btms
+}
+
+class BusTransportationManagementSystem {
+    -List<Bus> buses
+    -List<BusRoute> busRoutes
+    -List<Driver> drivers
+    +void assignBusToRoute(Bus bus, BusRoute route, Date date)
+    +void assignDriverToShift(Driver driver, Shift shift, Bus bus, Date date)
+}
+
+class Driver {
+    -String name
+    -int uniqueID
+    -boolean isOnSickLeave
+}
+
+class Bus {
+    -String licencePlate
+    -boolean isInRepairShop
+}
+
+class BusRoute {
+    -int routeNumber
+}
+
+City "1" -- "1" BusTransportationManagementSystem
+BusTransportationManagementSystem "1" o-- "*" Bus
+BusTransportationManagementSystem "1" o-- "*" BusRoute
+BusTransportationManagementSystem "1" o-- "*" Driver
+BusRoute "1" -- "*" Bus
+Bus "1" -- "*" Driver
+
+Driver "*" -- "*" Shift
+BusRoute "*" -- "*" Shift
+
+@enduml
+---------------------6/10---------:
+Compare_result:Errors in the generated content:
+
+1. In the generated content, the enumeration classes are not included in the correct format as shown in the correct enumerations section. The generated content should include the enumerations RepeatInterval, AppointmentType, TestResultType, and DayOfWeek with their respective values.
+
+2. The classes in the generated content do not match the correct classes provided. The classes Requisition, Doctor, Patient, TestGroup, RequisitionItem, Appointment, Test, Lab, and BusinessHour should be included as per the correct classes section.
+
+3. The relationships in the generated content do not match the correct relationships provided. The relationships between the classes Requisition, Doctor, Patient, TestGroup, RequisitionItem, Test, Appointment, Lab, and BusinessHour are missing or incorrect.
+
+Overall, the generated content needs to be updated to align with the correct enumerations, classes, and relationships provided.
+---------------------7/10---------:
+Base_AI_answer:@startuml
+
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor Black
+}
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+    +name: String
+}
+
+class BTMS {
+}
+
+class Driver {
+    +id: int
+    +name: String
+}
+
+class Bus {
+    +licencePlate: String
+}
+
+class Route {
+    +routeNumber: int
+}
+
+City "1" --> "1" BTMS
+BTMS "1" --> "1" Driver
+BTMS "1" --> "1" Bus
+BTMS "1" --> "1" Route
+Driver "1" --> "1" Shift
+Bus "1" --> "1" Route
+Route "1" --> "*" Bus
+Route "1" --> "*" Shift
+Route "1" --> "*" Driver
+
+@enduml
+---------------------7/10---------:
+Compare_result:Errors in the generated content:
+
+1. The class definitions in the generated content do not match the correct classes provided. For example, the classes in the correct definitions include "Requisition", "Doctor", "Patient", "TestGroup", "RequisitionItem", "Appointment", "Test", "Lab", and "BusinessHour", whereas the generated content includes classes like "City", "BTMS", "Driver", "Bus", and "Route", which are not present in the correct definitions.
+
+2. The relationships in the generated content do not match the correct relationships provided. For example, the correct relationships involve connecting classes like "Requisition" with "Doctor", "Patient", "TestGroup", and "RequisitionItem", while the generated content connects classes like "City", "BTMS", "Driver", "Bus", and "Route" in an unrelated manner.
+---------------------8/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class City {
+  -name: String
+  -btms: BTMS
+}
+
+class BTMS {
+  -drivers: Set<Driver>
+  -buses: Set<Bus>
+  -routes: Set<Route>
+  +assignBus(driverId: int, busId: int, routeNumber: int, shift: Shift, date: Date)
+  +assignDriverToShift(driverId: int, busId: int, routeNumber: int, shift: Shift, date: Date)
+  +updateDriverStatus(driverId: int, isSick: boolean)
+  +updateBusStatus(busId: int, isInRepairShop: boolean)
+  +getOverviewForDay(date: Date): String
+}
+
+class Driver {
+  -id: int
+  -name: String
+}
+
+class Bus {
+  -licencePlate: String
+}
+
+class Route {
+  -number: int
+}
+
+City "1" *-- "1" BTMS
+BTMS "1" *-- "1..*" Driver
+BTMS "1" *-- "1..*" Bus
+BTMS "1" *-- "1..*" Route
+
+Driver "1" *-- "0..*" Shift
+
+@enduml
+---------------------8/10---------:
+Compare_result:Errors in the generated content:
+- The Shift enum is missing the correct values (MORNING, AFTERNOON, NIGHT)
+- The City class is missing the correct attributes (name: String)
+- The Driver class is missing the correct attributes (id: int, name: String)
+- The Bus class is missing the correct attributes (licencePlate: String)
+- The Route class is missing the correct attributes (number: int)
+- The relationships between classes are different from the correct relationships provided.
+---------------------9/10---------:
+Base_AI_answer:@startuml
+
+enum Shift{
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City{
+    - name: String
+}
+
+class Bus{
+    - licencePlate: String
+}
+
+class Driver{
+    - name: String
+    - id: int
+}
+
+class BusRoute{
+    - routeNumber: int
+}
+
+class BusTransportationManagementSystem{
+    - assignedBuses: List<Bus>
+    - assignedDrivers: List<Driver>
+    
+    + addBus(bus: Bus): void
+    + deleteBus(bus: Bus): void
+    + addDriver(driver: Driver): void
+    + deleteDriver(driver: Driver): void
+    + assignBusToRoute(bus: Bus, route: BusRoute): void
+    + assignDriverToShift(driver: Driver, shift: Shift, bus: Bus): void
+    + markDriverSick(driver: Driver): void
+    + markBusRepair(bus: Bus): void
+    + displayOverview(day: Date): void
+}
+
+City "1" -- "*" BusTransportationManagementSystem
+
+Bus "1" -- "1" BusRoute
+
+Driver "1" -- "*" Shift
+Driver "1" -- "1" BusTransportationManagementSystem
+
+BusRoute "1" -- "*" BusTransportationManagementSystem
+
+@enduml
+---------------------9/10---------:
+Compare_result:Errors in the generated content:
+1. The Shift enumeration is not defined correctly. The correct values should be MORNING, AFTERNOON, and NIGHT.
+2. The relationships between classes are missing or incorrect:
+   - City should have a relationship with BusTransportationManagementSystem (1 to *)
+   - Bus should have a relationship with BusRoute (1 to 1)
+   - Driver should have relationships with Shift (1 to *) and BusTransportationManagementSystem (1 to 1)
+   - BusRoute should have a relationship with BusTransportationManagementSystem (1 to *)
+---------------------10/10---------:
+Base_AI_answer:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class City {
+}
+
+class BTMS {
+    +addDriver(name: String): void
+    +assignBusToRoute(bus: Bus, route: Route, date: Date): void
+    +assignDriverToShift(driver: Driver, bus: Bus, shift: Shift, date: Date): void
+    +removeDriver(driver: Driver): void
+    +removeBus(bus: Bus): void
+    +markDriverAsSick(driver: Driver): void
+    +markBusInRepair(bus: Bus): void
+}
+
+class Driver {
+    -name: String
+    -id: String
+    -isSick: boolean
+}
+
+class Bus {
+    -licencePlate: String
+    -isInRepair: boolean
+}
+
+class Route {
+    -routeNumber: int
+}
+
+City o-- BTMS
+BTMS o-- Driver
+BTMS o-- Bus
+BTMS o-- Route
+
+@enduml
+---------------------10/10---------:
+Compare_result:Errors in the generated content:
+
+1. The enumeration "Shift" is missing in the correct enumerations.
+2. The class "City" is not present in the correct classes.
+3. The class "BTMS" is missing some methods in the correct classes.
+4. The class "Driver" is missing attributes in the correct classes.
+5. The class "Bus" is missing attributes in the correct classes.
+6. The class "Route" is missing attributes in the correct classes.
+7. The relationships between classes in the generated content do not match the relationships in the correct enumerations, classes, and relationships.

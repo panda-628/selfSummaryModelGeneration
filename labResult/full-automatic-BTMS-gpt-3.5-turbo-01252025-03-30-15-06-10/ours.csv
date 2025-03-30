@@ -1,0 +1,516 @@
+---------------------1/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all required enumerations, classes, and relationships are included in the class diagram.
++ Rule 2: Make sure to correctly establish relationships between classes.
+```
+---------------------1/10---------:
+Improve_result:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class City {
+  + String name
+}
+
+class Bus {
+  + String licencePlate
+  + Boolean inRepairShop
+}
+
+class Driver {
+  + String name
+  + String ID
+  + Boolean onSickLeave
+}
+
+class Route {
+  + Integer number
+}
+
+class BusAssignment {
+  + Date date
+}
+
+City "1" --> "0..*" Bus
+City "1" --> "0..*" Driver
+City "1" --> "0..*" Route
+
+Bus "1" --> "0..*" BusAssignment
+Driver "1" --> "0..*" BusAssignment
+Route "1" --> "0..*" BusAssignment
+BusAssignment "1" -- "0..1" Shift
+
+@enduml
+---------------------2/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all enumerations are complete with their specified values.
++ Rule 2: Include all attributes specified in the correct classes section for each class.
++ Rule 3: Include all specified relationships between classes as indicated in the correct relationships section.
+```
+---------------------2/10---------:
+Improve_result:@startuml
+
+enum Shift {
+    Morning
+    Afternoon
+    Night
+}
+
+class Driver {
+    - id: int
+    - name: string
+    - sickLeave: boolean
+}
+
+class Bus {
+    - licencePlate: string
+    - inRepair: boolean
+}
+
+class Route {
+    - number: int
+}
+
+class Schedule {
+    - date: date
+}
+
+Schedule "1" *-- "1..*" Route
+Schedule "*" -- "*" Bus
+Schedule "*" -- "*" Driver
+
+Route "1" *-- "*" Bus
+Route "*" *-- "*" Driver
+Route "1" *-- "*" Shift
+Driver <-- Schedule
+
+@enduml
+---------------------3/10---------:
+Summary_rules:```rule
++ Rule 1: Include all relevant classes, enumerations, and relationships in the object-oriented class diagram model.
++ Rule 2: Ensure that relationships defined in the system description are accurately represented in the class diagram model.
+```
+---------------------3/10---------:
+Improve_result:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class CityStaff {
+    + assignBusToRoute(bus, route)
+    + assignDriverToShift(driver, bus, shift, day)
+    + postSchedule(driver, shift, day)
+    + addDriver(name)
+    + addBus(licencePlate)
+}
+
+class Bus {
+    - licencePlate: string
+    + getLicencePlate(): string
+}
+
+class Driver {
+    - name: string
+    - id: int
+    - sickLeave: bool
+    + getName(): string
+    + getId(): int
+    + isSickLeave(): bool
+}
+
+class Route {
+    - routeNumber: int
+    - buses: set<Bus>
+}
+
+CityStaff "1" *-- "1..*" Driver
+CityStaff "1" *-- "1..*" Bus
+CityStaff "1" *-- "1..*" Route
+Driver "1" o-- "1..*" Shift
+Bus o-- Route
+
+@enduml
+---------------------4/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that all enumerations used in the class diagram match the correct enumerations provided.
++ Rule 2: Make sure that the classes defined in the class diagram match the correct classes provided.
++ Rule 3: Verify that the relationships specified in the class diagram match the relationships provided in the correct relationships section.
+```
+---------------------4/10---------:
+Improve_result:@startuml
+
+' Define enumerations
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+' Define classes
+class Driver {
+    - String name
+    - int id
+}
+
+class Bus {
+    - String licencePlate
+}
+
+class BusRoute {
+    - int routeNumber
+}
+
+class Schedule {
+    - Date date
+}
+
+class Assignment {
+    - Shift shift
+}
+
+' Define relationships
+Driver "1" -- "1..*" Assignment : assigned
+Bus "1" -- "1..*" Assignment : assigned
+Bus "1" -- "0..*" BusRoute : serves
+Driver "1" -- "0..*" Shift : can_work
+Bus "1" -- "0..*" Shift : can_be_used
+Driver "1" -- "0..*" Schedule : posted
+Bus "1" -- "0..*" Schedule : assigned
+Bus "0..1" -- "0..1" RepairStatus : in_repair
+
+@enduml
+---------------------5/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all enumerations have commas between enum values.
++ Rule 2: Do not include attributes in classes that are not mentioned in the system description.
++ Rule 3: Include all necessary attributes in each class as specified in the system description.
++ Rule 4: Define relationships between classes accurately according to the system description.
++ Rule 5: Include all necessary attributes in each class as specified in the system description.
+```
+---------------------5/10---------:
+Improve_result:```plantuml
+@startuml
+
+enum Shift {
+    MORNING, AFTERNOON, NIGHT
+}
+
+class Driver {
+    - name: string
+    - id: int
+}
+
+class Bus {
+    - licencePlate: string
+}
+
+class BusRoute {
+    - routeNumber: int
+}
+
+class Assignment {
+}
+
+Driver "1" --o "0..*" Assignment
+Bus "1" --o "0..*" Assignment
+BusRoute "1" -- "0..*" Assignment
+Assignment "1" -- "0..1" Shift
+
+@enduml
+```
+---------------------6/10---------:
+Summary_rules:```rule
++ Rule 1: Include all the enumerations (RepeatInterval, AppointmentType, TestResultType, DayOfWeek) with their respective values in the generated content.
++ Rule 2: Ensure that all classes (Requisition, Doctor, Patient, TestGroup, RequisitionItem, Appointment, Test, Lab, BusinessHour) are correctly included in the generated content.
++ Rule 3: Make sure that the relationships between the classes (Requisition, Doctor, Patient, TestGroup, RequisitionItem, Test, Appointment, Lab, BusinessHour) are accurately represented in the generated content.
+```
+---------------------6/10---------:
+Improve_result:@startuml
+
+enum RepeatInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum AppointmentType {
+  CHECKUP
+  FOLLOWUP
+  PROCEDURE
+}
+
+enum TestResultType {
+  POSITIVE
+  NEGATIVE
+  INCONCLUSIVE
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+class Requisition {
+  -requisitionId: int
+  -requisitionDate: Date
+  -patientId: int
+  -doctorId: int
+}
+
+class Doctor {
+  -doctorId: int
+  -name: String
+}
+
+class Patient {
+  -patientId: int
+  -name: String
+}
+
+class TestGroup {
+  -testGroupId: int
+  -name: String
+}
+
+class RequisitionItem {
+  -requisitionItemId: int
+  -testId: int
+  -testGroupId: int
+}
+
+class Appointment {
+  -appointmentId: int
+  -patientId: int
+  -doctorId: int
+  -appointmentType: AppointmentType
+}
+
+class Test {
+  -testId: int
+  -name: String
+}
+
+class Lab {
+  -labId: int
+  -name: String
+}
+
+class BusinessHour {
+  -dayOfWeek: DayOfWeek
+  -startTime: Time
+  -endTime: Time
+}
+
+Requisition "1" --> "0..*" RequisitionItem
+Requisition "*" --> "1" Doctor
+Requisition "*" --> "1" Patient
+RequisitionItem "*" --> "1" TestGroup
+RequisitionItem "*" --> "1" Test
+Appointment "*" --> "1" Patient
+Appointment "*" --> "1" Doctor
+TestGroup "*" --> "*" Test
+Lab "*" --> "*" Test
+Lab "*" --> "*" BusinessHour
+
+@enduml
+---------------------7/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that the class definitions match the correct classes provided in the system description. Avoid introducing new classes that are not part of the system.
++ Rule 2: Make sure that the relationships between classes accurately reflect the connections specified in the system description. Avoid connecting unrelated classes in the diagram.
+```
+---------------------7/10---------:
+Improve_result:@startuml
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+class Bus {
+  - String licencePlate
+}
+
+class BusRoute {
+  - int routeNumber
+  + Bus[] buses
+}
+
+class Driver {
+  - int driverID
+  - String name
+  - boolean onSickLeave
+}
+
+class BusTransportationManagementSystem {
+  + void assignBusToRoute(Bus bus, BusRoute route)
+  + void assignDriverToShift(Driver driver, Bus bus, Shift shift)
+  + void postScheduleForDriver(Driver driver, Shift[] shifts)
+  + void showOverviewForDay(Date day)
+}
+
+Bus "1" -- "1" BusRoute : operates
+BusRoute "1" *-- "0..*" Bus : assigned
+BusTransportationManagementSystem "1" *-- "0..*" Bus : manages
+BusTransportationManagementSystem "1" *-- "0..*" BusRoute : manages
+BusTransportationManagementSystem "1" *-- "0..*" Driver : manages
+
+@enduml
+---------------------8/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that all enum values are correctly defined for each enum class.
++ Rule 2: Make sure that all classes have the correct attributes as described in the system description.
++ Rule 3: Verify that the relationships between classes are aligned with the correct relationships provided.
+```
+---------------------8/10---------:
+Improve_result:```plantuml
+@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class Driver {
+    - int driverID
+    - String name
+}
+
+class Bus {
+    - String licencePlate
+}
+
+class Route {
+    - int routeNumber
+}
+
+class Schedule {
+    - Date date
+}
+
+Driver "1" -- "0..*" Route
+Route "1" -- "0..*" Bus
+Schedule "1" -- "0..*" Bus
+Schedule "1" -- "0..*" Driver
+
+Schedule "1" -- "1" Shift
+
+@enduml
+```
+---------------------9/10---------:
+Summary_rules:```rule
++ Rule 1: Use the correct enumerations as defined in the system description.
++ Rule 2: Ensure to establish all necessary relationships between classes as specified in the system description.
+```
+---------------------9/10---------:
+Improve_result:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class Driver {
+    - String name
+    - int ID
+}
+
+class Bus {
+    - String licencePlate
+}
+
+class Route {
+    - int routeNumber
+}
+
+class Assignment {
+    - Date date
+}
+
+class BTMS {
+    + generateSchedule()
+    + assignDriverToShift()
+    + assignBusToRoute()
+    + updateBusStatus()
+}
+
+Driver "1" -- "1" BTMS : uses
+Bus "1" -- "1" BTMS : uses
+Route "1" -- "1" BTMS : uses
+Assignment "1" -- "1" BTMS : uses
+
+Assignment "1" -- "1" Shift : has
+Bus "1" -- "0..*" Assignment : is assigned to
+Driver "1" -- "0..*" Assignment : is assigned to
+Route "1" -- "0..*" Assignment : is assigned to
+
+@enduml
+---------------------10/10---------:
+Summary_rules:```rule
++ Rule 1: Include all necessary enumerations, classes, and relationships as described in the system description and referenced answer.
++ Rule 2: Ensure that each class has all the required attributes and methods as specified in the system description.
++ Rule 3: Make sure that the relationships between classes are accurately represented based on the system description and referenced answer.
+```
+---------------------10/10---------:
+Improve_result:@startuml
+
+enum Shift {
+    MORNING
+    AFTERNOON
+    NIGHT
+}
+
+class Driver {
+    - id: int
+    - name: string
+}
+
+class Bus {
+    - licencePlate: string
+    - onRepairShop: boolean
+}
+
+class Route {
+    - number: int
+}
+
+class Assignment {
+    - date: date
+    - driver: Driver
+    - bus: Bus
+    - route: Route
+    - shift: Shift
+}
+
+class BusTransportationManagementSystem {
+    + viewOverview()
+    + addDriver(driver: Driver)
+    + addBus(bus: Bus)
+    + assignBusToRoute(bus: Bus, route: Route, date: date, shift: Shift)
+    + assignDriverToShift(driver: Driver, bus: Bus, date: date, shift: Shift)
+    + markDriverSick(driver: Driver, date: date)
+    + markBusOnRepairShop(bus: Bus)
+}
+
+Driver "1" *-- "0..*" Assignment
+Bus "1" *-- "0..*" Assignment
+Route "1" *-- "0..*" Assignment
+Assignment "1" o-- "1" Shift
+Assignment "1" o-- "1" Driver
+Assignment "1" o-- "1" Bus
+
+@enduml

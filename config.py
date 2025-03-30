@@ -21,15 +21,15 @@ running_params = {
 }
 
 file = {
-    'path': 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration',
-    'baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult\pre',
-    'usecase_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-usecase\pre',
-    'statemachine_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-statemachine\pre',
-    'compare_usecase_baseline' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-compare\pre',
-    'ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult\ours',
-    'usecase_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-usecase\ours',
-    'statemachine_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-statemachine\ours',
-    'compare_usecase_ours' : 'C:\AppAndData\codeAndproject\modelGeneratelab\selfSummaryModelGeneration\labResult-compare\ours',
+    'path': 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult',
+    'baseline' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult\pre',
+    'usecase_baseline' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult-usecase\pre',
+    'statemachine_baseline' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult-statemachine\pre',
+    'compare_usecase_baseline' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult-compare\pre',
+    'ours' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult\ours',
+    'usecase_ours' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult-usecase\ours',
+    'statemachine_ours' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult-statemachine\ours',
+    'compare_usecase_ours' : 'C:\AppAndData\codeAndproject\selfSummaryModelGeneration\labResult-compare\ours',
 }
 
 class stateMachine:
@@ -40,24 +40,7 @@ class stateMachine:
 
 #Original version of the prompt template for the class diagram
 PROMPT_MODEL_INIT="""
-Create a class diagram for the following description by giving the enumerations, classes, and relationships using format:
-Enumerations:
-enumerationName(literals)
-(there might be no or multiple enumerations)
-
-Class:
-className(attributeName1 : attributeType1,attributeName2 : attributeType2 (there might be multiple attributes))
-(there might be multiple classes)
-
-Relationships:
-mul1 class1 associate mul2 class2 (class1 and2 are classes above. mul1 and mul2 are one of the following options[0..*, 1, 0..1, 1..*]).
-(there might be multiple associations)
-
-class1 inherit class2 (class1 and class2 are classes above)
-(there might be multiple inheritance)
-
-mul1 class1 contain mul2 class2 (class1 and2 are classes above. mul1 and mul2 are one of the following options[0..*, 1, 0..1, 1..*])
-(there might be multiple composition)
+Create a class diagram for the following description by giving the enumerations, classes, and relationships using PlantUML format:
 
 #Description 
 {}
@@ -247,15 +230,13 @@ Output Format
 
 
 PROMPT_MODEL_TEACHER_GUIDE_WITH_ERRORS="""
-You are a highly experienced professer in software engineering, teaching object-oriented class diagram modeling. You are reviewing (<Student Answers>) according to the (<System Description>) and (<Referenced Answer>). Generate some modeling rules that are not only accurate but also practical and easy for students to apply by summarizing the correct and the incorrect answers.
-
-Let's do it step by step.
+You are a highly experienced professor in software engineering, specializing in object-oriented class diagram modeling. Your task is to review the following student responses based on the provided system description and referenced answer. The goal is to generate a set of clear and practical modeling rules that students can easily apply, focusing on improving their understanding of modeling methodology rather than correcting individual errors.
 
 # Steps
-1. Note that your goal is to help students to manage modeling methodology, rather than correcting a specific error.
-2. Based on the errors given, inductively summarize common rules for OO modelings.
-3. Ensure that the rules you generate are clear, concise, and easy to understand. The rules should be general enough to be applicable to all types of OO models, regardless of the specific application domain. 
-4. DO NOT use concrete examples in rule descriptions. 
+1. Your objective is to help students grasp modeling principles rather than focus solely on their mistakes.
+2. Analyze the common errors presented and derive general rules for object-oriented modeling.
+3. Ensure the rules are clear, concise, and easily understandable. They should be broadly applicable to various object-oriented models, regardless of the specific context.
+4. Avoid using concrete examples in the rules.
 
 # Output Format
 Output the final rules in the following format.
@@ -276,24 +257,7 @@ Output the final rules in the following format.
 """
 
 PROMPT_MODEL_IMPROVE="""
-Create a class diagram for the following description by giving the enumerations, classes, and relationships using format:(Note: Follow the Rules given during the generation process)
-Enumerations:
-enumerationName(literals)
-(there might be no or multiple enumerations)
-
-Class:
-className(attributeName1 : attributeType1,attributeName2 : attributeType2 (there might be multiple attributes))
-(there might be multiple classes)
-
-Relationships:
-mul1 class1 associate mul2 class2 (class1 and2 are classes above. mul1 and mul2 are one of the following options[0..*, 1, 0..1, 1..*]).
-(there might be multiple associations)
-
-class1 inherit class2 (class1 and class2 are classes above)
-(there might be multiple inheritance)
-
-mul1 class1 contain mul2 class2 (class1 and2 are classes above. mul1 and mul2 are one of the following options[0..*, 1, 0..1, 1..*])
-(there might be multiple composition)
+Create a class diagram for the following description by giving the enumerations, classes, and relationships using PlantUML format:(Note: Follow the Rules given during the generation process)
 
 #Rules
 {}
@@ -344,21 +308,12 @@ state1 (eventName) state2
 {}
 """
 
+#system name
+SYSTEM_NAME = "CeIO"
+
 #system description
 DESCRIPTION = """
-The LabTracker software helps (i) doctors manage the requisition of tests and examinations for patients and (ii) patients book appointments for tests and examinations at a lab. For the remainder of this description, tests and examinations are used interchangeably. 
-
-For a requisition, a doctor must provide their numeric practitioner number and signature for verification as well as their full name, their address, and their phone number. The signature is a digital signature, i.e., an image of the actual signature of the doctor. Furthermore, the doctor indicates the date from which the requisition is valid. The requisition must also show the patient’s information including their alpha-numeric health number, first name and last name, date of birth, address, and phone number. A doctor cannot prescribe a test for themselves but can prescribe tests to someone else who is a doctor. 
-
-Several tests can be combined on one requisition but only if they belong to the same group of tests. For example, only blood tests can be combined on one requisition or only ultrasound examinations can be combined. It is not possible to have a blood test and an ultrasound examination on the same requisition. For each test, its duration is defined by the lab network, so that it is possible to schedule appointments accordingly. The duration of a test is the same at each lab. For some kinds of tests, it does not matter how many tests are performed. They take as long as a single test. For example, several blood tests can be performed on a blood sample, i.e., it takes as long to draw the blood sample for a single blood test as it does for several blood tests. 
-
-A doctor may also indicate that the tests on a requisition are to be repeated for a specified number of times and interval. The interval is either weekly, monthly, every half year, or yearly. All tests on a requisition are following the same repetition pattern. 
-
-The doctor and the patient can view the results of each test (either negative or positive) as well as the accompanying report. 
-
-A patient is required to make an appointment for some tests while others are walk-in only. For example, x-ray examinations require an appointment, but blood tests are walk-in only (i.e., it is not possible to make an appointment for a blood test). On the other hand, some tests only require a sample to be dropped off (e.g., a urine or stool sample). 
-
-To make an appointment for a requisition, a patient selects the desired lab based on the lab’s address and business hours. For requisitions with repeated tests, a patient is only allowed to make one appointment at a time. The confirmation for an appointment also shows a confirmation number, the date as well as start/end times, and the name of the lab as well as its registration number. It is possible to change or cancel an appointment at any time but doing so within 24 hours of the appointment incurs a change/cancellation fee. Each lab determines its own fee and business hours. All labs are open every day of the year and offer all tests. The business hours of a lab do not change from one week to the next. Each day a lab is open from the day’s start time to its end time, i.e., there are no breaks. 
+The CelO application helps families and groups of friends to organize birthday celebrations and other events. Organizers can keep track of which tasks have been completed and who attends. Attendees can indicate what they are bringing to the event. For a small event, there is typically one organizer, but larger events require several organizers. An organizer provides their first and last name, their email address (which is also used as their username), their postal address, their phone number, and their password. Furthermore, an organizer indicates the kind of event that needs to be planned by selecting from a list of events (e.g., birthday party, graduation party…) or creating a new kind of event. The start date/time and end date/time of the event must be specified as well as the occasion and location of the event. The location can again be selected from a list, or a new one can be created by specifying the name of the location and its address. An organizer then invites the attendees by entering their first and last names as well as their email addresses. Sometimes, an organizer is only managing the event but not attending the event. Sometimes, an organizer also attends the event. When an attendee receives the email invitation, the attendee can create an account (if they do not yet have an account) with a new password and their email address from the invitation as their username. Afterwards, the attendee can indicate whether they will attend the event, maybe will attend the event, or cannot attend the event. An organizer can view the invitation status of an event, e.g., how many attendees have replied or have not yet replied and who is coming for sure or maybe will be coming. When an organizer selects an event, an event-specific checklist is presented to the organizer. For example, a birthday party may have a task to bring a birthday cake. For each task on the checklist, an organizer can indicate that the task needs to be done, has been done, or is not applicable for the event. An organizer can also add new tasks to the list, which will then also be available for the next event. For example, an organizer can add to bring birthday candles to the list for a birthday party and this task will then be available for the next birthday party, too. An organizer can also designate a task on the checklist for attendees to accomplish. For example, an organizer can indicate that the birthday cake should be brought to the event by an attendee. If this is the case, then the list of tasks to be accomplished by attendees is shown to attendees that have confirmed their attendance to the event. An attendee can then select their tasks, so that the organizer can see who is bringing what to the event.
 """
 
 #system description

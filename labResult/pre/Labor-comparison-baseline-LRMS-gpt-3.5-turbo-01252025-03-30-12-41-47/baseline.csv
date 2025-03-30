@@ -1,0 +1,370 @@
+---------------------1/5---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    X_RAY
+    URINE
+    STOOL
+}
+
+enum RepeatInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: string
+    - address: string
+    - phone: string
+    + createRequisition()
+    + viewResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dob: date
+    - address: string
+    - phone: string
+    + bookAppointment()
+    + viewResults()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - startDate: date
+    - tests: TestType[]
+    - repetition: RepeatInterval
+    + addTest()
+    + repeatTests()
+}
+
+class Test {
+    - duration: int
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - testsOffered: TestType[]
+    - registrationNumber: int
+    - fee: double
+    + makeAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+Doctor "1" -- "1" Requisition
+Patient "1" -- "1" Requisition
+Requisition "1" -- "0..*" Test
+Requisition "1" -- "1" Lab
+
+@enduml
+---------------------2/5---------:
+Base_AI_answer:@startuml
+
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor Black
+}
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    XRAY
+    ULTRASOUND
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition()
+}
+
+class Patient {
+    - healthNumber: String
+    - fullName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + bookAppointment()
+}
+
+class Requisition {
+    - validFromDate: Date
+    - repeatTimes: int
+    - repeatInterval: Interval
+    + addTest()
+}
+
+class Test {
+    - duration: int
+    + getResults()
+}
+
+class Interval {
+    - weekly
+    - monthly
+    - halfYearly
+    - yearly
+}
+
+class Lab {
+    - labAddress: String
+    - businessHours: TimeRange
+    - registrationNumber: int
+    - fee: int
+}
+
+class Appointment {
+    - confirmationNumber: String
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - labName: String
+}
+
+class Report {
+    - content: String
+}
+
+class Result {
+    - resultType: Enum
+}
+
+Doctor "1" --> "1" Requisition
+Patient "1" --> "1" Requisition
+Requisition "1" --> "*" Test
+Test "1" --> "0..1" Result
+Requisition "1" --> "1" Interval
+Lab "1" --> "*" Appointment
+Appointment "1" --> "1" Lab
+Test <|-- BLOOD
+Test <|-- URINE
+Test <|-- STOOL
+Test <|-- XRAY
+Test <|-- ULTRASOUND
+
+@enduml
+---------------------3/5---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+  BLOOD
+  URINE
+  STOOL
+  XRAY
+  ULTRASOUND
+}
+
+class Doctor {
+  -numericPractitionerNumber: int
+  -signature: Image
+  -fullName: String
+  -address: String
+  -phoneNumber: String
+  +createRequisition()
+}
+
+class Patient {
+  -healthNumber: String
+  -firstName: String
+  -lastName: String
+  -dateOfBirth: Date
+  -address: String
+  -phoneNumber: String
+  +bookAppointment()
+  +viewResults()
+}
+
+class Requisition {
+  -validFromDate: Date
+  -repeatedTests: int
+  -repetitionInterval: enum {WEEKLY, MONTHLY, HALF_YEAR, YEARLY}
+  +addTest()
+  +setRepetitionPattern()
+}
+
+class Test {
+  -duration: int
+  -testType: TestType
+}
+
+class Lab {
+  -address: String
+  -businessHours: String
+  -registrationNumber: int
+  -fee: double
+  +makeAppointment()
+  +changeAppointment()
+  +cancelAppointment()
+}
+
+Doctor -- Requisition
+Requisition "1" *-- "n" Test
+Patient -- Lab
+
+@enduml
+---------------------4/5---------:
+Base_AI_answer:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + provideRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + bookAppointment()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<TestType>
+    - startDate: date
+    - repeatInterval: string
+    + addTest()
+    + setRepeatPattern()
+}
+
+class Test {
+    - type: TestType
+    - duration: int
+    + getType()
+    + getDuration()
+}
+
+class Appointment {
+    - patient: Patient
+    - lab: Lab
+    - confirmationNumber: string
+    - date: date
+    - startTime: time
+    - endTime: time
+    - registrationNumber: int
+    + cancelAppointment()
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    - testsOffered: List<Test>
+    - appointmentFee: int
+    + changeBusinessHours()
+    + setFee()
+}
+
+Doctor -- Requisition : creates
+Patient -- Requisition : creates
+Requisition "1" *-- "*" Test : contains
+Requisition o-- "1" Appointment : creates
+Patient "1" -- "1" Appointment
+Appointment "1" -- "1" Lab
+
+@enduml
+---------------------5/5---------:
+Base_AI_answer:```plantuml
+@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    XRAY
+    ULTRASOUND
+}
+
+class Doctor {
+    - numericPractitionerNumber: int
+    - signatureImage: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition()
+    + viewResults()
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + makeAppointment()
+    + viewResults()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<Test>
+    - repetitionInterval: Interval
+    + addTest()
+    + setRepetition()
+}
+
+class Test {
+    - type: TestType
+    - duration: int
+}
+
+class Lab {
+    - address: String
+    - businessHours: List<BusinessHour>
+    - registrationNumber: String
+    + makeAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class BusinessHour {
+    - day: String
+    - startTime: Time
+    - endTime: Time
+}
+
+class Appointment {
+    - confirmationNumber: String
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    - lab: Lab
+}
+
+Doctor "1" <-up-> "1..*" Requisition
+Patient "1" <-up-> "1..*" Requisition
+Requisition "0..*" -left- "1..*" Test
+Lab "1" <-up-> "1..*" Appointment
+
+@enduml
+```

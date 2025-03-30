@@ -1,0 +1,663 @@
+---------------------1/10---------:
+Summary_rules:```rule
++ Rule 1: Use the correct enumeration name "RepeatInterval" instead of "RepetitionInterval".
++ Rule 2: Ensure that the class attributes in the "Requisition" class match the correct attributes.
++ Rule 3: Include the "validFrom" attribute in the "Requisition" class as specified in the correct content.
++ Rule 4: Ensure that the class attributes in the "Doctor" class match the correct attributes.
++ Rule 5: Ensure that the class attributes in the "Patient" class match the correct attributes.
++ Rule 6: Include the attribute mapping "doctor" in the relationship between "Requisition" and "Doctor" classes.
++ Rule 7: Include the attribute mapping "patient" in the relationship between "Requisition" and "Patient" classes.
++ Rule 8: Ensure that all specified relationships between classes are included in the generated content.
+```
+---------------------1/10---------:
+Improve_result:@startuml
+
+enum RepeatInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+}
+
+class Requisition {
+    - doctorSignature: string
+    - validFrom: date
+}
+
+Doctor "1" -- "1" Requisition : doctor
+Requisition "1" -- "1" Patient : patient
+
+@enduml
+---------------------2/10---------:
+Summary_rules:```rule
++ Rule 1: Enum values should be written accurately and consistently.
++ Rule 2: Attribute names in classes should be consistent and clearly defined.
++ Rule 3: All necessary classes should be included in the model.
++ Rule 4: Relationships between classes should have the correct cardinality and be clearly defined.
+```
+---------------------2/10---------:
+Improve_result:```plantuml
+@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    ULTRASOUND
+    XRAY
+}
+
+class Doctor {
+    - numericPractitionerNumber: int
+    - signature: Image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + prescribeTest()
+    + viewTestResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: string
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+    + viewTestResults()
+}
+
+class Requisition {
+    - validFromDate: string
+    - testType: TestType
+    - testDuration: string
+    - repeatInterval: int
+    - repeatPattern: string
+    + addTest()
+    + setRepeatPattern()
+}
+
+class Test {
+    - result: string
+    - report: string
+}
+
+class Lab {
+    - labAddress: string
+    - businessHours: string
+    - registrationNumber: int
+    - fee: int
+    + makeAppointment()
+    + setBusinessHours()
+    + setFee()
+}
+
+Doctor "1" --> "*" Requisition
+Patient "1" --> "*" Requisition
+Requisition "1" --> "*" Test
+Requisition "1" --> Lab
+Patient -- Lab
+
+@enduml
+```
+---------------------3/10---------:
+Summary_rules:```rule
++ Rule 1: Use the correct attribute names as specified in the system description instead of creating new or incorrect ones.
++ Rule 2: Ensure that each class only contains the necessary attributes specified in the system description; do not include additional attributes that are not mentioned.
+```
+---------------------3/10---------:
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dob: date
+    - address: string
+    - phoneNumber: string
+}
+
+class Requisition {
+    - validFrom: date
+}
+
+class Test {
+    - duration: int
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: date
+    - startTime: time
+    - endTime: time
+}
+
+class Lab {
+    - registrationNumber: int
+    - address: string
+    - businessHours: string
+    - testTypes: TestType[]
+    - fees: float
+}
+
+Doctor "1" o-- "1" Requisition
+Patient "1" o-- "1" Requisition
+Requisition o-- "0..*" Test
+Requisition o-- "0..1" Appointment
+Appointment "1" o-- "1" Lab
+
+@enduml
+---------------------4/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that attribute types match the description provided in the system description.
++ Rule 2: Define relationships between classes accurately based on the system description.
+```
+---------------------4/10---------:
+Improve_result:```plantuml
+@startuml
+
+enum RepeatInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEAR
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + isValidRequisition(): boolean
+    + prescribeTest(): void
+    + viewTestResults(): void
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + makeAppointment(): void
+    + viewTestResults(): void
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<Test>
+    - validFrom: Date
+    + addTest(): void
+    + setRepeatInterval(): void
+}
+
+class Test {
+    - type: String
+    - duration: int
+    - result: String
+    - report: String
+    + getType(): String
+    + getDuration(): int
+}
+
+class Lab {
+    - address: String
+    - businessHours: List<BusinessHour>
+    - testsOffered: List<String>
+    - fee: int
+    + makeAppointment(): void
+}
+
+class BusinessHour {
+    - dayOfWeek: int
+    - startTime: DateTime
+    - endTime: DateTime
+}
+
+Doctor "1" -- "0..*" Requisition
+Patient "1" -- "0..*" Requisition
+Requisition "1" *-- "1..*" Test
+Lab "1" *-- "0..*" BusinessHour
+
+@enduml
+```
+---------------------5/10---------:
+Summary_rules:```rule
++ Rule 1: Include all necessary enumerations and classes in the object-oriented class diagram.
++ Rule 2: Ensure that the data types of attributes are correctly defined in classes.
++ Rule 3: Make sure to include all relevant classes mentioned in the system description.
++ Rule 4: Verify the relationships between classes are accurately represented in the diagram.
+```
+---------------------5/10---------:
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    XRAY
+    ULTRASOUND
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Requisition {
+    - validFromDate: string
+}
+
+class Test {
+    - duration: int
+    - result: string
+    - report: string
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    - fee: int
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: string
+    - startTime: string
+    - endTime: string
+}
+
+Doctor "1" -- "n" Requisition
+Patient "1" -- "n" Requisition
+Requisition "*" -- "n" Test
+Requisition "1" -- "n" Appointment
+Test -- Lab
+
+@enduml
+---------------------6/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all attributes are correctly and completely defined in each class.
++ Rule 2: Use consistent attribute names across classes.
++ Rule 3: Pay attention to missing relationships between classes.
+```
+---------------------6/10---------:
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - numericPractitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+
+    {method} provideSignature()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+
+    {method} viewResults()
+}
+
+class Requisition {
+    - validFromDate: date
+    - repetitionPattern: string
+    - interval: enum{WEEKLY, MONTHLY, HALF_YEARLY, YEARLY}
+
+    {method} addTest()
+}
+
+class Test {
+    - duration: int
+
+    {method} performTest()
+}
+
+class Lab {
+    - labNumber: int
+    - address: string
+    - businessHours: string
+    - testingFee: int
+
+    {method} scheduleAppointment()
+}
+
+Doctor "1" -- "1" Patient
+Doctor "1" -- "0..*" Requisition
+Patient "1" -- "0..*" Requisition
+Requisition "1" -- "1..*" Test
+Test "1" -- "1" Lab
+Patient "1" -- "1" Lab
+
+@enduml
+---------------------7/10---------:
+Summary_rules:```rule
++ Rule 1: Enumerations and class attributes must match the correct definitions provided in the system description.
++ Rule 2: Relationships between classes must align with the correct relationships specified in the system description.
+```
+---------------------7/10---------:
+Improve_result:@startuml
+
+enum RepetitionInterval {
+    WEEKLY
+    MONTHLY
+    HALF_YEAR
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - name: string
+    - address: string
+    - phoneNumber: string
+    - signature: image
+    + createRequisition()
+    + prescribeTest()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+    + viewTestResults()
+}
+
+class Test {
+    - groupName: string
+    - duration: int
+}
+
+class Requisition {
+    - validFromDate: date
+    - repeatedTimes: int
+    - repetitionInterval: RepetitionInterval
+}
+
+class Lab {
+    - labAddress: string
+    - businessHours: string
+    - confirmationNumber: int
+    - appointmentDate: date
+    - startTime: time
+    - endTime: time
+    - registrationNumber: string
+    - changeCancellationFee: int
+    - determineFee()
+}
+
+Doctor "1" o-- "1..*" Requisition
+Doctor "1" o-- "0..*" Test
+Requisition o-- "1" Patient
+Requisition o-- "1..*" Test
+Patient "1" o-- "0..*" Requisition
+Patient "1" o-- "1..*" Test
+Patient "1" o-- "1" Lab
+Lab "1..*" o-- "0..*" Requisition
+Lab "1" o-- "0..*" Patient
+
+@enduml
+---------------------8/10---------:
+Summary_rules:```rule
++ Rule 1: Include the "validFrom" attribute in the "Requisition" class.
++ Rule 2: Ensure that the attribute name for the doctor's numeric practitioner number is "practitionerNumber" in the "Doctor" class.
++ Rule 3: Do not include the "specialty" attribute in the "Doctor" class.
++ Rule 4: Combine the "firstName" and "lastName" attributes into one "name" attribute in the "Doctor" class.
++ Rule 5: Include the "phone" attribute in the "Doctor" class.
++ Rule 6: Do not include the "dateOfBirth" attribute in the "Patient" class.
++ Rule 7: Include the "TestGroup" class in the generated content.
++ Rule 8: Define the relationships between classes in the correct format as in the correct relationships.
+```
+---------------------8/10---------:
+Improve_result:@startuml
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEAR
+    YEARLY
+}
+
+class Doctor {
+    - name: string
+    - practitionerNumber: int
+    - address: string
+    - phone: string
+}
+
+class Patient {
+    - healthNumber: string
+    - name: string
+    - address: string
+    - phone: string
+}
+
+class Requisition {
+    - validFrom: date
+}
+
+class TestGroup {
+}
+
+Doctor "1" -- "m" Requisition
+Patient "1" -- "m" Requisition
+Requisition "1" -- "m" TestGroup
+
+@enduml
+---------------------9/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that the enum names in the model correspond exactly to the referenced enumerations.
++ Rule 2: Make sure that the class attributes match exactly with the attributes provided in the system description.
++ Rule 3: Include all required attributes in the class definition, such as date of birth for the Patient class.
++ Rule 4: Ensure that all necessary attributes are included in the class definition.
++ Rule 5: Ensure consistency in the attributes of the class according to the system description.
++ Rule 6: Ensure that the class attributes match exactly with the attributes provided in the system description.
++ Rule 7: Make sure that the relationships defined align exactly with the correct relationships provided in the system description.
+```
+---------------------9/10---------:
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    OTHER
+}
+
+class Doctor {
+    - id: int
+    - name: string
+    - address: string
+    - phone: string
+    - signature: image
+    + createRequisition(): Requisition
+    + viewTestResults(): void
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phone: string
+    + makeAppointment(): void
+    + viewTestResults(): void
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - tests: List<TestType>
+    - startDate: date
+    - repeatInterval: string
+    - repeatTimes: int
+    + addTest(test: TestType): void
+    + setRepeatInterval(interval: string): void
+    + setRepeatTimes(times: int): void
+}
+
+class Lab {
+    - labNumber: string
+    - address: string
+    - businessHours: string
+    - testsOffered: List<TestType>
+    - appointments: List<Appointment>
+    + scheduleAppointment(patient: Patient): Appointment
+    + cancelAppointment(appointment: Appointment): void
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: date
+    - startTime: time
+    - endTime: time
+    - lab: Lab
+    + changeTime(newTime: time): void
+    + cancel(): void
+}
+
+Doctor "1" -- "1" Requisition
+Patient "1" -- "1" Requisition
+Requisition "1" -- "n" TestType
+Lab "1" -- "n" Appointment
+Patient "1" -- "n" Appointment
+
+@enduml
+---------------------10/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that all enumerations are correctly defined and included in the model.
++ Rule 2: Class attributes must exactly match the attributes described in the system description.
++ Rule 3: All classes and their relationships should be accurately included in the model.
+```
+---------------------10/10---------:
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD_TESTS
+    ULTRASOUND_EXAMINATIONS
+    XRAY_EXAMINATIONS
+    OTHER
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + createRequisition()
+    + viewTestResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+    + viewTestResults()
+}
+
+class Requisition {
+    - validFromDate: date
+    - groupOfTests: TestType
+    - repeatInterval: string
+    - repeatTimes: int
+}
+
+class Test {
+    - duration: int
+}
+
+class Lab {
+    - labAddress: string
+    - businessHours: string
+    - registrationNumber: string
+    - testsOffered: TestType
+    - fee: double
+    + scheduleAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+Doctor "1" --> "1..*" Requisition
+Patient "1" --> "1..*" Requisition
+Requisition "1" --> "1..*" Test
+Lab "1" --> "1..*" Appointment
+
+@enduml

@@ -1,0 +1,60 @@
+{
+    "enumeration": {
+        "EventKind": [
+            "BIRTHDAY_PARTY",
+            "GRADUATION_PARTY",
+            "// other event kinds",
+            ""
+        ],
+        "EventStatus": [
+            "OPEN",
+            "CLOSED",
+            ""
+        ]
+    },
+    "class": {
+        "User": [
+            "- first_name: String",
+            "- last_name: String",
+            "- email: String",
+            "- address: String",
+            "- phone_number: String",
+            "- password: String",
+            ""
+        ],
+        "Location": [
+            "- name: String",
+            "- address: String",
+            ""
+        ],
+        "Event": [
+            "- start_date_time: Date",
+            "- end_date_time: Date",
+            "- occasion: String",
+            "- location: Location",
+            ""
+        ],
+        "Organizer": [
+            "- events_to_plan: List<Event>",
+            "+ createNewEvent(): void",
+            "+ inviteAttendees(eventId: Int, attendees: List<User>): void",
+            "+ viewInvitationStatus(eventId: Int): void",
+            "+ createTask(eventId: Int, taskName: String): void",
+            ""
+        ],
+        "Attendee": [
+            "- tasks: List<String>",
+            "+ createAccount(email: String, password: String): void",
+            "+ confirmAttendance(eventId: Int, taskSelection: List<String>): void",
+            ""
+        ]
+    },
+    "relationships": [
+        "User \"1\" -- \"1\" Organizer",
+        "User \"1\" -- \"1\" Attendee",
+        "Organizer \"1\" -- \"*\" Event",
+        "Event \"*\" -- \"1\" Location",
+        "Organizer \"1\" -- \"0..*\" Attendee",
+        ""
+    ]
+}

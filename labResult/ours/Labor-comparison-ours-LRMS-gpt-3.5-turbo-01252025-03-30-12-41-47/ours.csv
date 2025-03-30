@@ -1,0 +1,439 @@
+---------------------1/5---------:
+error_list: 3 categories changed, 9 insertions(+), 6 deletions(-)
+- **enumeration**: 2 insertions(+), 0 deletions(-)
+  added: RepeatInterval, TestType
+- **class**: 5 insertions(+), 0 deletions(-)
+  added: Lab, Doctor, Test, Patient, Requisition
+- **relationships**: 2 insertions(+), 6 deletions(-)
+  added: Requisition "1" -- "0..*" Test, Requisition "1" -- "1" Lab
+  absent: Requisition "1" -- "*" TestGroup (testGroup), Requisition "*" -- "*" RequisitionItem (items), TestGroup "*" -- "*" Test (tests), Test "1" -- "1" Appointment (appointment), Appointment "1" -- "1" Lab (lab), Lab "1" -- "*" BusinessHour (businessHours)
+Summary_rules:```rule
++ Rule 1: Define enumerations for common types that have fixed values.
++ Rule 2: Each class should represent a distinct entity or concept in the system.
++ Rule 3: Clearly define relationships between classes to represent their associations.
++ Rule 4: Use cardinality to specify how many instances of one class are related to instances of another class.
+```
+Improve_result:@startuml
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEAR
+    YEARLY
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    - signature: image
+    + prescribeTest()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + viewResults()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - validFromDate: date
+    + combineTests()
+}
+
+class Test {
+    - type: string
+    - duration: int
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: string
+    + makeAppointment()
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: date
+    - startTime: time
+    - endTime: time
+    - lab: Lab
+}
+
+Doctor "1" --> "*" Requisition: creates
+Requisition "1" --> "*" Test: includes
+Patient "1" --> "*" Requisition: has
+Requisition "1" --> "1" Interval: repeats
+Patient "1" --> "1" Appointment: makes
+
+@enduml
+---------------------2/5---------:
+error_list: 3 categories changed, 13 insertions(+), 5 deletions(-)
+- **enumeration**: 1 insertions(+), 0 deletions(-)
+  added: TestType
+- **class**: 9 insertions(+), 0 deletions(-)
+  added: Lab, Test, Interval, Result, Appointment, Report, Doctor, Patient, Requisition
+- **relationships**: 3 insertions(+), 5 deletions(-)
+  added: Requisition "1" --> "*" Test, Test "1" --> "0..1" Result, Requisition "1" --> "1" Interval
+  absent: Requisition "1" -- "*" TestGroup (testGroup), Requisition "*" -- "*" RequisitionItem (items), TestGroup "*" -- "*" Test (tests), Test "1" -- "1" Appointment (appointment), Lab "1" -- "*" BusinessHour (businessHours)
+Summary_rules:```rule
++ Rule 1: Use existing enumerations when defining attributes with limited options.
++ Rule 2: Avoid introducing new classes without a clear purpose or relationship to the existing model.
++ Rule 3: Ensure that relationships between classes are accurately represented based on the system description.
++ Rule 4: Clearly define the cardinality and directionality of relationships between classes.
++ Rule 5: Maintain consistency in the naming and structure of classes to enhance model clarity.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    XRAY
+    OTHERS
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+}
+
+class Requisition {
+    - validFromDate: date
+    - repetitionTimes: int
+    - repetitionInterval: enum Interval
+    - tests: List<Test>
+}
+
+class Test {
+    - duration: int
+    - result: enum Result
+    - report: string
+}
+
+class Lab {
+    - labAddress: string
+    - businessHours: string
+    - registrationNumber: string
+}
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+enum Result {
+    NEGATIVE
+    POSITIVE
+}
+
+Doctor "1" --> "0..*" Requisition : creates
+Patient "1" --> "0..*" Requisition : has
+Requisition "1" --> "1..*" Test : includes
+Test "1" --> "1" TestType : belongs to
+Requisition "1" --> "1" Patient : for
+Requisition "1" --> "1" Doctor : prescribed by
+Lab "1" --> "0..*" Requisition : schedules
+
+@enduml
+---------------------3/5---------:
+error_list: 3 categories changed, 6 insertions(+), 8 deletions(-)
+- **enumeration**: 1 insertions(+), 0 deletions(-)
+  added: TestType
+- **class**: 5 insertions(+), 0 deletions(-)
+  added: Lab, Doctor, Test, Patient, Requisition
+- **relationships**: 0 insertions(+), 8 deletions(-)
+  added: []
+  absent: Requisition "1" -- "1" Doctor (doctor), Requisition "1" -- "1" Patient (patient), Requisition "1" -- "*" TestGroup (testGroup), Requisition "*" -- "*" RequisitionItem (items), TestGroup "*" -- "*" Test (tests), Test "1" -- "1" Appointment (appointment), Appointment "1" -- "1" Lab (lab), Lab "1" -- "*" BusinessHour (businessHours)
+Summary_rules:```rule
++ Rule 1: Define relevant classes that represent the main entities in the system.
++ Rule 2: Enumerations should be used to represent fixed sets of values.
++ Rule 3: Establish relationships between classes to depict their associations.
++ Rule 4: Clearly define attributes for each class to capture their essential information.
++ Rule 5: Use descriptive and meaningful names for classes, attributes, and relationships.
++ Rule 6: Follow consistency in modeling by maintaining standard notation and structure.
+```
+Improve_result:```plantuml
+@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    XRAY
+    ULTRASOUND
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + createRequisition()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    - tests: Test[]
+    + makeAppointment()
+}
+
+class Test {
+    - duration: int
+    - repetitions: int
+    - interval: string
+    - result: string
+    - report: string
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - registrationNumber: int
+    - fees: int
+    - confirmationNumber: int
+    - appointmentDate: date
+    - startTime: time
+    - endTime: time
+    + specifyTestDuration()
+    + specifyRepetitions()
+    + changeAppointment()
+}
+
+Doctor "1" -- "*" Test : prescribes
+Patient "1" -- "*" Test : needs
+Test "1" -- "1" TestType : belongs to
+Lab "1" -- "*" Appointment : schedules
+
+@enduml
+```
+---------------------4/5---------:
+error_list: 3 categories changed, 8 insertions(+), 7 deletions(-)
+- **enumeration**: 1 insertions(+), 0 deletions(-)
+  added: TestType
+- **class**: 6 insertions(+), 0 deletions(-)
+  added: Appointment, Lab, Doctor, Test, Patient, Requisition
+- **relationships**: 1 insertions(+), 7 deletions(-)
+  added: Patient "1" -- "1" Appointment
+  absent: Requisition "1" -- "1" Doctor (doctor), Requisition "1" -- "1" Patient (patient), Requisition "1" -- "*" TestGroup (testGroup), Requisition "*" -- "*" RequisitionItem (items), TestGroup "*" -- "*" Test (tests), Test "1" -- "1" Appointment (appointment), Lab "1" -- "*" BusinessHour (businessHours)
+Summary_rules:```rule
++ Rule 1: Define all classes related to the system explicitly.
++ Rule 2: Ensure each class has the necessary attributes to represent its characteristics.
++ Rule 3: Clearly establish relationships between classes to depict their connections.
+```
+Improve_result:```plantuml
+enum TestType {
+    BLOOD
+    ULTRASOUND
+    X_RAY
+    URINE
+    STOOL
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: Image
+    - fullName: String
+    - address: String
+    - phoneNumber: String
+    + createRequisition()
+    + viewResults()
+}
+
+class Patient {
+    - healthNumber: String
+    - firstName: String
+    - lastName: String
+    - dateOfBirth: Date
+    - address: String
+    - phoneNumber: String
+    + makeAppointment()
+    + viewResults()
+}
+
+class Requisition {
+    - doctor: Doctor
+    - patient: Patient
+    - validFromDate: Date
+    - tests: List<Test>
+    - repetitionInterval: int
+    - repetitionPattern: Interval
+    + addTest()
+    + repeatTests()
+}
+
+class Test {
+    - duration: int
+    - type: TestType
+}
+
+class Appointment {
+    - patient: Patient
+    - lab: Lab
+    - confirmationNumber: int
+    - date: Date
+    - startTime: Time
+    - endTime: Time
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class Lab {
+    - address: String
+    - businessHours: List<BusinessHour>
+    - registrationNumber: int
+    - testsOffered: List<TestType>
+    - appointmentRequired: boolean
+    - sampleDropOffOnly: boolean
+    + setBusinessHours()
+    + setTestsOffered()
+}
+
+class BusinessHour {
+    - dayOfWeek: Day
+    - startTime: Time
+    - endTime: Time
+}
+
+enum Interval {
+    WEEKLY
+    MONTHLY
+    HALF_YEARLY
+    YEARLY
+}
+
+enum Day {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+}
+
+Doctor --|> Requisition
+Patient --|> Appointment
+Requisition *--* Test
+Appointment --> Lab
+BusinessHour "1" --o Lab
+```
+---------------------5/5---------:
+error_list: 3 categories changed, 8 insertions(+), 8 deletions(-)
+- **enumeration**: 1 insertions(+), 0 deletions(-)
+  added: TestType
+- **class**: 7 insertions(+), 0 deletions(-)
+  added: Appointment, Lab, BusinessHour, Doctor, Test, Patient, Requisition
+- **relationships**: 0 insertions(+), 8 deletions(-)
+  added: []
+  absent: Requisition "1" -- "1" Doctor (doctor), Requisition "1" -- "1" Patient (patient), Requisition "1" -- "*" TestGroup (testGroup), Requisition "*" -- "*" RequisitionItem (items), TestGroup "*" -- "*" Test (tests), Test "1" -- "1" Appointment (appointment), Appointment "1" -- "1" Lab (lab), Lab "1" -- "*" BusinessHour (businessHours)
+Summary_rules:```rule
++ Rule 1: Define all necessary classes based on the system description.
++ Rule 2: Make sure to include all required attributes and relationships within the classes.
++ Rule 3: Clearly define enumerations for any relevant attributes that have predefined values.
++ Rule 4: Ensure proper naming conventions for classes, attributes, and relationships.
++ Rule 5: Establish clear connections between classes through appropriate relationships.
++ Rule 6: Include all necessary operations or behaviors within the classes if specified in the system description.
++ Rule 7: Avoid unnecessary duplication of information across classes.
+```
+Improve_result:@startuml
+
+enum TestType {
+    BLOOD
+    URINE
+    STOOL
+    XRAY
+    ULTRASOUND
+    MRI
+    ECG
+}
+
+class Doctor {
+    - practitionerNumber: int
+    - signature: image
+    - fullName: string
+    - address: string
+    - phoneNumber: string
+    + createRequisition()
+    + viewTestResults()
+}
+
+class Patient {
+    - healthNumber: string
+    - firstName: string
+    - lastName: string
+    - dateOfBirth: date
+    - address: string
+    - phoneNumber: string
+    + makeAppointment()
+    + viewTestResults()
+}
+
+class Requisition {
+    - validFromDate: date
+    - repeatTimes: int
+    - repeatInterval: string
+    - doctor: Doctor
+    - patient: Patient
+    - tests: TestType[]
+    + addTest(type: TestType)
+}
+
+class Appointment {
+    - confirmationNumber: string
+    - date: date
+    - startTime: time
+    - endTime: time
+    - labName: string
+    - labRegistrationNumber: string
+    - changeFee: double
+    - cancellationFee: double
+    - appointmentType: TestType
+    + changeAppointment()
+    + cancelAppointment()
+}
+
+class Lab {
+    - address: string
+    - businessHours: string
+    - fee: double
+    + scheduleTest()
+    + determineAvailability()
+}
+
+Doctor "1" -- "1" Requisition
+Patient "1" -- "n" Requisition
+Patient "1" -- "n" Appointment
+Appointment "1" -- "1" Lab
+Lab "n" -- "n" TestType
+
+@enduml

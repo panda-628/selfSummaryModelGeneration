@@ -7,71 +7,56 @@
             "URINE",
             "STOOL",
             ""
-        ],
-        "RepetitionInterval": [
-            "WEEKLY",
-            "MONTHLY",
-            "HALF_YEARLY",
-            "YEARLY",
-            ""
         ]
     },
     "class": {
         "Doctor": [
             "- practitionerNumber: int",
-            "- signature: Image",
-            "- fullName: String",
-            "- address: String",
-            "- phoneNumber: String",
-            "{static} - instance: Doctor",
+            "- fullName: string",
+            "- address: string",
+            "- phoneNumber: string",
+            "- signature: string",
+            "+ prescriptionRequisition()",
+            "+ viewTestResults()",
             ""
         ],
         "Patient": [
-            "- healthNumber: String",
-            "- firstName: String",
-            "- lastName: String",
-            "- dateOfBirth: Date",
-            "- address: String",
-            "- phoneNumber: String",
-            "- appointments: Appointment[]",
-            "{static} - instance: Patient",
+            "- healthNumber: string",
+            "- firstName: string",
+            "- lastName: string",
+            "- dateOfBirth: string",
+            "- address: string",
+            "- phoneNumber: string",
+            "+ bookAppointment()",
+            "+ viewTestResults()",
             ""
         ],
         "Requisition": [
             "- doctor: Doctor",
             "- patient: Patient",
-            "- tests: Test[]",
-            "- repetitionInterval: RepetitionInterval",
-            ""
-        ],
-        "Test": [
-            "- type: TestType",
-            "- durationInMinutes: int",
+            "- tests: List<TestType>",
+            "- validFromDate: string",
+            "- repeatInterval: string",
+            "- repeatTimes: int",
             ""
         ],
         "Lab": [
-            "- address: String",
-            "- businessHours: String",
-            "- registrationNumber: String",
-            "- fees: float",
-            "- appointments: Appointment[]",
-            "{static} - instance: Lab",
-            ""
-        ],
-        "Appointment": [
-            "- confirmationNumber: int",
-            "- date: Date",
-            "- startTime: Time",
-            "- endTime: Time",
+            "- address: string",
+            "- businessHours: string",
+            "- registrationNumber: int",
+            "- testsDuration: Map<TestType, int>",
+            "- appointmentTypes: List<TestType>",
+            "- appointmentFee: int",
+            "+ scheduleAppointment()",
+            "+ changeAppointment()",
+            "+ cancelAppointment()",
             ""
         ]
     },
     "relationships": [
-        "Doctor \"1\" --> \"many\" Requisition",
-        "Patient \"1\" --> \"many\" Appointment",
-        "Requisition \"1\" --> \"many\" Test",
-        "Requisition \"1\" --> RepetitionInterval",
-        "Test <-- Lab",
+        "Doctor -- Requisition",
+        "Patient -- Requisition",
+        "Requisition -- Lab",
         ""
     ]
 }

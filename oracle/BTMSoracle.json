@@ -13,19 +13,23 @@
             "-isSick: boolean"
         ],
         "DriverShiftAssignment": [
-            "-shiftType: ShiftType",
-            "-date: Date"
+            "-shiftType: ShiftType"
         ],
-        "BusRoute": [
-            "-routeNumber: integer",
+        "Bus": [
             "-licensePlate: String",
             "-isInRepair: boolean"
         ],
-        "BusRouteAssignment": []
+        "Route": [
+            "-routeNumber: integer"
+        ],
+        "BusRouteAssignment": [
+            "-date: Date"
+        ]
     },
     "relationships": [
         "Driver \"1\" -- \"*\" DriverShiftAssignment",
         "DriverShiftAssignment \"1\" -- \"1\" BusRouteAssignment",
-        "BusRouteAssignment \"1\" -- \"1\" BusRoute"
+        "BusRouteAssignment \"1\" -- \"1\" Bus",
+        "BusRouteAssignment \"1\" -- \"1\" Route"
     ]
 }

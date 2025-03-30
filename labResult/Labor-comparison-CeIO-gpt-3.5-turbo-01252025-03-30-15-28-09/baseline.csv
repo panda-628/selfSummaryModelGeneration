@@ -1,0 +1,621 @@
+---------------------1/10---------:
+Base_AI_answer:@startuml
+
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor Black
+}
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    WEDDING
+    OTHER
+}
+
+enum InvitationStatus {
+    REPLIED
+    NOT_REPLIED
+    ATTENDING
+    MAYBE_ATTENDING
+    CANNOT_ATTEND
+}
+
+class Organizer {
+    -String firstName
+    -String lastName
+    -String email
+    -String address
+    -String phone
+    -String password
+    +EventType eventType
+    +Date startTime
+    +Date endTime
+    +String occasion
+    +String location
+    +List<Attendee> invitedAttendees
+    -List<Task> eventChecklist
+    +addTask()
+    +inviteAttendee()
+    +viewInvitationStatus()
+}
+
+class Attendee {
+    -String firstName
+    -String lastName
+    -String email
+    -String password
+    +InvitationStatus invitationStatus
+    +List<Task> assignedTasks
+}
+
+class Task {
+    -String description
+    -Status status
+    +setStatus()
+}
+
+Organizer "1" -- "0..*" Attendee : organizes
+Organizer "1" *-- "0..*" Task : has
+Attendee "0..*" *-- "0..*" Task : has
+
+@enduml
+---------------------2/10---------:
+Base_AI_answer:@startuml
+
+enum Event {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  // Add more event types as needed
+}
+
+class Organizer {
+  -first_name: String
+  -last_name: String
+  -email: String
+  -postal_address: String
+  -phone_number: String
+  -password: String
+  +selectEvent(event: Event): void
+  +inviteAttendees(names: List<String>, emails: List<String>): void
+  +viewInvitationStatus(): void
+}
+
+class Event {
+  -start_date_time: DateTime
+  -end_date_time: DateTime
+  -occasion: String
+  -location: Location
+}
+
+class Location {
+  -name: String
+  -address: String
+}
+
+class Task {
+  -description: String
+  -status: TaskStatus
+}
+
+enum TaskStatus {
+  NEEDS_TO_BE_DONE
+  HAS_BEEN_DONE
+  NOT_APPLICABLE
+}
+
+class Attendee {
+  -first_name: String
+  -last_name: String
+  -email: String
+  -password: String
+  +createAccount(): void
+  +indicateAttendance(status: AttendanceStatus): void
+  +selectTasks(tasks: List<Task>): void
+}
+
+enum AttendanceStatus {
+  ATTENDING
+  MAYBE_ATTENDING
+  CANNOT_ATTEND
+}
+
+Organizer "1" --> "1..*" Task
+Organizer "1" --> "1" Event
+Organizer "1" --> "1..*" Attendee
+Event "1" --> "1" Location
+Task "1" --> "0..*" Attendee
+Attendee "1" --> "0..*" Task
+
+@enduml
+---------------------3/10---------:
+Base_AI_answer:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // Add more event kinds as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    + selectEventKind(eventKind: EventKind): void
+    + createEventKind(newEventKind: String): EventKind
+    + specifyEventDetails(startDate: Date, endDate: Date, occasion: String, location: Location): void
+    + inviteAttendees(attendees: List<Attendee>): void
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount(): void
+    + indicateAttendance(status: String): void
+}
+
+class Event {
+    - start_date_time: Date
+    - end_date_time: Date
+    - occasion: String
+    - location: Location
+    - attendees: List<Attendee>
+    + viewInvitationStatus(): void
+    + viewChecklist(): void
+    + addTask(task: String): void
+    + designateTaskForAttendee(task: String, attendee: Attendee): void
+}
+
+Organizer "1" --* "1..*" Event
+Organizer "1" -- Location
+Event "1" *-- "1..*" Attendee
+
+@enduml
+---------------------4/10---------:
+Base_AI_answer:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event types here
+}
+
+enum TaskStatus {
+    TO_DO
+    DONE
+    NOT_APPLICABLE
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - postal_address: String
+    - phone_number: String
+    + createEvent()
+    + inviteAttendees()
+    + manageTasks()
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount()
+    + respondToInvitation()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    + getEventSpecificChecklist()
+}
+
+class Location
+class Task {
+    - status: TaskStatus
+}
+
+Organizer "1" --> "1..*" Event: organizes
+Event "1" --> "1" EventKind: event_kind
+Event "1" --> "1" Location: location
+Event "1" --> "1..*" Organizer: attendees
+Event "1" --> "1..*" Task: tasks
+Organizer "1" --> "0..*" Task: designated_tasks
+Task "1" --> "0..1" Attendee: assigned_to
+
+@enduml
+---------------------5/10---------:
+Base_AI_answer:@startuml
+
+enum EventTypes {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // Add more event types as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    + selectEventType(eventType: EventTypes): void
+    + selectLocation(location: String): void
+    + inviteAttendees(attendeeList: List<Attendee>): void
+    + viewInvitationStatus(event: Event): void
+    + createEventChecklist(eventType: EventTypes): void
+    + addTaskToChecklist(task: Task): void
+    + designateTaskForAttendees(task: Task): void
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount(email: String, password: String): void
+    + indicateAttendanceStatus(status: String): void
+    + selectTasks(tasks: List<Task>): void
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: Location
+}
+
+class Task {
+    - name: String
+    - status: String
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+Organizer --> Event
+Attendee --> Event
+Organizer --> Task
+Attendee --> Task
+Organizer --> Location
+
+@enduml
+---------------------6/10---------:
+Base_AI_answer:@startuml
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more types as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    
+    + createEvent(type: EventType, start_date: Date, end_date: Date, location: Location): Event
+    + inviteAttendee(first_name: String, last_name: String, email: String): void
+    + addTask(task: Task): void
+    + designateTaskForAttendee(task: Task): void
+}
+
+class Event {
+    - type: EventType
+    - start_date: Date
+    - end_date: Date
+    - location: Location
+    - attendees: List<Attendee>
+    - tasks: List<Task>
+    
+    + addAttendee(attendee: Attendee): void
+    + updateAttendeeStatus(attendee: Attendee, status: AttendeeStatus): void
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - status: AttendeeStatus
+    
+    + respondToInvitation(status: AttendeeStatus): void
+    + selectTasks(tasks: List<Task>): void
+}
+
+class Location {
+    - name: String
+    - address: String
+    
+}
+
+class Task {
+    - description: String
+    - status: TaskStatus
+    
+}
+
+enum AttendeeStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+}
+
+enum TaskStatus {
+    TO_DO
+    DONE
+    NOT_APPLICABLE
+}
+
+Organizer "1" --> "1..*" Event
+Organizer "1" --> "0..*" Attendee
+Event "0..*" --> "1..*" Attendee
+Event "1" --> "0..*" Task
+Attendee "1" --> "0..*" Task
+
+@enduml
+---------------------7/10---------:
+Base_AI_answer:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // Add more event kinds as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    + selectEventKind(eventKind: EventKind): void
+    + specifyDateTime(start_date: Date, end_date: Date): void
+    + specifyLocation(location: String, address: String): void
+    + inviteAttendees(attendee_names: List<String>, attendee_emails: List<String): void
+    + viewInvitationStatus(): void
+    + selectEvent(eventName: String): void
+    + indicateTaskStatus(task_name: String, status: String): void
+    + addTask(task_name: String): void
+    + designateAttendeeTask(task_name: String, attendee_name: String): void
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount(): void
+    + indicateAttendanceStatus(status: String): void
+    + selectTasks(tasks: List<String>): void
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class EventChecklist {
+    - tasks: List<String>
+    + indicateTaskStatus(task_name: String, status: String): void
+    + addTask(task_name: String): void
+}
+
+Organizer "1" -- "1..n" Organizer: requires
+Organizer "1" -- "1..*" Attendee: invites
+Attendee "0..*" -- "1" EventChecklist: views
+
+@enduml
+---------------------8/10---------:
+Base_AI_answer:@startuml
+
+enum EventTypes {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // Add more event types as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    - event_type: EventTypes
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + createChecklist()
+    + addTask()
+}
+
+class Event {
+    - start_date_time: Date
+    - end_date_time: Date
+    - occasion: String
+    - location: Location
+    - attendees_list: List<Attendee>
+}
+
+class Location {
+    - name: String
+    - address: String
+    + addLocation()
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - attendance_status: AttendanceStatus
+    - tasks: List<Task>
+    + createAccount()
+    + respondToInvitation()
+    + selectTasks()
+}
+
+enum AttendanceStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    CANNOT_ATTEND
+}
+
+class Task {
+    - description: String
+    - status: TaskStatus
+}
+
+enum TaskStatus {
+    TO_DO
+    DONE
+    NOT_APPLICABLE
+}
+
+Organizer "1" --> "1..*" Attendee
+Organizer "1" --> "1" Event
+Event "1" --> "1" Location
+Event "1" --> "1..*" Task
+Task "1" --> "1" Attendee
+Attendee "1" --> "0..*" Task
+
+@enduml
+---------------------9/10---------:
+Base_AI_answer:@startuml
+
+enum EventType {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  WEDDING
+  OTHER
+}
+
+class Organizer {
+  - String firstName
+  - String lastName
+  - String email
+  - String address
+  - String phone
+  - String password
+  - List<EventType> eventTypes
+  + createEvent()
+  + inviteAttendees()
+  + viewInvitationStatus()
+  + createChecklist()
+  + designateTasksForAttendees()
+}
+
+class Event {
+  - Date startTime
+  - Date endTime
+  - String occasion
+  - Location location
+  - List<Attendee> attendees
+  + addAttendee()
+  + removeAttendee()
+}
+
+class Location {
+  - String name
+  - String address
+}
+
+class Attendee {
+  - String firstName
+  - String lastName
+  - String email
+  - List<Task> tasks
+  + createAccount()
+  + respondToInvitation()
+  + selectTasks()
+}
+
+class Task {
+  - String description
+  - boolean isDone
+  - boolean isApplicable
+}
+
+Organizer "1" -- "1..*" Event
+Organizer "1" -- "1..*" Location
+Event "1" -- "0..*" Attendee
+Attendee "0..*" -- "0..*" Task
+
+@enduml
+---------------------10/10---------:
+Base_AI_answer:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // other event kinds
+}
+
+enum EventStatus {
+    OPEN
+    CLOSED
+}
+
+class User {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Event {
+    - start_date_time: Date
+    - end_date_time: Date
+    - occasion: String
+    - location: Location
+}
+
+class Organizer {
+    - events_to_plan: List<Event>
+    + createNewEvent(): void
+    + inviteAttendees(eventId: Int, attendees: List<User>): void
+    + viewInvitationStatus(eventId: Int): void
+    + createTask(eventId: Int, taskName: String): void
+}
+
+class Attendee {
+    - tasks: List<String>
+    + createAccount(email: String, password: String): void
+    + confirmAttendance(eventId: Int, taskSelection: List<String>): void
+}
+
+User "1" -- "1" Organizer
+User "1" -- "1" Attendee
+Organizer "1" -- "*" Event
+Event "*" -- "1" Location
+Organizer "1" -- "0..*" Attendee
+
+@enduml

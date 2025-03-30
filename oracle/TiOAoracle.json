@@ -1,5 +1,5 @@
 {
-    "enumerations": {
+    "enumeration": {
         "TileKind": [
             "NORMAL",
             "ACTION",
@@ -13,7 +13,7 @@
             "LOSE_YOUR_NEXT_TURN"
         ]
     },
-    "classes": {
+    "class": {
         "PlayingGame": [
             "currentTurn: integer",
             "nextAction: integer",

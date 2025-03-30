@@ -1,6 +1,6 @@
 {
-    "enumerations": {},
-    "classes": {
+    "enumeration": {},
+    "class": {
         "User": [
             "username: String",
             "password: String"

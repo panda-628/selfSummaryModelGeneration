@@ -1,5 +1,5 @@
 {
-    "enumerations": {
+    "enumeration": {
         "TaskType": [
             "NEEDED",
             "DONE",
@@ -12,7 +12,7 @@
             "NOT_ATTENDING"
         ]
     },
-    "classes": {
+    "class": {
         "Event": [
             "name: String",
             "startDateTime: Date",

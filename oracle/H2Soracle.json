@@ -1,6 +1,6 @@
 {
-    "enumerations": {},
-    "classes": {
+    "enumeration": {},
+    "class": {
         "Route": [
             "date: Date"
         ],

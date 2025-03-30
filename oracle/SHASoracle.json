@@ -1,6 +1,6 @@
 
 {
-    "enumerations": {
+    "enumeration": {
         "CommandStatus": [
             "REQUESTED",
             "COMPLETED",
@@ -17,7 +17,7 @@
             "EQUAL"
         ]
     },
-    "classes": {
+    "class": {
         "SmartHome": [
             "physicalAddress: String"
         ],

@@ -1,5 +1,5 @@
 {
-    "enumerations": {
+    "enumeration": {
         "DayOfWeek": [
             "MONDAY",
             "TUESDAY",
@@ -21,7 +21,7 @@
             "PAID"
         ]
     },
-    "classes": {
+    "class": {
         "User": [
             "name: String",
             "email: String"

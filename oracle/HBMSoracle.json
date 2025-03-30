@@ -1,5 +1,5 @@
 {
-    "enumerations": {
+    "enumeration": {
         "RoomType": [
             "SINGLE",
             "DOUBLE",
@@ -16,7 +16,7 @@
             "PAY_AT_HOTEL"
         ]
     },
-    "classes": {
+    "class": {
         "Traveller": [
             "name: String",
             "travelPreferences: String[]",

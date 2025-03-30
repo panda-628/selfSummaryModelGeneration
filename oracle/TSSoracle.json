@@ -1,5 +1,5 @@
 {
-    "enumerations": {
+    "enumeration": {
         "Position": [
             "GK",
             "RB",
@@ -22,7 +22,7 @@
             "NOT_GOOD_SIGNING"
         ]
     },
-    "classes": {
+    "class": {
         "Club": [],
         "Employee": [
             "name: String"

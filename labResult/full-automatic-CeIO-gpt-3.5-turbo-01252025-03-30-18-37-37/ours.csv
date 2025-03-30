@@ -1,0 +1,628 @@
+---------------------1/10---------:
+Summary_rules:```rule
++ Rule 1: Make sure to include all the necessary attributes and methods as mentioned in the system description for each class.
++ Rule 2: Ensure that the relationships between the classes match those specified in the system description.
+```
+---------------------1/10---------:
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // Add more event kinds as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    - event_kind: EventKind
+    + createEvent()
+    + inviteAttendees()
+    + manageEvent()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: String
+    + addTask()
+    + designateTask()
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - RSVP_response: Enum {ATTENDING, MAYBE, NOT_ATTENDING}
+    + createAccount()
+    + selectTasks()
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+Organizer "1" --> "1..*" Event
+Organizer "1" --> "0..*" Attendee
+Event "1" --> "1" Location
+Event "1" --> "*" Task
+Organizer "0..*" --> "0..*" Task
+Attendee "1" --> "*" Task
+
+@enduml
+---------------------2/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all classes have appropriate relationships with other classes as needed.
++ Rule 2: Represent relationships accurately in terms of cardinality and direction.
+```
+---------------------2/10---------:
+Improve_result:@startuml
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    OTHER
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    + selectEventType(eventType: EventType): void
+    + specifyEventDetails(startDate: Date, endDate: Date, occasion: String, location: String): void
+    + inviteAttendees(listOfAttendees: List<Attendee>): void
+    + manageTaskList(eventType: EventType): void
+    + designateTaskForAttendees(task: String): void
+    + addNewTask(task: String): void
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - attendance_status: Enum {ATTENDING, MAYBE_ATTENDING, NOT_ATTENDING}
+    + createAccount(password: String): void
+    + selectAttendanceStatus(attendanceStatus: Enum): void
+    + selectTasks(tasks: List<String>): void
+}
+
+class Event {
+    - startDate: Date
+    - endDate: Date
+    - occasion: String
+    - location: String
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+Organizer "1" o-- "*" Event
+Organizer "1" -- "1..*" EventType
+Organizer "1" o-- "*" Attendee
+Organizer "0..1" *-- "*" Event
+Attendee "0..*" o-- "1" Event
+Event "1" o-- "*" Task
+Task "1" o-- "*" Attendee
+
+@enduml
+---------------------3/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all relationships between classes are accurately defined according to their cardinality and multiplicity.
++ Rule 2: Establish relationships between all relevant classes to represent the interactions and connections within the system.
+```
+---------------------3/10---------:
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event kinds as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    + selectEventKind(kind: EventKind): void
+    + specifyEventDetails(start_date: DateTime, end_date: DateTime, occasion: String, location: Location): void
+    + inviteAttendee(first_name: String, last_name: String, email: String): void
+    + viewInvitationStatus(): void
+    + addTaskToChecklist(task: Task): void
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - attending_status: String
+    + createAccount(): void
+    + indicateAttendanceStatus(status: String): void
+    + selectTasks(tasks: Task[]): void
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Task {
+    - description: String
+    - status: String
+}
+
+Organizer "1" --> "1..*" EventKind
+Organizer "1" --> "1..*" Location
+Organizer "1" --> "1..*" Task
+
+Attendee "1..*" --> "0..*" Task
+
+@enduml
+
+---------------------4/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that all classes, attributes, and relationships are consistent with the information provided in the system description and referenced answers.
++ Rule 2: Do not include any classes, attributes, or relationships that are not explicitly mentioned in the system description and referenced answers.
+```
+---------------------4/10---------:
+Improve_result:@startuml
+
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor Black
+}
+
+enum Event {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    + createEvent()
+    + inviteAttendee()
+    + viewInvitationStatus()
+    + addTaskToChecklist()
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - attending_status: Enum { ATTENDING, MAYBE, NOT_ATTENDING }
+    + selectTasks()
+}
+
+Organizer "1" -- "1..*" Event
+Organizer "1" -- "1" Location
+Organizer "1" -- "1..*" Attendee
+Event "1" -- "1" Location
+Event "1" -- "1..*" Attendee
+Event "1" -- "1..*" Task
+Task "1" -- "0..*" Attendee
+
+@enduml
+
+---------------------5/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that enumerations in the model match the correct provided enumerations.
++ Rule 2: Ensure that classes in the model have the correct attributes and methods as specified in the system description.
++ Rule 3: Ensure that all necessary attributes and methods are included in classes according to the system description.
++ Rule 4: Ensure that the attribute types and enum types are correct for each class in the model.
++ Rule 5: Ensure that the relationships in the model match the correct relationships specified in the system description.
+```
+---------------------5/10---------:
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event kinds as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + createChecklist()
+    + addNewTask()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: Location
+    + selectLocation()
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - attendance_status: AttendanceStatus
+}
+
+enum AttendanceStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    CANNOT_ATTEND
+}
+
+class Task {
+    - description: String
+    - status: TaskStatus
+}
+
+enum TaskStatus {
+    NEEDS_TO_BE_DONE
+    HAS_BEEN_DONE
+    NOT_APPLICABLE
+}
+
+Organizer "1" --> "1..*" Event: organizes
+Event "1" --> "1" Location: takes place at
+Organizer "1" --> "*" Attendee: invites
+Attendee "--" Task: responsible for
+
+@enduml
+```
+---------------------6/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all enum values are correctly listed.
++ Rule 2: Include all necessary methods in classes.
++ Rule 3: Ensure all necessary methods are included for all classes.
++ Rule 4: Pay close attention to the relationships between classes and their associations.
++ Rule 5: Include correct relationships between classes in the model.
+```
+---------------------6/10---------:
+Improve_result:```plantuml
+@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    OTHER
+}
+
+enum InvitationStatus {
+    REPLIED
+    NOT_REPLIED
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + addNewTask()
+    + designateTaskForAttendee()
+}
+
+class Event {
+    - start_date_time: String
+    - end_date_time: String
+    - occasion: String
+    - location: String
+    + selectLocation()
+    + addLocation()
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount()
+    + indicateAttendance()
+    + selectTasks()
+}
+
+class Task {
+    - description: String
+    - status: String
+}
+
+Organizer "1" --> "1..*" Event
+Organizer "1..*" --> "0..*" Attendee
+Event "1" -> "0..*" Task
+Attendee "0..*" -> "0..*" Task
+
+@enduml
+```
+---------------------7/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure that all enumerations match the provided list of correct enumerations.
++ Rule 2: Avoid adding additional attributes to classes that are not present in the correct classes.
++ Rule 3: Ensure that the relationships defined in the model match the relationships specified in the correct relationships.
+```
+---------------------7/10---------:
+Improve_result:@startuml
+
+enum EventKind {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  OTHER
+}
+
+class Organizer {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - postal_address: String
+  - phone_number: String
+  - password: String
+}
+
+class Event {
+  - start_date_time: Date
+  - end_date_time: Date
+  - occasion: String
+  - location: Location
+}
+
+class Location {
+  - name: String
+  - address: String
+}
+
+class Attendee {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - password: String
+}
+
+class Task {
+  - description: String
+  - status: Enum<TaskStatus>
+}
+
+enum TaskStatus {
+  NEEDS_TO_BE_DONE
+  HAS_BEEN_DONE
+  NOT_APPLICABLE
+}
+
+Organizer --> "1..*" Event
+Organizer "invites" Attendee : enters
+Event "consists of" Task : adds
+Task "can be designated for" Attendee : accomplishing
+Attendee -- Event : confirms attendance
+
+@enduml
+---------------------8/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all enumerations have the correct values specified.
++ Rule 2: Ensure class structures match the correct classes specified.
++ Rule 3: Verify the relationship multiplicities are correct in the model.
+```
+---------------------8/10---------:
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event kinds as needed
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    - event_kind: EventKind
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + manageEvent()
+    + addTask()
+    + designateTask()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: String
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount()
+    + respondToInvitation()
+}
+
+class Task {
+    - description: String
+    - status: TaskStatus
+}
+
+Organizer "1" --> "1..*" Event
+Organizer "1" --> "1..*" Task
+Organizer "1" --> "1..*" Attendee
+Event "1" --> "1" Location
+Event "1" *--> "1..*" Task
+Task "1" --> "1..*" Attendee
+
+@enduml
+
+---------------------9/10---------:
+Summary_rules:```rule
++ Rule 1: Include all necessary attributes for each class based on the system description.
++ Rule 2: Ensure that the relationships between classes align with the specified relationships in the system description.
++ Rule 3: Avoid adding methods to classes that are not described in the system description.
+```
+---------------------9/10---------:
+Improve_result:@startuml
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event types as needed
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class User {
+    + first_name: String
+    + last_name: String
+    + email: String
+    + postal_address: String
+    + phone_number: String
+    + password: String
+}
+
+class Organizer {
+    + is_attending: boolean
+}
+
+class Event {
+    + start_date_time: DateTime
+    + end_date_time: DateTime
+    + occasion: String
+    - location: Location
+}
+
+class Attendee {
+    - is_attending: boolean
+    + bring_item: String
+}
+
+class Invitation {
+    - status: String
+}
+
+User "1" --> "1" Organizer
+User "1" --> "1..*" Attendee
+Organizer "1" --> "*" Event
+Event "1" --> "1" Location
+Event "1" --> "*" Attendee
+Attendee "1" --> "1" Invitation
+Event "1" --> "*" Task
+Task "1" --> "*" Attendee
+Task "*" --> "*" TaskStatus
+
+@enduml
+---------------------10/10---------:
+Summary_rules:```rule
++ Rule 1: Ensure all necessary classes and their attributes are included in the class diagram.
++ Rule 2: Represent relationships between classes accurately in the class diagram.
+```
+---------------------10/10---------:
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    OTHER
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+    - event_kind: EventKind
+    + createEvent()
+    + inviteAttendees()
+    + manageEvent()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: String
+    + addLocation()
+    + addTask()
+    + designateTaskForAttendees()
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - attending_status: String
+}
+
+Organizer "1" --> "1..*" Attendee
+Organizer "1" --> "1" Event
+Event "1" *--> "1..*" Task
+Event "1" *--> "1..*" Location
+Task "1" *--> "1..*" Attendee
+
+@enduml

@@ -54,7 +54,7 @@ def semantic_compare(items_a, items_b, threshold=0.75):
     
     return add, miss
 
-def compare_files(generated_data, oracle_data, similarity_threshold=0.75):
+def compare_files(generated_data, oracle_data, similarity_threshold=0.6):
     """改进后的比较函数"""
     result = {
         'enumeration': {'add': [], 'miss': []},
@@ -66,6 +66,8 @@ def compare_files(generated_data, oracle_data, similarity_threshold=0.75):
     for key in ['enumeration', 'class']:
         gen_items = generated_data.get(key, [])
         ora_items = oracle_data.get(key, [])
+        print("CeIO原始的枚举：",ora_items)
+        print("CeIO生成的枚举：",gen_items)
         
         add, miss = semantic_compare(gen_items, ora_items, similarity_threshold)
         result[key]['add'] = add
@@ -102,16 +104,16 @@ def get_changes_summary(result):
         total_insertions += len(data['add'])
         total_deletions += len(data['miss'])
 
-    summary.append(f"{len(result)} categories changed, {total_insertions} insertions(+), {total_deletions} deletions(-)")
+    summary.append(f"{len(result)} categories changed, {total_insertions} incorrect(+), {total_deletions} omissions(-)")
 
     for category, data in result.items():
-        summary.append(f"- **{category}**: {len(data['add'])} insertions(+), {len(data['miss'])} deletions(-)")
+        summary.append(f"- **{category}**: {len(data['add'])} incorrect(+), {len(data['miss'])} omissions(-)")
         if data['add']:
-            summary.append("  added: " + ', '.join(data['add']))
+            summary.append("  incorrect: " + ', '.join(data['add']))
         else:
-            summary.append("  added: []")
+            summary.append("  incorrect: []")
         if data['miss']:
-            summary.append("  absent: " + ', '.join(data['miss']))
+            summary.append("  omissions: " + ', '.join(data['miss']))
 
     return '\n'.join(summary)
 

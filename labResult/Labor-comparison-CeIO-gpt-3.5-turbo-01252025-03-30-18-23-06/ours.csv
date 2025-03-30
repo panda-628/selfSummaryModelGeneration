@@ -1,0 +1,769 @@
+---------------------1/10---------:
+error_list: 3 categories changed, 7 incorrect(+), 12 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: EventKind
+  omissions: InvitationStatus, TaskType
+- **class**: 2 incorrect(+), 3 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, TaskTemplate
+- **relationships**: 4 incorrect(+), 7 omissions(-)
+  incorrect: Organizer "1" -- "1..*" Event, Organizer "1" -- "1" Location, Organizer "1" -- "1..*" Attendee, Attendee "1" -- "0..*" Task
+  omissions: Event "*" -- "*" Invitation (invitations), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Ensure that all relevant enumerations, classes, and relationships are identified and included in the model.
++ Rule 2: Use clear and consistent naming conventions for all elements in the model.
++ Rule 3: Clearly define the cardinality and direction of relationships between classes.
++ Rule 4: Include all necessary attributes and properties for each class in the model.
++ Rule 5: Make sure to capture associations between classes accurately, considering multiplicity and role names.
+```
+Improve_result:@startuml
+
+enum EventKind {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  WEDDING
+  CUSTOM
+}
+
+class Organizer {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - address: String
+  - phone_number: String
+  - password: String
+  + selectEventKind()
+  + createEventKind()
+  + specifyEventDetails()
+  + inviteAttendees()
+  + viewInvitationStatus()
+  + createChecklist()
+  + addTask()
+  + designateTaskForAttendees()
+}
+
+class Event {
+  - start_date_time: DateTime
+  - end_date_time: DateTime
+  - occasion: String
+  - location: Location
+}
+
+class Location {
+  - name: String
+  - address: String
+}
+
+class Attendee {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - password: String
+  + createAccount()
+  + indicateAttendance()
+  + selectTasks()
+}
+
+Organizer "1" --> "1..*" Attendee : invites
+Organizer "*" --> "1" Event : organizes
+Event "1" --> "0..*" Location : takes place
+Organizer "1" --> "0..*" Event : manages
+Attendee "0..*" --> "0..1" Event : attends
+Organizer "*" --> "*" Task : creates
+Task "1" --> "0..*" Attendee : designates
+
+@enduml
+---------------------2/10---------:
+error_list: 3 categories changed, 7 incorrect(+), 12 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: InvitationStatus
+- **class**: 2 incorrect(+), 3 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, TaskTemplate
+- **relationships**: 4 incorrect(+), 8 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Attendee, Organizer "1" --> "1" Event, Organizer "1" --> "1..*" Task, Attendee "1" --> "0..*" Task
+  omissions: Event "*" -- "*" Invitation (invitations), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Ensure that all relevant entities, attributes, and relationships are included in the model.
++ Rule 2: Avoid introducing new entities or attributes that are not explicitly mentioned in the system description.
++ Rule 3: Clearly define the cardinality and directionality of relationships between entities.
++ Rule 4: Use clear and descriptive names for entities, attributes, and relationships.
+```
+Improve_result:@startuml
+enum EventType {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  // Add more event types as needed
+}
+
+class Organizer {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - address: String
+  - phone_number: String
+  - password: String
+  + createEvent()
+  + inviteAttendees()
+  + viewInvitationStatus()
+  + createChecklist()
+  + addTask()
+  + designateTaskForAttendees()
+}
+
+class Event {
+  - start_date_time: DateTime
+  - end_date_time: DateTime
+  - occasion: String
+  - location: Location
+}
+
+class Location {
+  - name: String
+  - address: String
+}
+
+class Attendee {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - password: String
+  - attendance_status: AttendanceStatus
+  + createAccount()
+  + selectTasks()
+}
+
+enum AttendanceStatus {
+  ATTENDING
+  MAYBE_ATTENDING
+  CANNOT_ATTEND
+}
+
+Organizer "1" --> "1..n" Event : organizes
+Organizer "1..n" --> "1..n" Attendee : invites
+Attendee "1" --> "0..1" Event : attends
+Event "1" --> "0..n" Location : takes place at
+Event "1" --> "1" EventType : has type
+Event "1" --> "1..n" Organizer : manages
+Organizer "1..n" --> "1..n" Task : creates
+Task "0..n" --> "0..1" Attendee : designated to
+
+@enduml
+---------------------3/10---------:
+error_list: 3 categories changed, 6 incorrect(+), 13 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: TaskType
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, Location, TaskTemplate
+- **relationships**: 3 incorrect(+), 8 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Attendee, Organizer "1" --> "1" Event, Task "1" --> "0..*" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Define all necessary enumerations and classes relevant to the system domain.
++ Rule 2: Ensure all relationships between classes are accurately represented in the class diagram.
++ Rule 3: Include all important attributes for each class.
++ Rule 4: Clearly depict cardinality and multiplicities in the relationships between classes.
++ Rule 5: Use appropriate naming conventions for classes, attributes, and relationships.
++ Rule 6: Include all essential entities and their relationships in the class diagram.
+```
+Improve_result:@startuml
+' Define enums
+enum EventTypes {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  OTHER
+}
+
+enum InvitationStatus {
+  REPLIED
+  NOT_REPLIED
+  ATTENDING
+  MAYBE_ATTENDING
+  NOT_ATTENDING
+}
+
+enum TaskStatus {
+  TO_BE_DONE
+  DONE
+  NOT_APPLICABLE
+}
+
+' Define classes
+class Organizer {
+  - first_name: String
+  - last_name: String
+  - email_address: String
+  - postal_address: String
+  - phone_number: String
+  - password: String
+  + createEvent()
+  + inviteAttendees()
+  + manageEvent()
+}
+
+class Event {
+  - start_date_time: DateTime
+  - end_date_time: DateTime
+  - occasion: String
+  - location: Location
+  + addTask()
+  + designateTaskForAttendees()
+}
+
+class Location {
+  - name: String
+  - address: String
+}
+
+class Attendee {
+  - first_name: String
+  - last_name: String
+  - email_address: String
+  - password: String
+  - invitation_status: InvitationStatus
+  + createAccount()
+  + selectTasks()
+}
+
+class Task {
+  - description: String
+  - status: TaskStatus
+}
+
+' Define relationships
+Organizer "1" -- "1..*" Event : organizes
+Organizer "1" -- "1..*" Attendee : invites
+
+Event "1" -- "1" Location : takes place at
+Event "1" -- "0..*" Task : has tasks
+
+Task "0..1" -- "1..*" Attendee : designated to
+
+@enduml
+```
+---------------------4/10---------:
+error_list: 3 categories changed, 6 incorrect(+), 13 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: TaskType
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, Location, TaskTemplate
+- **relationships**: 3 incorrect(+), 8 omissions(-)
+  incorrect: Organizer "1" --> "0..*" Attendee, Organizer "1" --> "1" Event, Attendee "0..*" --> "0..*" Task
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Define all enumerations relevant to the system.
++ Rule 2: Ensure that all classes necessary for the system are modeled.
++ Rule 3: Specify all relationships between classes accurately.
++ Rule 4: Use cardinalities correctly to represent the multiplicity of relationships.
++ Rule 5: Include all necessary attributes in classes.
+```
+Improve_result:@startuml
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    WEDDING
+    OTHER
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    + selectEventType()
+    + specifyEventDetails()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + viewEventChecklist()
+    + addTaskToChecklist()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: Location
+    + selectLocation()
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    + createAccount()
+    + respondToInvitation()
+    + selectTasks()
+}
+
+class Task {
+    - description: String
+    - status: Status
+}
+
+enum Status {
+    TO_DO
+    DONE
+    NOT_APPLICABLE
+}
+
+Organizer -- EventType
+Organizer *-- Event: organizes
+Organizer *-- Attendee: invites
+Event *-- Location: takes place at
+Attendee -- Task: accomplishes
+
+@enduml
+---------------------5/10---------:
+error_list: 3 categories changed, 6 incorrect(+), 15 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventTypes
+  omissions: InvitationStatus
+- **class**: 2 incorrect(+), 5 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, Event, EventKind, TaskTemplate
+- **relationships**: 3 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" -- "1..*" Attendee, Task "1" -- "0..*" Attendee, Location "1" -- "0..*" Organizer
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Include all relevant enumerations related to the system domain.
++ Rule 2: Use clear and descriptive class names that reflect the roles and entities in the system.
++ Rule 3: Define all necessary relationships between classes to capture the interactions and associations accurately.
+```
+Improve_result:@startuml
+
+enum EventKind {
+    BirthdayParty
+    GraduationParty
+    Wedding
+    Other
+}
+
+class User {
+    + first_name: String
+    + last_name: String
+    + email: String
+    + address: String
+    + phone_number: String
+    + password: String
+}
+
+class Organizer {
+    + selectEventKind(kind: EventKind): void
+    + specifyEventDetails(date: Date, occasion: String, location: Location): void
+    + inviteAttendees(attendees: List<Attendee>): void
+    + viewInvitationStatus(event: Event): void
+    + createEventChecklist(event: Event): void
+}
+
+class Attendee {
+    + createAccount(email: String, password: String): void
+    + respondToInvitation(response: String): void
+    + selectTasks(tasks: List<Task>): void
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Event {
+    + start_date: Date
+    + end_date: Date
+    + occasion: String
+    + location: Location
+}
+
+class Task {
+    + description: String
+    + status: String
+}
+
+User -- Organizer
+User -- Attendee
+Organizer "1" -- "1..*" Event
+Organizer "1" -- Location
+Event "1" *-- "0..*" Task
+Attendee "0..*" -- "0..*" Task
+
+@enduml
+---------------------6/10---------:
+error_list: 3 categories changed, 7 incorrect(+), 16 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: Event
+  omissions: InvitationStatus, TaskType
+- **class**: 2 incorrect(+), 5 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, Event, EventKind, TaskTemplate
+- **relationships**: 4 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Task, Task "1..*" --> "1" Attendee, Location "1" --> "1..*" Organizer, Event "1" --> "1..*" Organizer
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Include all necessary enumerations, classes, and relationships based on the system description.
++ Rule 2: Ensure accuracy in defining the relationships between classes and the cardinality of those relationships.
++ Rule 3: Clearly differentiate between entities such as Organizer, Attendee, Invitation, User, Event, Location, EventKind, TaskTemplate, etc.
++ Rule 4: Use meaningful names for classes, attributes, and relationships to enhance clarity and understanding.
+```
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    WEDDING
+    OTHER
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - address: String
+    - phone_number: String
+    - password: String
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+}
+
+class Invitation {
+    - status: String
+}
+
+class TaskTemplate {
+    - description: String
+}
+
+Organizer "1" -- "1..n" Event
+Event "1" -- "1" EventKind
+Event "1" -- "1" Location
+Organizer "1" -- "0..n" Attendee
+Attendee "0..n" -- "1" Invitation
+Event "1" -- "0..n" TaskTemplate
+
+@enduml
+
+---------------------7/10---------:
+error_list: 3 categories changed, 4 incorrect(+), 14 omissions(-)
+- **enumeration**: 2 incorrect(+), 2 omissions(-)
+  incorrect: EventStatus, EventKind
+  omissions: InvitationStatus, TaskType
+- **class**: 2 incorrect(+), 3 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, TaskTemplate
+- **relationships**: 0 incorrect(+), 9 omissions(-)
+  incorrect: []
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Include all necessary enumerations related to the system domain.
++ Rule 2: Enumerations should accurately represent the attributes within the system.
+
++ Rule 1: Define all essential classes that are part of the system.
++ Rule 2: Class attributes should reflect the relevant properties of the entities they represent.
++ Rule 3: Ensure all key classes are included in the model.
+
++ Rule 1: Establish all relevant relationships between classes in the system.
++ Rule 2: Clearly define the cardinality and multiplicity of relationships.
++ Rule 3: Include all essential relationships necessary for capturing the system interactions.
+```
+Improve_result:```plantuml
+@startuml
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    WEDDING
+    OTHER
+}
+
+enum TaskStatus {
+    TO_DO
+    DONE
+    NOT_APPLICABLE
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email_address: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: Location
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email_address: String
+}
+
+class Task {
+    - description: String
+    - status: TaskStatus
+}
+
+Organizer "1" -- "1..*" Event : organizes
+Event "1" *-- "1" Location : takes place at
+Event "1" *-- "*" Attendee : invites
+Attendee "1" *-- "1" Task : selects tasks
+
+@enduml
+```
+---------------------8/10---------:
+error_list: 3 categories changed, 9 incorrect(+), 16 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: EventTypes
+  omissions: InvitationStatus, TaskType
+- **class**: 3 incorrect(+), 5 omissions(-)
+  incorrect: Checklist, Attendee, Organizer
+  omissions: Invitation, User, Location, Task, TaskTemplate
+- **relationships**: 5 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Event, Organizer "1" --> "1..*" Attendee, Event "1" --> "1..*" Attendee, Event "1" --> "1" Checklist, Checklist "1..*" --> "1..*" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Enumerate all relevant types and statuses in the system.
++ Rule 2: Define classes for all key entities in the system and ensure their attributes are properly specified.
++ Rule 3: Establish clear and accurate relationships between classes to represent associations correctly.
+```
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event types as needed
+}
+
+class Organizer {
+    - first_name: string
+    - last_name: string
+    - email: string
+    - address: string
+    - phone_number: string
+    - password: string
+    + selectEventKind()
+    + specifyEventDetails()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + addTaskToList()
+    + designateTaskForAttendees()
+}
+
+class Event {
+    - start_date_time: datetime
+    - end_date_time: datetime
+    - occasion: string
+    - location: string
+    + addLocation()
+}
+
+class Attendee {
+    - first_name: string
+    - last_name: string
+    - email: string
+    - password: string
+    - attendance_status: enum {ATTENDING, MAYBE_ATTENDING, NOT_ATTENDING}
+    + createAccount()
+    + selectAttendanceStatus()
+    + selectTasks()
+}
+
+class Checklist {
+    - task_name: string
+    - task_status: enum {TO_DO, DONE, NOT_APPLICABLE}
+}
+
+Organizer "1" ---> "1..*" Event: organizes
+Organizer "1" ---> "0..*" Event: manages
+Organizer "1" ---> "0..*" Attendee: invites
+Event "1" ---> "1..*" Attendee: has attendees
+Event "1" ---> "1" EventKind: has event kind
+Event "1" ---> "1..*" Checklist: has checklist
+
+@enduml
+---------------------9/10---------:
+error_list: 3 categories changed, 8 incorrect(+), 14 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: TaskType
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Attendee, Organizer
+  omissions: Invitation, User, Location, TaskTemplate
+- **relationships**: 5 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "0..n" Event, Event "0..n" --> "0..n" Attendee, Organizer "0..n" --> "0..n" Attendee, Task "1" --> "0..n" Organizer, Task "0..n" --> "0..n" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Include all necessary entities and their attributes in the class diagram.
++ Rule 2: Define relationships accurately between entities in the class diagram.
++ Rule 3: Ensure that all enumerations related to the system are properly represented.
++ Rule 4: Use clear and consistent naming conventions for classes and attributes.
+```
+Improve_result:@startuml
+
+enum EventType {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  WEDDING
+  OTHER
+}
+
+class Organizer {
+  - first_name: string
+  - last_name: string
+  - email: string
+  - address: string
+  - phone_number: string
+  - password: string
+  + selectEventType()
+  + specifyEventDetails()
+  + inviteAttendees()
+  + viewInvitationStatus()
+  + createEventChecklist()
+  + addTasks()
+  + designateTasks()
+  + manageEvent()
+}
+
+class Event {
+  - start_date_time: datetime
+  - end_date_time: datetime
+  - occasion: string
+  - location: string
+}
+
+class Location {
+  - name: string
+  - address: string
+}
+
+class Attendee {
+  - first_name: string
+  - last_name: string
+  - email: string
+  - RSVP: string
+  - selected_tasks: list<string>
+}
+
+Organizer "1" -- "1..*" Event
+Organizer "1" *-- "0..*" Attendee
+Organizer "1" *-- "0..*" Task
+Event "1" *-- "0..1" Location
+Attendee "0..*" *-- "0..*" Task
+
+@enduml
+---------------------10/10---------:
+error_list: 3 categories changed, 9 incorrect(+), 17 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: Event
+  omissions: InvitationStatus, TaskType
+- **class**: 3 incorrect(+), 6 omissions(-)
+  incorrect: Status, Attendee, Organizer
+  omissions: Invitation, User, Location, Event, EventKind, TaskTemplate
+- **relationships**: 5 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "1" Event, Organizer "1" --> "1" Task, Organizer "1" --> "1" Status, Attendee "0..*" --> "0..*" Task, Attendee "1" --> "1" Status
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:```rule
++ Rule 1: Include all necessary enumerations, classes, and relationships that are essential for describing the system.
++ Rule 2: Ensure the relationships between classes accurately represent the connections and associations within the system.
++ Rule 3: Define classes with attributes that capture relevant information for each entity in the system.
++ Rule 4: Specify relationships between classes to show how entities interact and communicate with each other.
+```
+Improve_result:@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more event kinds as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    - postal_address: String
+    - phone_number: String
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + manageEvent()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    - location: Location
+    + specifyLocation()
+    + createChecklist()
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount()
+    + indicateAttendance()
+    + selectTasks()
+}
+
+class Task {
+    - description: String
+    - status: Status
+}
+
+enum Status {
+    NEEDS_TO_BE_DONE
+    HAS_BEEN_DONE
+    NOT_APPLICABLE
+}
+
+Organizer "1" -- "1..*" Event
+Event "1" *-- "1" Location
+Organizer "1" -- "0..*" Attendee
+Attendee "1" *-- "0..*" Task
+
+@enduml

@@ -1,0 +1,989 @@
+---------------------1/10---------:
+error_list: 3 categories changed, 3 incorrect(+), 14 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventType
+  omissions: InvitationStatus
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: Location, Invitation, TaskTemplate, User
+- **relationships**: 0 incorrect(+), 9 omissions(-)
+  incorrect: []
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Here are the derived modeling rules based on the analysis of the student's errors and the system description:
+
+```rule
++ Rule 1: Always identify and model enumerations for attributes with a fixed set of possible values (e.g., status types, event types).
++ Rule 2: Do not omit enumerations that represent critical state or type information in the system (e.g., invitation status).
+
++ Rule 3: Ensure all key domain entities mentioned in the system description are represented as classes (e.g., Location, TaskTemplate).
++ Rule 4: Avoid creating separate classes for roles that share core attributes; instead, use inheritance or role-based associations (e.g., Organizer/Attendee as subclasses of User).
+
++ Rule 5: Model all meaningful relationships between classes, especially composition/aggregation for dependent entities (e.g., Event-Location, Event-Task).
++ Rule 6: Never omit relationships that show participation constraints (e.g., 1-to-1, 1-to-many) between entities.
++ Rule 7: Always represent role-based relationships explicitly (e.g., User as Organizer/Attendee for Events).
++ Rule 8: Model template relationships separately from instance relationships (e.g., EventKind-TaskTemplate vs. Event-Task).
+```
+
+These rules focus on improving fundamental modeling practices rather than addressing specific errors in the student's submission. They emphasize completeness, proper representation of domain concepts, and clear relationship modeling.
+Improve_result:```plantuml
+@startuml
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // Add more event types as needed
+}
+
+class Organizer {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - postal_address: String
+    - phone_number: String
+    - password: String
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + manageEvent()
+}
+
+class Attendee {
+    - first_name: String
+    - last_name: String
+    - email: String
+    - password: String
+    + createAccount()
+    + respondToInvitation()
+    + selectTasks()
+}
+
+class Event {
+    - start_date_time: DateTime
+    - end_date_time: DateTime
+    - occasion: String
+    + addLocation()
+    + addTasks()
+    + viewChecklist()
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+EventKind -- Event
+Organizer --|> User
+Attendee --|> User
+Event *-- Location: held at
+Organizer "1"--"*" Event: organizes
+Attendee "0..1"--"*" Event: attends
+Event <-- Task: has
+Attendee <-- Task: does
+
+class Task {
+    - description: String
+    - status: Status
+    + markAsDone()
+    + markAsNotApplicable()
+}
+
+enum Status {
+    NEEDS_TO_BE_DONE
+    DONE
+    NOT_APPLICABLE
+}
+
+@enduml
+```
+---------------------2/10---------:
+error_list: 3 categories changed, 7 incorrect(+), 15 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: InvitationStatus
+- **class**: 2 incorrect(+), 5 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: EventKind, Invitation, TaskTemplate, User, Event
+- **relationships**: 4 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" -- "1..*" Attendee, Organizer "1" -- "1" Location, Organizer "1" -- "0..*" Task, Attendee "0..*" -- "0..*" Task
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Based on the analysis of the student's errors and the system description, here are the derived modeling rules that focus on improving object-oriented class diagram understanding:
+
+```rule
++ Rule 1: Always model enumerations for attributes with a fixed set of possible values (e.g., status types, categories).
++ Rule 2: Do not model enumerations for attributes that represent free-form text or dynamically extendable sets.
++ Rule 3: Distinguish between core domain entities (like User, Event, Task) and their relationships before modeling supporting classes.
++ Rule 4: Model inheritance when different classes share significant common attributes/behaviors (e.g., Organizer and Attendee as subclasses of User).
++ Rule 5: Always represent many-to-many relationships explicitly through association classes when additional attributes are needed (e.g., Invitation connecting User and Event).
++ Rule 6: Do not connect classes directly when their relationship is mediated through another entity (e.g., Organizer-Task relationship should go through Event).
++ Rule 7: Model composition relationships for entities that cannot exist without their parent (e.g., TaskTemplate belongs to EventKind).
++ Rule 8: Always include cardinality constraints for all relationships to clarify business rules.
++ Rule 9: Do not omit associative entities that track state or additional information between relationships (e.g., Invitation tracking acceptance status).
++ Rule 10: Model reusable template patterns (like TaskTemplate) separately from their runtime instances (like Task).
+```
+Improve_result:```plantuml
+@startuml
+
+enum Status {
+  ATTENDING
+  MAYBE_ATTENDING
+  NOT_ATTENDING
+}
+
+enum TaskStatus {
+  TO_DO
+  DONE
+  NOT_APPLICABLE
+}
+
+class Organizer {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - address: String
+  - phone_number: String
+  - password: String
+  + createEvent()
+  + inviteAttendees()
+  + viewInvitationStatus()
+}
+
+class Event {
+  - start_date_time: DateTime
+  - end_date_time: DateTime
+  - occasion: String
+  + addLocation()
+}
+
+class Location {
+  - name: String
+  - address: String
+}
+
+class Attendee {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - password: String
+  - status: Status
+  + createAccount()
+  + selectTasks()
+}
+
+class Task {
+  - description: String
+  - status: TaskStatus
+}
+
+class EventKind {
+  - description: String
+}
+
+Organizer "1" -- "1..*" Event
+Organizer "1" -- "0..*" Attendee
+Event * -- 1 Location
+Attendee "1" -- "0..*" Task
+EventKind "1" * -- "0..*" Event
+Task o-- TaskTemplate
+
+@enduml
+```
+---------------------3/10---------:
+error_list: 3 categories changed, 7 incorrect(+), 11 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: Event
+  omissions: InvitationStatus
+- **class**: 2 incorrect(+), 3 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: Invitation, TaskTemplate, User
+- **relationships**: 4 incorrect(+), 7 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Event, Organizer "1" --> "1..*" Task, Organizer "1" --> "1..*" Attendee, Task "1" --> "0..*" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Here are the derived modeling rules based on the analysis of student errors and the system description:
+
+```rule
++ Rule 1: Always model enumerations for attributes with a fixed set of possible values (e.g., status types, categories).
++ Rule 2: Do not create separate enumerations for single attributes that don't share values with other attributes in the system.
++ Rule 3: When modeling user roles (like Organizer/Attendee), first identify common attributes/relationships to abstract into a parent class (e.g., User).
++ Rule 4: Never model separate classes for roles when they share significant attributes/relationships - use inheritance or role pattern instead.
++ Rule 5: Always include association classes when tracking additional information about relationships between entities.
++ Rule 6: Don't directly connect role classes to other entities when the relationship actually exists at the abstract parent level.
++ Rule 7: For template patterns (like reusable tasks), always model both the template class and its concrete instances separately.
++ Rule 8: Never omit cardinalities in relationships - they are essential for understanding system behavior.
++ Rule 9: Always verify bidirectional relationships to ensure they accurately reflect the system's requirements.
++ Rule 10: When modeling categorization systems (like event types), explicitly represent them as classes if they have their own attributes/relationships.
++ Rule 11: Don't create direct relationships between entities when the connection should be mediated through an association class.
++ Rule 12: Always consider whether multi-role participation (e.g., organizer who is also attendee) requires special modeling attention.
+```
+Improve_result:@startuml
+
+!define Attendee {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+}
+
+!define Organizer {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  postalAddress: string
+  phoneNumber: string
+}
+
+enum TaskStatus {
+  TO_DO
+  DONE
+  NOT_APPLICABLE
+}
+
+class Event {
+  startDate: datetime
+  endDate: datetime
+  occasion: string
+}
+
+class Location {
+  name: string
+  address: string
+}
+
+class EventKind {
+  name: string
+}
+
+class Task {
+  name: string
+  description: string
+  status: TaskStatus
+}
+
+class Invitation {
+  status: string
+}
+
+class Attendee {
+  << (M, #FF7700) Attendee >>
+  Attendee
+  Attendee {
+    +email: string
+    +password: string
+    +firstName: string
+    +lastName: string
+  }
+}
+
+class Organizer {
+  << (M, #FF7700) Organizer >>
+  Organizer {
+    +email: string
+    +password: string
+    +firstName: string
+    +lastName: string
+    +postalAddress: string
+    +phoneNumber: string
+  }
+}
+
+class AttendeeEventStatus {
+  status: string
+}
+
+class OrganizerEventStatus {
+  status: string
+}
+
+class EventChecklist {
+  attendeeTasks: Task
+  organizerTasks: Task
+}
+
+Attendee --|> User
+Organizer --|> User
+Location *-- Event
+Event --> EventKind
+Event --> Location
+
+Invitation "1" -- "0..*" Attendee
+EventChecklist --> Task
+
+@enduml
+---------------------4/10---------:
+error_list: 3 categories changed, 5 incorrect(+), 13 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: InvitationStatus
+- **class**: 2 incorrect(+), 3 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: Invitation, TaskTemplate, User
+- **relationships**: 2 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Event, Organizer "1" --> "1..*" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Here are the derived modeling rules based on the analysis of the student's errors and the system description:
+
+```rule
++ Rule 1: Enumerate all possible states or types when a property has a fixed set of values (e.g., InvitationStatus, EventKind).
++ Rule 2: Do not create separate classes for roles that share common attributes; instead, use inheritance or role-based associations (e.g., Organizer and Attendee should extend User).
++ Rule 3: Model all entities that participate in relationships, even if they seem trivial (e.g., Invitation, TaskTemplate).
++ Rule 4: Ensure bidirectional relationships are explicitly represented (e.g., Event ↔ Invitation, User ↔ Event).
++ Rule 5: Avoid direct many-to-many relationships between classes representing people and events; use intermediary classes (e.g., Invitation links User and Event).
++ Rule 6: Always include associative entities in many-to-many relationships (e.g., TaskTemplate links EventKind and Task).
++ Rule 7: Do not conflate attributes with relationships (e.g., EventKind should be a class, not an attribute of Event).
++ Rule 8: Model all compositional relationships (e.g., Event "1" -- "1" Location).
++ Rule 9: Represent all role-specific associations (e.g., User as Organizer/Attendee linked to Event).
++ Rule 10: Include all task-related associations (e.g., Task ↔ User for accomplishment tracking).
+``` 
+
+These rules emphasize systematic modeling practices, such as proper enumeration usage, avoiding redundancy, and ensuring complete relationship representation. They are intentionally generic to apply beyond the given context.
+Improve_result:@startuml
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  MAYBE
+  DECLINED
+}
+
+enum EventKind {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  WEDDING
+}
+
+class User {
+  + first_name: String
+  + last_name: String
+  + email: String
+  + address: String
+  + phone_number: String
+  + password: String
+}
+
+class Organizer {
+  + is_attending: Boolean
+}
+
+class Attendee {
+  + is_attending: Boolean
+  + bring_item: String
+}
+
+class Event {
+  + start_date_time: DateTime
+  + end_date_time: DateTime
+  + occasion: String
+}
+
+class Location {
+  + name: String
+  + address: String
+}
+
+class Invitation {
+  + invitation_status: InvitationStatus
+}
+
+class TaskTemplate {
+  + task_name: String
+  + task_status: String
+}
+
+User "1" <-- "1" Event
+User "1" -- "n" Invitation
+User <|-- Organizer
+User <|-- Attendee
+
+Event "1" -- "1" Location
+Event "1" -- "n" Invitation
+Event <|-- TaskTemplate
+
+TaskTemplate "n" -- "1" EventKind
+
+Invitation "1" -- "n" User
+
+@enduml
+---------------------5/10---------:
+error_list: 3 categories changed, 6 incorrect(+), 14 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: EventType
+  omissions: TaskType, InvitationStatus
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: Location, Invitation, TaskTemplate, User
+- **relationships**: 3 incorrect(+), 8 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Event, Organizer "1" --> "1..*" Attendee, Task "1" --> "0..1" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Based on the system description and the students' errors, here are the derived modeling rules:
+
+```rule
++ Rule 1: Always identify and model enumerations for attributes with a fixed set of possible values (e.g., status types, categories).
++ Rule 2: Do not create separate classes for roles (e.g., Organizer/Attendee) when they share core attributes with a base entity (e.g., User); instead, use associations or inheritance.
++ Rule 3: Model reusable entities (e.g., Location, TaskTemplate) as independent classes when they are referenced across multiple contexts.
++ Rule 4: Explicitly represent associative entities (e.g., Invitation) when relationships require attributes or complex multiplicity (e.g., many-to-many with status tracking).
++ Rule 5: Ensure bidirectional relationships are modeled when navigation is required in both directions (e.g., Event↔Location, User↔Event).
++ Rule 6: Avoid direct relationships between peripheral entities (e.g., Task→Attendee) when they should be mediated through a central entity (e.g., User or Invitation).
++ Rule 7: Always capture hierarchical or template relationships (e.g., EventKind→TaskTemplate) to support reuse.
++ Rule 8: Do not omit cardinalities in relationships; explicitly define minimum/maximum participation (e.g., 1..* vs *).
+``` 
+
+These rules emphasize abstraction, reuse, and clarity in relationship modeling while avoiding role duplication and incomplete associations.
+Improve_result:Sure, here is the PlantUML code for the class diagram based on the description provided:
+
+```plantuml
+@startuml
+
+skinparam class {
+    BackgroundColor PaleGreen
+    BorderColor DarkSlateGray
+}
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    // add more options as needed
+}
+
+class User {
+    + first_name: String
+    + last_name: String
+    + email: String
+    + address: String
+    + phone_number: String
+    + password: String
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class TaskTemplate {
+    + name: String
+    + description: String
+}
+
+class Event {
+    + start_date_time: DateTime
+    + end_date_time: DateTime
+    + occasion: String
+    + location: Location
+    + organizers: List<User>
+    + attendees: List<User>
+}
+
+class Invitation {
+    + status: String
+}
+
+class Task {
+    + description: String
+    + status: String
+    + assignee: User
+}
+
+Event *-- EventKind
+Event "1" *-- "1..*" User: organizer
+Event "1" *-- "0..*" User: attendee
+Event -- Location
+Event *-- Invitation
+Event "1" -- TaskTemplate
+
+User -- Invitation
+User *-- Task
+
+@enduml
+```
+
+This class diagram captures the main entities (classes) and their relationships as described in the system. Additional attributes and associations can be added as needed based on further requirements or details.
+---------------------6/10---------:
+error_list: 3 categories changed, 8 incorrect(+), 16 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: Event
+  omissions: TaskType, InvitationStatus
+- **class**: 3 incorrect(+), 6 omissions(-)
+  incorrect: Organizer, Attendee, EventChecklist
+  omissions: EventKind, Invitation, TaskTemplate, Task, User, Event
+- **relationships**: 4 incorrect(+), 8 omissions(-)
+  incorrect: Organizer "1" -- "n" Attendee : organizes, Organizer "1" -- "1..*" Event, Event "*" -- "*" Attendee : invites, Event "1" -- "1" EventChecklist
+  omissions: Event "*" -- "*" Invitation (invitations), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Here are the derived modeling rules based on the analysis of the student responses and the system description:
+
+```rule
++ Rule 1: Always define enumerations for attributes with a fixed set of possible values (e.g., status types, categories).
++ Rule 2: Do not model classes that represent roles (e.g., Organizer, Attendee) separately if they share core attributes; instead, use a generalized class (e.g., User) with role-specific associations or attributes.
++ Rule 3: Ensure all domain concepts mentioned in the system description are represented as classes or attributes (e.g., EventKind, TaskTemplate).
++ Rule 4: Model relationships between classes to reflect real-world interactions and dependencies (e.g., an Event has Invitations, a Task is assigned to a User).
++ Rule 5: Avoid creating redundant relationships; instead, leverage existing associations to infer indirect connections (e.g., Organizer-Attendee relationships can be derived via Event).
++ Rule 6: Use multiplicity constraints (e.g., 1..*, 0..1) to accurately capture optionality and cardinality in relationships.
++ Rule 7: Do not omit associative classes when modeling many-to-many relationships (e.g., Invitation as a link between Event and User).
++ Rule 8: Ensure bidirectional relationships are modeled only when necessary for the system's functionality.
++ Rule 9: Model inheritance or shared attributes (e.g., User as a base for Organizer/Attendee) to avoid duplication.
++ Rule 10: Include all relevant attributes for classes based on the system description (e.g., Event must have start/end time, location).
+``` 
+
+These rules emphasize clarity, completeness, and avoiding redundancy while ensuring the model aligns with the problem domain.
+Improve_result:@startuml
+enum EventKind {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  // add more event types as needed
+}
+
+enum InvitationStatus {
+  NOT_REPLIED
+  ATTENDING
+  MAYBE_ATTENDING
+  NOT_ATTENDING
+}
+
+class Location {
+  - name: String
+  - address: String
+}
+
+class User {
+  - first_name: String
+  - last_name: String
+  - email: String
+  - password: String
+}
+
+class Organizer {
+  - role: String
+  - eventsOrganized: Event[]
+}
+
+class Attendee {
+  - invitedBy: Organizer
+  - status: InvitationStatus
+}
+
+class Event {
+  - kind: EventKind
+  - startDateTime: DateTime
+  - endDateTime: DateTime
+  - occasion: String
+  - location: Location
+  - invitations: Invitation[]
+  - tasks: Task[]
+}
+
+class Invitation {
+  - event: Event
+  - attendee: Attendee
+}
+
+class Task {
+  - description: String
+  - status: String
+  - assignedTo: User
+}
+
+Location "1" <-- "0..*" Event: has
+User <-- Organizer
+User <-- Attendee
+User "0..*" <-- "0..*" Event: organizes
+Event "1" <-- "0..*" Invitation: has
+Event "1" <-- "1..*" Task: has
+Organizer "1" <-- "0..*" Attendee: invites
+Organizer "1" <-- "1..*" Task: assigns
+Attendee "1" <-- "1..*" Task: brings
+
+@enduml
+---------------------7/10---------:
+error_list: 3 categories changed, 8 incorrect(+), 16 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: Event
+  omissions: TaskType, InvitationStatus
+- **class**: 3 incorrect(+), 5 omissions(-)
+  incorrect: EventChecklist, Organizer, Attendee
+  omissions: EventKind, Invitation, TaskTemplate, User, Event
+- **relationships**: 4 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" -- "1..*" Attendee, Organizer "1" -- "1" EventChecklist, Attendee "1" -- "1" Event, Attendee "1" -- "1" Task
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Based on the analysis of the student errors and the system description, here are the derived modeling rules:
+
+```rule
++ Rule 1: Enumerate all possible states or types when an attribute has a fixed set of values (e.g., invitation status, task types).
++ Rule 2: Do not create classes for roles (e.g., Organizer, Attendee) when they can be generalized into a single class with role differentiation (e.g., User with a role attribute).
++ Rule 3: Model relationships between classes based on real-world interactions and dependencies, not just ownership or hierarchy.
++ Rule 4: Include all entities that participate in key system operations, even if they seem secondary (e.g., Invitation, TaskTemplate).
++ Rule 5: Avoid direct relationships between role-based classes unless they represent a distinct interaction beyond the system's core functionality.
++ Rule 6: Ensure all enumerated types are used as attributes in relevant classes (e.g., TaskType in Task, InvitationStatus in Invitation).
++ Rule 7: Model reusable components (e.g., EventKind, TaskTemplate) as separate classes when they are referenced across multiple instances.
++ Rule 8: Represent many-to-many relationships explicitly when entities interact bidirectionally (e.g., Event and Task, User and Event).
++ Rule 9: Do not omit associative classes when relationships carry additional attributes or behavior (e.g., Invitation linking User and Event).
++ Rule 10: Validate cardinalities by checking real-world constraints (e.g., an Event has 1..* organizers, not 1-to-1).
+``` 
+
+These rules emphasize generalization, completeness, and relationship accuracy—core principles of object-oriented modeling.
+Improve_result:```plantuml
+@startuml
+
+title CelO Application Class Diagram
+
+enum EventKind {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    WEDDING
+    // Add more event kinds as needed
+}
+
+enum InvitationStatus {
+    REPLIED
+    NOT_REPLIED
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+}
+
+class User {
+    - username: String
+    - password: String
+    - firstName: String
+    - lastName: String
+    - email: String
+    - address: String
+    - phone: String
+}
+
+class Event {
+    - startDate: Date
+    - endDate: Date
+    - occasion: String
+    - location: Location
+    - organizers: List<User>
+}
+
+class Location {
+    - name: String
+    - address: String
+}
+
+class TaskTemplate {
+    - name: String
+}
+
+class Task {
+    - taskTemplate: TaskTemplate
+    - status: String
+}
+
+class Invitation {
+    - event: Event
+    - user: User
+    - status: InvitationStatus
+}
+
+Event "1" -- "*" User : has
+Event "1" -- "*" Task : has
+Task "1" -- "*" User : designated
+Event "*" -- "1" Location : takes place at
+User "0..*" -- "0..*" Event : manages
+User "0..*" -- "0..1" Event : attends
+Invitation "1" -- "1" User : sent to
+Invitation "1" -- "1" Event : for
+
+@enduml
+```
+---------------------8/10---------:
+error_list: 3 categories changed, 8 incorrect(+), 15 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: EventTypes
+  omissions: TaskType, InvitationStatus
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: Location, Invitation, TaskTemplate, User
+- **relationships**: 5 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "1..*" EventTypes : Selects, Organizer "1" --> "1" Event : Creates, Organizer "1" --> "1" Attendee : Invites, Organizer "1" --> "1..*" Task : Creates, Event "1" --> "1..*" Attendee : Attends
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Here are the derived modeling rules based on the analysis of the student responses and the system description:
+
+```rule
++ Rule 1: Enumerations should represent finite, discrete sets of values that are mutually exclusive and collectively exhaustive for a specific domain concept.
++ Rule 2: Avoid creating enumerations for concepts that are better modeled as classes with their own attributes and relationships.
++ Rule 3: Classes should encapsulate both data (attributes) and behavior (methods) relevant to a single, well-defined responsibility.
++ Rule 4: Do not conflate roles (e.g., Organizer, Attendee) with user entities; instead, model roles as relationships or attributes of a central User class.
++ Rule 5: Always model bidirectional relationships explicitly if both directions of the association are semantically meaningful in the domain.
++ Rule 6: Avoid creating direct relationships between classes that should interact through an intermediary class (e.g., Organizer-Invitation-Attendee instead of Organizer-Attendee).
++ Rule 7: When modeling participation in events, distinguish between the event itself, the invitation mechanism, and the participant's response status.
++ Rule 8: For reusable components (like tasks or locations), create separate classes that can be associated with multiple events rather than embedding them directly.
++ Rule 9: Always consider the lifecycle and reuse potential of domain objects when modeling relationships (e.g., task templates vs. event-specific tasks).
++ Rule 10: Do not omit cardinalities in relationships; they are essential for understanding the business rules and constraints of the system.
+```
+Improve_result:```plantuml
+@startuml
+
+enum EventKind {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  // Add more event kinds as needed
+}
+
+enum ResponseStatus {
+  ATTENDING
+  MAYBE_ATTENDING
+  CANNOT_ATTEND
+}
+
+class User {
+  username: String
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  address: String
+  phone: String
+}
+
+class Event {
+  name: String
+  startDateTime: Date
+  endDateTime: Date
+  occasion: String
+  location: Location
+}
+
+class Location {
+  name: String
+  address: String
+}
+
+class Attendee {
+  responseStatus: ResponseStatus
+}
+
+class Task {
+  description: String
+  status: String
+}
+
+class Organizer extends User {
+  eventsOrganized: Event[]
+  invitees: Attendee[]
+  
+  selectEventKind(kind: EventKind): void
+  createEventKind(kind: EventKind): void
+  inviteAttendee(firstName: String, lastName: String, email: String): void
+  viewInvitationStatus(event: Event): void
+  selectEvent(event: Event): void
+  addTask(task: Task): void
+  designateAttendeeTask(task: Task): void
+}
+
+User "1" -- "0..*" Event
+Event "1" -- "1" Location
+Event "1" -- "0..*" Task
+Attendee "1" -- "1" ResponseStatus
+Organizer "1" -- "0..*" Event
+Organizer "1" -- "0..*" Attendee
+Attendee "1" -- "0..*" Task
+
+@enduml
+```
+---------------------9/10---------:
+error_list: 3 categories changed, 10 incorrect(+), 16 omissions(-)
+- **enumeration**: 1 incorrect(+), 2 omissions(-)
+  incorrect: EventKind
+  omissions: TaskType, InvitationStatus
+- **class**: 2 incorrect(+), 5 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: EventKind, Invitation, TaskTemplate, User, Event
+- **relationships**: 7 incorrect(+), 9 omissions(-)
+  incorrect: Organizer "1" --> "1..*" Attendee, Organizer "1" --> "1" EventKind, Organizer "1" --> "1" Location, Organizer "1" --> "0..*" Task, Location "0..*" --> "1" Organizer, Task "0..1" --> "0..1" Attendee, Attendee "1" --> "0..*" Task
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Event "*" -- "*" Task (checklist), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Here are the derived modeling rules based on the analysis of student errors and the system description:
+
+```rule
++ Rule 1: Enumerate all domain-specific status types (e.g., invitation statuses, task states) to ensure clear state representation.
++ Rule 2: Do not create separate classes for roles (e.g., Organizer/Attendee) when they share core attributes with a base entity (e.g., User); use inheritance or role associations instead.
++ Rule 3: Model domain concepts (e.g., Event, TaskTemplate) as independent classes when they have distinct attributes or lifecycle management.
++ Rule 4: Represent many-to-many relationships explicitly (e.g., Event-Task, User-Event) when entities participate independently.
++ Rule 5: Avoid bidirectional relationships unless both directions are functionally necessary; prefer unidirectional navigation.
++ Rule 6: Use composition ("whole-part") for dependent entities (e.g., Checklist-Task) that cannot exist without their parent.
++ Rule 7: Always associate enumerations with the classes that use them (e.g., TaskType with Task).
++ Rule 8: Model optional participation (0..1) only when the relationship is conditionally required by business rules.
++ Rule 9: Separate invariant relationships (e.g., Event-Location) from dynamic ones (e.g., User-Task assignment).
++ Rule 10: Abstract reusable patterns (e.g., template tasks) into distinct classes with generalization relationships.
+``` 
+
+These rules emphasize:
+1. **Abstraction**: Prioritize essential domain concepts over implementation roles
+2. **Relationship clarity**: Distinguish between structural and behavioral associations
+3. **Lifecycle integrity**: Ensure proper dependency management between entities
+4. **Pattern recognition**: Identify and formalize recurring domain constructs
+Improve_result:```plantuml
+@startuml
+
+' Define enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    WEDDING
+    OTHER
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+}
+
+' Define classes
+class User {
+    + first_name: string
+    + last_name: string
+    + email: string
+    + address: string
+    + phone_number: string
+    + password: string
+}
+
+class Event {
+    + start_date_time: datetime
+    + end_date_time: datetime
+    + occasion: string
+}
+
+class Location {
+    + name: string
+    + address: string
+}
+
+class Task {
+    + description: string
+    + status: TaskStatus
+}
+
+' Define relationships
+User "1" -- "1..*" Event: organizes
+User <|-- Event: manages
+User <|-- Event: attends
+User "1" -- "0..*" Location: creates
+Event "1" -- "1..*" User: invites
+User "1" -- "*" Task: manages
+Event "1" -- "*" Task: has
+Task "0..1" -- "1..*" User: assigns
+Task "1" *--* User: brings
+
+EventType <|-- Event: type
+TaskStatus <|-- Task: status
+InvitationStatus <|-- User: invitation_status
+
+@enduml
+```
+---------------------10/10---------:
+error_list: 3 categories changed, 7 incorrect(+), 13 omissions(-)
+- **enumeration**: 1 incorrect(+), 1 omissions(-)
+  incorrect: EventKind
+  omissions: TaskType
+- **class**: 2 incorrect(+), 4 omissions(-)
+  incorrect: Organizer, Attendee
+  omissions: Location, Invitation, TaskTemplate, User
+- **relationships**: 4 incorrect(+), 8 omissions(-)
+  incorrect: Organizer "1" -- "*" Event, Organizer "1" -- "*" Attendee, Event "1" -- "*" Attendee, Task "1" -- "1" Attendee
+  omissions: Event "*" -- "*" Invitation (invitations), Event "1" -- "1" Location (location), Invitation "1" -- "0..1" User (invitee), Task "1" -- "1" User (accomplisher), User "*" -- "*" Event (organizers), Event "*" -- "*" EventKind (Kind), User "*" -- "*" EventKind (EventKinds), EventKind "*" -- "*" TaskTemplate (taskTemplates)
+Summary_rules:Based on the system description and student errors, here are the derived modeling rules to improve object-oriented class diagram understanding:
+
+```rule
++ Rule 1: Always identify and model all core domain entities as classes, even if they share attributes with other classes (e.g., User as superclass for Organizer/Attendee).
++ Rule 2: Never model the same real-world concept as separate classes when they should be related through inheritance or association.
++ Rule 3: Always create enumerations for fixed sets of values that classify or categorize other elements (e.g., TaskType, EventKind).
++ Rule 4: Never omit associative classes when tracking additional information about relationships between entities (e.g., Invitation between Event and Attendee).
++ Rule 5: Always model location as a separate class when it has its own attributes and may be reused across multiple events.
++ Rule 6: Never create direct relationships between classes when an intermediate class better represents the real-world interaction (e.g., use Invitation instead of direct Event-Attendee link).
++ Rule 7: Always distinguish between template patterns (TaskTemplate) and their concrete instances (Task).
++ Rule 8: Never model participants in multiple roles (like Organizer-Attendee) without considering role separation or inheritance.
++ Rule 9: Always verify cardinalities by checking real-world constraints (e.g., an Event must have ≥1 Organizer but may have 0..* Attendees).
++ Rule 10: Never omit relationships that maintain important system functionality (e.g., who accomplishes tasks or what templates exist for event types).
+```
+Improve_result:@startuml
+
+enum EventKind {
+  BIRTHDAY_PARTY
+  GRADUATION_PARTY
+  // add more event kinds as needed
+}
+
+class Organizer {
+  - first_name: string
+  - last_name: string
+  - email: string
+  - postal_address: string
+  - phone_number: string
+  - password: string
+  + selectEventKind()
+  + createEventKind()
+  + specifyDateTime()
+  + inviteAttendees()
+  + viewInvitationStatus()
+  + addTaskToList()
+  + designateTaskForAttendees()
+}
+
+class Event {
+  - start_date_time: DateTime
+  - end_date_time: DateTime
+  - occasion: string
+  - location: Location
+  + getOrganizers()
+  + getAttendees()
+  + getTasks()
+}
+
+class Location {
+  - name: string
+  - address: string
+}
+
+class Attendee {
+  - first_name: string
+  - last_name: string
+  - email: string
+  - status: AttendeeStatus
+  + createAccount()
+  + selectTasks()
+}
+
+enum AttendeeStatus {
+  ATTENDING
+  MAYBE_ATTENDING
+  NOT_ATTENDING
+}
+
+class Task {
+  - description: string
+  - status: TaskStatus
+}
+
+enum TaskStatus {
+  TODO
+  DONE
+  NOT_APPLICABLE
+}
+
+class Invitation {
+  - invitation_id: int
+  - status: InvitationStatus
+}
+
+enum InvitationStatus {
+  REPLIED
+  NOT_REPLIED
+}
+
+Organizer "1" -- "1..*" Event
+Event "1" *-- "1" Location
+Organizer "1" -- "0..*" Attendee
+Attendee "1" *-- "0..*" Task
+Event "1" *-- "0..*" Task
+Event "1" *-- "0..*" Invitation
+
+@enduml

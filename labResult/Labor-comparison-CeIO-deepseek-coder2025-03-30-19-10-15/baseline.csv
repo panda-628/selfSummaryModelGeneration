@@ -1,0 +1,1046 @@
+---------------------1/10---------:
+Base_AI_answer:Here's a PlantUML class diagram based on the CelO application description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_REPLIED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ANNIVERSARY
+    OTHER
+}
+
+' Classes
+class User {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+}
+
+class Organizer {
+    + postalAddress: String
+    + phoneNumber: String
+}
+
+class Attendee {
+    + invitationStatus: InvitationStatus
+}
+
+class Event {
+    + eventType: EventType
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+    + occasion: String
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + status: TaskStatus
+    + isForAttendee: Boolean
+}
+
+class Invitation {
+    + sentDate: DateTime
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : organizes
+Event "1" -- "1" Location : has
+Event "1" -- "*" Task : contains
+Event "1" -- "*" Invitation : has
+Invitation "1" -- "1" Attendee : sent to
+Attendee "0..*" -- "0..*" Task : assigned to
+
+note right of Organizer::postalAddress
+    An organizer can manage events
+    without attending them
+end note
+
+note right of Task::isForAttendee
+    When true, task is shown to
+    attending attendees for selection
+end note
+
+@enduml
+```
+
+Key elements of the diagram:
+1. **Enumerations** for status types and event types
+2. **User** as the base class with common attributes
+3. **Organizer** and **Attendee** as specialized user types
+4. **Event** as the central class with related location and tasks
+5. **Task** with status tracking and attendee assignment capability
+6. **Invitation** to track attendee responses
+7. Relationships showing:
+   - Organizers manage events
+   - Events have locations and tasks
+   - Invitations connect events to attendees
+   - Attendees can be assigned tasks
+
+The diagram captures the main entities and relationships described in the requirements while maintaining clarity. Additional attributes or methods could be added for more detailed implementation.
+---------------------2/10---------:
+Base_AI_answer:Here's a PlantUML class diagram based on the CelO application description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ANNIVERSARY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_REPLIED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class Organizer {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + postalAddress: String
+    + phoneNumber: String
+    + password: String
+    + isAttending: Boolean
+}
+
+class Attendee {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+}
+
+class Event {
+    + name: String
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+    + occasion: String
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + isForAttendee: Boolean
+}
+
+class EventTask {
+    + status: TaskStatus
+}
+
+class Invitation {
+    + status: InvitationStatus
+}
+
+' Relationships
+Organizer "1..*" -- "1..*" Event : organizes
+Organizer "1" -- "*" Attendee : invites
+Attendee "1" -- "*" Invitation : receives
+Event "1" -- "*" Invitation : has
+Event "1" -- "1" Location : at
+Event "1" -- "1" EventType : of
+Event "1" -- "*" EventTask : contains
+Task "1" -- "*" EventTask : based on
+Attendee "0..*" -- "0..*" EventTask : assigned to
+Organizer "1" -- "*" Task : creates
+
+note right of Organizer::isAttending
+    Indicates whether the organizer
+    is also attending the event
+end note
+
+note right of Task::isForAttendee
+    True if task should be
+    accomplished by attendees
+end note
+
+@enduml
+```
+
+Key points about this diagram:
+1. I've created enumerations for the fixed sets of values (EventType, InvitationStatus, TaskStatus)
+2. The main classes represent the core entities in the system
+3. Relationships show how these entities interact:
+   - An organizer can create multiple events
+   - An event has one location and one event type
+   - Tasks can be assigned to attendees
+   - Invitations track attendee responses
+4. I've added notes to clarify some attributes
+5. The EventTask class serves as a junction between Event and Task to track status
+
+You may want to adjust this based on specific implementation needs, but this captures the main entities and relationships described in the requirements.
+---------------------3/10---------:
+Base_AI_answer:Here's a PlantUML class diagram based on the CelO application description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ANNIVERSARY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_REPLIED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+}
+
+class Organizer {
+    + phoneNumber: String
+    + postalAddress: String
+}
+
+class Attendee {
+}
+
+class Event {
+    + occasion: String
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + isForAttendee: Boolean
+}
+
+class EventTask {
+    + status: TaskStatus
+}
+
+class Invitation {
+    + responseDate: DateTime
+    + status: InvitationStatus
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : organizes
+Event "1" -- "1" Location : held at
+Event "1" -- "1" EventType : has type
+Event "1" -- "*" Invitation : has
+Event "1" -- "*" EventTask : has
+
+Organizer "1" -- "*" Invitation : sends
+Attendee "1" -- "*" Invitation : receives
+
+Task "1" -- "*" EventTask : appears in
+EventTask "0..1" -- "0..1" Attendee : assigned to
+
+' Notes
+note top of Organizer
+  Can be attending or not attending
+  their own events
+end note
+
+note right of Task
+  Reusable across events
+  of the same type
+end note
+
+@enduml
+```
+
+Key points about this diagram:
+1. I've created enumerations for the fixed sets of values (EventType, InvitationStatus, TaskStatus)
+2. The main classes are User (with Organizer and Attendee as subclasses), Event, Location, Task, EventTask, and Invitation
+3. Relationships show:
+   - Organizers can organize multiple events (many-to-many)
+   - Events have one location and one type
+   - Events have multiple invitations and tasks
+   - Tasks can be assigned to attendees (optional)
+   - Invitations connect organizers and attendees
+4. Notes explain some special business rules
+5. EventTask is a join class between Event and Task that adds status information
+
+The diagram captures all the main entities and relationships described in the requirements while keeping it clean and readable.
+---------------------4/10---------:
+Base_AI_answer:Here's the PlantUML class diagram based on the provided description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ' ... other event types
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_REPLIED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+}
+
+class Organizer {
+    + postalAddress: String
+    + phoneNumber: String
+}
+
+class Attendee {
+}
+
+class Event {
+    + occasion: String
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + isForAttendee: Boolean
+}
+
+class EventTask {
+    + status: TaskStatus
+}
+
+class Invitation {
+    + status: InvitationStatus
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : organizes
+Event "1" -- "1" Location : held at
+Event "1" -- "1" EventType : has type
+Event "1" -- "*" Invitation : has
+Event "1" -- "*" EventTask : has
+
+Invitation "1" -- "1" Attendee : for
+Invitation "1" -- "1" Event : for
+
+Task "1" -- "*" EventTask : appears in
+EventTask "0..1" -- "0..1" Attendee : assigned to
+
+Organizer "1" -- "*" Task : creates
+
+@enduml
+```
+
+### Explanation:
+
+1. **Enumerations**:
+   - `EventType`: Different types of events (birthday party, graduation party, etc.)
+   - `InvitationStatus`: Status of attendee responses (attending, maybe, not attending, not replied)
+   - `TaskStatus`: Status of tasks (to-do, done, not applicable)
+
+2. **Classes**:
+   - `User`: Base class with common attributes for both organizers and attendees
+   - `Organizer`: Extends User with additional organizer-specific attributes
+   - `Attendee`: Extends User
+   - `Event`: Contains event details including time and occasion
+   - `Location`: Where the event is held
+   - `Task`: Template for tasks (can be reused across events)
+   - `EventTask`: Instance of a task for a specific event with status
+   - `Invitation`: Links attendees to events with their response status
+
+3. **Relationships**:
+   - Organizers and attendees inherit from User
+   - Organizers can organize multiple events (many-to-many)
+   - Each event has one location and one type
+   - Events have multiple invitations and tasks
+   - Tasks can be assigned to attendees (optional)
+   - Organizers can create new tasks that become available for future events
+
+The diagram captures the main entities and relationships described in the requirements while maintaining flexibility for event organization and task management.
+---------------------5/10---------:
+Base_AI_answer:Here's a PlantUML class diagram based on the CelO application description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ANNIVERSARY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_RESPONDED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    +firstName: String
+    +lastName: String
+    +email: String
+    +password: String
+    +phone: String
+    +address: String
+}
+
+class Organizer {
+    +isAttending: boolean
+}
+
+class Attendee {
+    +invitationStatus: InvitationStatus
+    +selectTask()
+}
+
+class Event {
+    +name: String
+    +startDateTime: DateTime
+    +endDateTime: DateTime
+    +occasion: String
+    +eventType: EventType
+    +getInvitationStats()
+}
+
+class Location {
+    +name: String
+    +address: String
+}
+
+class Task {
+    +name: String
+    +description: String
+    +status: TaskStatus
+    +isForAttendee: boolean
+    +assignToAttendee()
+}
+
+class Checklist {
+    +addTask()
+    +removeTask()
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : manages >
+Organizer "0..*" -- "0..*" Event : attends >
+
+Event "1" -- "1" Location : has >
+Event "1" -- "1" Checklist : has >
+Event "1" -- "*" Attendee : invites >
+
+Checklist "1" -- "*" Task : contains >
+
+Attendee "0..*" -- "0..*" Task : assigned >
+
+@enduml
+```
+
+Key points about the diagram:
+1. Created enumerations for EventType, InvitationStatus, and TaskStatus
+2. User is the base class with common attributes for both Organizer and Attendee
+3. Organizer can manage multiple events and optionally attend them
+4. Event has a location, checklist, and multiple attendees
+5. Checklist contains multiple tasks which can be assigned to attendees
+6. Attendees can have multiple tasks assigned to them
+7. Relationships show multiplicity (1-to-1, 1-to-many, etc.)
+
+You may want to adjust the multiplicities or add additional attributes/methods based on more detailed requirements. The diagram captures the main entities and relationships described in the scenario.
+---------------------6/10---------:
+Base_AI_answer:Here's a PlantUML class diagram based on the description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NO_RESPONSE
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    +firstName: String
+    +lastName: String
+    +email: String
+    +password: String
+    +phone: String
+    +address: String
+}
+
+class Organizer {
+    +createEvent()
+    +inviteAttendees()
+    +viewInvitationStatus()
+    +manageTasks()
+}
+
+class Attendee {
+    +rsvp()
+    +selectTasks()
+}
+
+class Event {
+    +name: String
+    +startDateTime: DateTime
+    +endDateTime: DateTime
+    +occasion: String
+    +getInvitationStatus()
+}
+
+class Location {
+    +name: String
+    +address: String
+}
+
+class Task {
+    +description: String
+    +status: TaskStatus
+    +isForAttendee: Boolean
+}
+
+class Invitation {
+    +status: InvitationStatus
+    +responseDate: DateTime
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : organizes
+Event "1" -- "1" Location : has
+Event "1" -- "*" Task : contains
+Event "1" -- "*" Invitation : has
+Invitation "1" -- "1" Attendee : for
+Task "1" -- "0..1" Attendee : assignedTo
+Organizer "0..1" -- "1" Event : attends as >
+Organizer "1" -- "*" Attendee : invites
+
+Event "1" -- "1" EventType : of type
+
+@enduml
+```
+
+Key points about the diagram:
+1. Used inheritance for Organizer and Attendee both being specializations of User
+2. Created enumerations for the status types and event types
+3. Showed the many-to-many relationship between Organizers and Events
+4. Included the optional attendance of Organizers at their own events
+5. Represented the task assignment functionality
+6. Captured the invitation status tracking
+7. Made Location a separate class that's associated with Events
+
+The diagram captures all the main entities and relationships described in the requirements. You might want to adjust some multiplicities or add additional attributes/methods based on more detailed requirements.
+---------------------7/10---------:
+Base_AI_answer:Here's a PlantUML class diagram based on the CelO application description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NO_RESPONSE
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    +firstName: String
+    +lastName: String
+    +email: String
+    +password: String
+}
+
+class Organizer {
+    +address: String
+    +phoneNumber: String
+}
+
+class Attendee {
+}
+
+class Event {
+    +eventType: EventType
+    +startDateTime: DateTime
+    +endDateTime: DateTime
+    +occasion: String
+}
+
+class Location {
+    +name: String
+    +address: String
+}
+
+class Invitation {
+    +status: InvitationStatus
+}
+
+class Task {
+    +description: String
+    +status: TaskStatus
+    +isForAttendee: Boolean
+}
+
+class EventChecklist {
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : organizes
+Event "1" -- "1" Location : has
+Event "1" -- "*" Invitation : contains
+Event "1" -- "1" EventChecklist : has
+
+Invitation "1" -- "1" Attendee : for
+Invitation "1" -- "1" Organizer : from
+
+EventChecklist "1" -- "*" Task : contains
+
+Attendee "0..*" -- "0..*" Task : assigned
+
+Organizer "0..1" -- "0..1" Attendee : is also
+
+@enduml
+```
+
+### Explanation:
+
+1. **Enumerations**:
+   - `EventType`: Different types of events (birthday party, graduation party, etc.)
+   - `InvitationStatus`: Possible responses from attendees (attending, maybe, etc.)
+   - `TaskStatus`: Status of tasks (to-do, done, not applicable)
+
+2. **Classes**:
+   - `User`: Base class with common attributes for both organizers and attendees
+   - `Organizer`: Extends User with additional organizer-specific attributes
+   - `Attendee`: Extends User (no additional attributes needed beyond User)
+   - `Event`: Contains event details including type, time, and location
+   - `Location`: Stores location information
+   - `Invitation`: Tracks attendee responses
+   - `Task`: Represents checklist items with status and assignment info
+   - `EventChecklist`: Container for tasks specific to an event
+
+3. **Relationships**:
+   - Inheritance between User and Organizer/Attendee
+   - Many-to-many between Organizer and Event (as larger events need multiple organizers)
+   - Event has one Location and many Invitations
+   - Event has one Checklist which contains many Tasks
+   - Attendees can be assigned multiple Tasks
+   - Organizer can optionally also be an Attendee
+
+The diagram captures the main entities and relationships described in the requirements while keeping it clean and readable. You might want to add more attributes or methods depending on implementation details.
+---------------------8/10---------:
+Base_AI_answer:Here's the PlantUML class diagram based on the provided description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ' ... other event types
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_REPLIED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+}
+
+class Organizer {
+    + postalAddress: String
+    + phoneNumber: String
+}
+
+class Attendee {
+    + invitationStatus: InvitationStatus
+}
+
+class Event {
+    + eventType: EventType
+    + occasion: String
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + status: TaskStatus
+    + isForAttendee: Boolean
+}
+
+class Checklist {
+    + getTasks(): List<Task>
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1" *-- "1..*" Event : plans >
+Organizer "1" -- "0..*" Event : attends >
+
+Event "1" *-- "1" Location : has >
+Event "1" *-- "1" Checklist : has >
+Event "1" *-- "0..*" Attendee : has >
+
+Checklist "1" *-- "0..*" Task : contains >
+
+Attendee "0..*" -- "0..*" Task : assigned >
+
+@enduml
+```
+
+Key points about the design:
+1. I've created three enumerations for the fixed sets of values mentioned in the description
+2. User is the base class with common attributes for both Organizer and Attendee
+3. The relationships capture:
+   - An organizer plans 1 or more events
+   - An organizer may attend 0 or more events
+   - Each event has one location and one checklist
+   - Each checklist contains multiple tasks
+   - Attendees can be assigned multiple tasks
+   - Events have multiple attendees
+
+The diagram shows the main entities and their relationships while keeping it clean and focused on the core domain. You might want to add more attributes or methods depending on implementation details.
+---------------------9/10---------:
+Base_AI_answer:Here's the PlantUML class diagram based on the description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    ANNIVERSARY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NO_RESPONSE
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class Organizer {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + address: String
+    + phone: String
+    + password: String
+    + createEvent()
+    + inviteAttendees()
+    + viewInvitationStatus()
+    + manageTasks()
+}
+
+class Attendee {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+    + rsvp()
+    + selectTasks()
+}
+
+class Event {
+    + name: String
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+    + occasion: String
+    + addTask()
+    + removeTask()
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + status: TaskStatus
+    + isForAttendee: Boolean
+}
+
+class Invitation {
+    + status: InvitationStatus
+    + responseDate: DateTime
+}
+
+' Relationships
+Organizer "1" *-- "1..*" Event : organizes
+Organizer "1" -- "0..*" Event : attends
+Organizer "1" -- "1..*" Attendee : invites
+
+Attendee "1" -- "1..*" Event : attends
+Attendee "1" -- "0..*" Task : assigned
+
+Event "1" -- "1" EventType : has
+Event "1" -- "1" Location : at
+Event "1" *-- "0..*" Task : contains
+Event "1" *-- "1..*" Invitation : has
+
+Invitation "1" -- "1" Attendee : for
+
+@enduml
+```
+
+Key points about the diagram:
+1. Enumerations capture the fixed sets of values (EventType, InvitationStatus, TaskStatus)
+2. Main classes represent the core entities (Organizer, Attendee, Event, Location, Task, Invitation)
+3. Relationships show:
+   - Organizers create and manage events
+   - Organizers can also attend events
+   - Events have locations and types
+   - Events contain tasks and invitations
+   - Attendees receive invitations and can be assigned tasks
+   - Tasks can be marked with different statuses
+
+The diagram captures the main entities and relationships described in the requirements while keeping it clear and focused on the core domain.
+---------------------10/10---------:
+Base_AI_answer:Here's the PlantUML class diagram for the CelO application based on the description:
+
+```plantuml
+@startuml CelO_Class_Diagram
+
+' Enumerations
+enum EventType {
+    BIRTHDAY_PARTY
+    GRADUATION_PARTY
+    OTHER
+}
+
+enum InvitationStatus {
+    ATTENDING
+    MAYBE_ATTENDING
+    NOT_ATTENDING
+    NOT_REPLIED
+}
+
+enum TaskStatus {
+    TODO
+    DONE
+    NOT_APPLICABLE
+}
+
+' Classes
+class User {
+    + firstName: String
+    + lastName: String
+    + email: String
+    + password: String
+}
+
+class Organizer {
+    + postalAddress: String
+    + phoneNumber: String
+}
+
+class Attendee {
+    + invitationStatus: InvitationStatus
+}
+
+class Event {
+    + eventType: EventType
+    + startDateTime: DateTime
+    + endDateTime: DateTime
+    + occasion: String
+}
+
+class Location {
+    + name: String
+    + address: String
+}
+
+class Task {
+    + description: String
+    + status: TaskStatus
+    + isForAttendee: Boolean
+}
+
+class EventTaskAssignment {
+    + assignedAttendee: Attendee
+}
+
+' Relationships
+User <|-- Organizer
+User <|-- Attendee
+
+Organizer "1..*" -- "1..*" Event : organizes >
+Organizer "0..*" -- "0..*" Event : attends >
+
+Event "1" -- "1" Location : held at >
+Event "1" -- "*" Task : has >
+Event "1" -- "*" Attendee : has >
+
+Attendee "0..*" -- "0..*" Task : brings >
+Task "1" -- "0..1" EventTaskAssignment : assigned to >
+
+Organizer "1" -- "*" EventType : selects >
+Organizer "1" -- "*" Location : selects/creates >
+
+@enduml
+```
+
+Key points about the diagram:
+1. Enumerations are defined for EventType, InvitationStatus, and TaskStatus
+2. User is the base class with Organizer and Attendee as subclasses
+3. Relationships show:
+   - Organizers can organize multiple events and attend multiple events
+   - Events have one location but multiple tasks and attendees
+   - Tasks can be assigned to attendees through EventTaskAssignment
+   - Organizers can select from existing event types/locations or create new ones
+4. The multiplicities show the various cardinalities described in the requirements
+
+You may want to adjust some of the field names or relationships based on additional implementation details, but this covers the core domain model described.

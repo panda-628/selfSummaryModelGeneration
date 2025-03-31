@@ -1,9 +1,14 @@
 {
     "enumeration": {
-        "Event": [
+        "EventKind": [
             "BIRTHDAY_PARTY",
             "GRADUATION_PARTY",
             "OTHER",
+            ""
+        ],
+        "InvitationStatus": [
+            "REPLIED",
+            "NOT_REPLIED",
             ""
         ]
     },
@@ -15,14 +20,19 @@
             "- address: String",
             "- phone_number: String",
             "- password: String",
-            "+ selectEvent(event: Event)",
-            "+ specifyDateTime(startDateTime: DateTime, endDateTime: DateTime)",
-            "+ specifyLocation(location: String, address: String)",
-            "+ inviteAttendee(firstName: String, lastName: String, email: String)",
-            "+ viewInvitationStatus(event: Event)",
-            "+ indicateTaskStatus(task: Task, status: Status)",
-            "+ addNewTask(task: Task)",
-            "+ designateTaskForAttendees(task: Task)",
+            "+ createEvent()",
+            "+ inviteAttendees()",
+            "+ viewInvitationStatus()",
+            "+ manageEvent()",
+            ""
+        ],
+        "Event": [
+            "- start_date_time: DateTime",
+            "- end_date_time: DateTime",
+            "- occasion: String",
+            "- location: String",
+            "+ addTask()",
+            "+ designateTask()",
             ""
         ],
         "Attendee": [
@@ -30,29 +40,24 @@
             "- last_name: String",
             "- email: String",
             "- password: String",
-            "+ createAccount(password: String)",
-            "+ indicateAttendanceStatus(status: Status)",
-            "+ selectTask(task: Task)",
+            "+ createAccount()",
+            "+ indicateAttendance()",
             ""
         ],
         "Task": [
             "- description: String",
-            ""
-        ],
-        "Status": [
             "- status: String",
+            "+ markAsDone()",
+            "+ markAsNotApplicable()",
             ""
         ]
     },
     "relationships": [
-        "Organizer \"1\" --> \"1\" Event",
-        "Organizer \"1\" --> \"1\" Task",
-        "Organizer \"1\" --> \"1\" Status",
-        "",
-        "Attendee \"0..*\" --> \"0..*\" Task",
-        "Attendee \"1\" --> \"1\" Status",
-        "",
-        "Event \"1\" <--> \"0..*\" Task",
+        "Organizer \"1\" -- \"*\" Event",
+        "Organizer \"1\" -- \"*\" Attendee",
+        "Event \"1\" -- \"*\" Task",
+        "Event \"1\" -- \"*\" Attendee",
+        "Task \"1\" -- \"1\" Attendee",
         ""
     ]
 }

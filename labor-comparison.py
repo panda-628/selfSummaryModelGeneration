@@ -129,7 +129,7 @@ def run_llm(prompt_list,llm,temperature):
                 "content": prompt[-1]['content']        
         }
         ],
-        model="deepseek-ai/DeepSeek-R1",
+        model="deepseek-coder",
     )
     #print(chat_completion)
     return chat_completion.choices[0].message.content

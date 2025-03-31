@@ -1,5 +1,5 @@
 running_params = {
-    'llm':'gpt-3.5-turbo-0125',
+    'llm':'deepseek-coder',
     'run_llm':2, # 1:单轮问答，2：2论问答，3：三轮问答
     'cycle':10,
     'useCasecycle':5,
